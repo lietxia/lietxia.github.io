@@ -79,33 +79,6 @@ https://lietxia.github.io/res/001.png
 
 ----
 
-###追加教程，如何修改其他资源
-
-`如果 http://jpg.dog 的图床没法显示，可以试试用 http://sm.ms 图床`
-
-
-chrome进入雀魂，按f12打开控制台，然后按f5刷新一次
-
-切换到network选项卡，过滤器选 img 就能看到雀魂调用的所有图片资源。
-
-把雀魂资源的url复制出来，然后点开Resource Override的按钮
-
-![](img/005.png)
-
-添加一个规则：点【add rule】->【url -> url 】
-
-【form】 写雀魂图片的url ，【To:】写【替换的url】
-
-【替换的url】需要自己往互联网传图片，推荐一个 [https://jpg.dog](https://jpg.dog) 的图床，图片拖到这个网页就能上传了，
-
-上传完之后，下方选【嵌入代码】然后把【图片url连接】的部分复制出来。写到【替换的url】那即可
-
-![](img/006.png)
-
-图床还有 [http://sm.ms](http://sm.ms) 等等，你们可以自己试试什么好
-
-----
-
 ###改牌桌
 
 `如果 http://jpg.dog 的图床没法显示，可以试试用 http://sm.ms 图床`
@@ -179,3 +152,30 @@ http://www.majsoul.com/0/v**/audio/sound/yujie/*.mp3
 https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
 https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
 </pre>
+
+----
+
+###追加教程，如何修改其他资源
+
+`如果 http://jpg.dog 的图床没法显示，可以试试用 http://sm.ms 图床`
+
+
+chrome进入雀魂，按f12打开控制台，然后按f5刷新一次
+
+切换到network选项卡，过滤器选 img 就能看到雀魂调用的所有图片资源。
+
+把雀魂资源的url复制出来，然后点开Resource Override的按钮
+
+![](img/005.png)
+
+添加一个规则：点【add rule】->【url -> url 】
+
+【form】 写雀魂图片的url ，【To:】写【替换的url】
+
+【替换的url】需要自己往互联网传图片，推荐一个 [https://jpg.dog](https://jpg.dog) 的图床，图片拖到这个网页就能上传了，
+
+上传完之后，下方选【嵌入代码】然后把【图片url连接】的部分复制出来。写到【替换的url】那即可
+
+![](img/006.png)
+
+图床还有 [http://sm.ms](http://sm.ms) 等等，你们可以自己试试什么好
