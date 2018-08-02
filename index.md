@@ -81,15 +81,14 @@ https://lietxia.github.io/res/001.png
 
 ###追加教程，如何修改其他资源
 
-<pre>
-一些网友表示 http://jpg.dog 的图床没法显示，
-你们可以试试用 http://sm.ms 图床
-</pre>
-chrome进入 [http://majsoul.com](http://majsoul.com) 按f12打开控制台，然后按f5刷新一次
+`如果 http://jpg.dog 的图床没法显示，可以试试用 http://sm.ms 图床`
+
+
+chrome进入雀魂，按f12打开控制台，然后按f5刷新一次
 
 切换到network选项卡，过滤器选 img 就能看到雀魂调用的所有图片资源。
 
-把雀魂资源的url复制出来，然后点开Resource Override的按钮，
+把雀魂资源的url复制出来，然后点开Resource Override的按钮
 
 ![](img/005.png)
 
@@ -109,11 +108,7 @@ chrome进入 [http://majsoul.com](http://majsoul.com) 按f12打开控制台，�
 
 ###改牌桌
 
-<pre>
-一些网友表示http://jpg.dog的图床没法显示，
-你们可以试试用http://sm.ms图床
-</pre>
-
+`如果 http://jpg.dog 的图床没法显示，可以试试用 http://sm.ms 图床`
 
 这里提供一个我弄的photoshop的.PSD 源文件
 
