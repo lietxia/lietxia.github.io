@@ -1,9 +1,10 @@
 魔改雀魂
 =============
-目前魔改雀魂只能在PC端，若有新的思路可以联系我 QQ252373009
+目前魔改只能在PC端，若有新的思路可以联系我 QQ252373009
 ----------
 
-####效果
+###效果
+
 ![](img/001.png)
 
 ![](img/002.png)
@@ -76,8 +77,10 @@ https://lietxia.github.io/res/001.png
 
 5.进入雀魂 [http://majsoul.com](http://majsoul.com) 即可享受我魔改后的效果
 
-------
-####追加教程，如何修改其他资源
+----
+
+###追加教程，如何修改其他资源
+
 <pre>
 一些网友表示 http://jpg.dog 的图床没法显示，
 你们可以试试用 http://sm.ms 图床
@@ -103,7 +106,9 @@ chrome进入 [http://majsoul.com](http://majsoul.com) 按f12打开控制台，�
 图床还有 [http://sm.ms](http://sm.ms) 等等，你们可以自己试试什么好
 
 ----
-####改牌桌
+
+###改牌桌
+
 <pre>
 一些网友表示http://jpg.dog的图床没法显示，
 你们可以试试用http://sm.ms图床
@@ -125,8 +130,11 @@ chrome进入 [http://majsoul.com](http://majsoul.com) 按f12打开控制台，�
 把中间正方形的部分（我用红框 框出来了），用PS替换掉就行了（里面的线条其实可以不要，然后变暗一下，太亮会很惨）
 
 ![](img/008.png)
+
 ----
-####魔改语音
+
+###魔改语音
+
 目标语音：我上传了很多种语音，下面都以【清水谷龙华】的CV为例
 
 如果要改成其他语音，则把qingshuigulonghua改成相应的拼音即可
@@ -145,7 +153,7 @@ chrome进入 [http://majsoul.com](http://majsoul.com) 按f12打开控制台，�
 竹井久→zhujingjiu
 </pre>
 
-##改【一姬】的语音方法：
+###改【一姬】的语音方法：
 
 添加2行规则
 
@@ -162,7 +170,7 @@ https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
 </pre>
 
 ----
-##改【二阶堂】的语音方法：
+###改【二阶堂】的语音方法：
 
 添加2行规则
 左边2行写
