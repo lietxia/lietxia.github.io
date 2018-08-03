@@ -3,7 +3,7 @@
 目前魔改只能在PC端，若有新的思路可以联系我 QQ252373009
 ----------
 
-###效果
+##效果
 
 ![](img/001.png)
 
@@ -11,16 +11,21 @@
 
 所需:
 
-chrome浏览器
+chrome浏览器（或可以装chrome插件的浏览器，如：360极速浏览器，360安全浏览器）
 
 chrome的插件:Resource Override
 
 ----
 
+##魔改准备
+
 1.打开chrome(若没装，去 [https://www.google.cn/chrome/](https://www.google.cn/chrome/) 下载）
 
-2.chrome 打开 
-`chrome://extensions/`
+2.chrome 打开 `chrome://extensions/`
+
+※360安全浏览器 打开 `se://extensions/`
+
+※360极速浏览器 打开 `chrome://myextensions/`
 
 3.下载插件
 
@@ -39,39 +44,38 @@ chrome的插件:Resource Override
 
 5.安装好后，点击插件的图标，弹出Resource Override的配置页面
 
+※如果360安全浏览器看不到图标，把浏览器拉宽一些就能看到了。
+
 6.点【add rule】->【url -> url 】。添加4行规则
 
 ![](img/004.png)
 
 左侧4行依次填入
-<pre>
-http://www.majsoul.com/0/v0.2.5/scene/Assets/Resource/effect/res_g1/mjui.png
-http://www.majsoul.com/0/v0.2.5/res/atlas/myres3.png
-http://www.majsoul.com/0/**/scene/Assets/Resource/mjpai/3d/*.png
-http://www.majsoul.com/0/v0.2.1/scene/Assets/Resource/table/Table_Dif.png
-</pre>
+
+    http://www.majsoul.com/0/v0.2.5/scene/Assets/Resource/effect/res_g1/mjui.png
+    http://www.majsoul.com/0/v0.2.5/res/atlas/myres3.png
+    http://www.majsoul.com/0/**/scene/Assets/Resource/mjpai/3d/*.png
+    http://www.majsoul.com/0/v0.2.1/scene/Assets/Resource/table/Table_Dif.png
+
 
 如果想要紫色样式，右侧4行依次填入
-<pre>
-https://lietxia.github.io/mj/purple/mjui.png
-https://lietxia.github.io/mj/purple/myres3.png
-https://lietxia.github.io/mj/purple/small/*.png
-https://lietxia.github.io/res/001.png
-</pre>
+    https://lietxia.github.io/mj/purple/mjui.png
+    https://lietxia.github.io/mj/purple/myres3.png
+    https://lietxia.github.io/mj/purple/small/*.png
+    https://lietxia.github.io/res/001.png
 
 上方右侧的地址里 purple 改成 blue 则变成蓝色牌背，目前支持的颜色
-<pre>
-黑色→black
-蓝色→blue
-青色→cyan
-只有背面是黑色→dark
-绿色→green
-橙色→orange
-粉红→pink
-紫色→purple
-红色→red
-黄色→yellow
-</pre>
+
+    黑色→black
+    蓝色→blue
+    青色→cyan
+    只有背面是黑色→dark
+    绿色→green
+    橙色→orange
+    粉红→pink
+    紫色→purple
+    红色→red
+    黄色→yellow
 
 ※上面最后一行是改背景图的
 
@@ -79,7 +83,7 @@ https://lietxia.github.io/res/001.png
 
 ----
 
-###改牌桌
+##改牌桌
 
 `如果 http://jpg.dog 的图床没法显示，可以试试用 http://sm.ms 图床`
 
@@ -101,61 +105,56 @@ https://lietxia.github.io/res/001.png
 
 ----
 
-###魔改语音
+##魔改语音
 
 目标语音：我上传了很多种语音，下面都以【清水谷龙华】的CV为例
 
 如果要改成其他语音，则把qingshuigulonghua改成相应的拼音即可
 
 支持的CV
-<pre>
-清水谷龙华→qingshuigulonghua
-松实玄→songshixuan
-松实宥→songshiyou
-福路美穗子→fulumeisuizi
-宫永咲→gongyongxiao
-龙门渕透华→longmenyuantouhua
-梦乃真帆→mengnaizhenfan
-天江衣→tianjiangyi
-原村和→yuancunhe
-竹井久→zhujingjiu
-</pre>
+
+    清水谷龙华→qingshuigulonghua
+    松实玄→songshixuan
+    松实宥→songshiyou
+    福路美穗子→fulumeisuizi
+    宫永咲→gongyongxiao
+    龙门渕透华→longmenyuantouhua
+    梦乃真帆→mengnaizhenfan
+    天江衣→tianjiangyi
+    原村和→yuancunhe
+    竹井久→zhujingjiu
 
 ###改【一姬】的语音方法：
 
 添加2行规则
 
 左边2行写
-<pre>
-http://www.majsoul.com/0/v**/audio/sound/girl/*.mp3
-http://www.majsoul.com/0/sound/girl/*.mp3
-</pre>
+
+    http://www.majsoul.com/0/v**/audio/sound/girl/*.mp3
+    http://www.majsoul.com/0/sound/girl/*.mp3
 
 右边2行写
-<pre>
-https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
-https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
-</pre>
+
+    https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
+    https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
 
 ----
 ###改【二阶堂】的语音方法：
 
 添加2行规则
 左边2行写
-<pre>
-http://www.majsoul.com/0/sound/yujie/*.mp3
-http://www.majsoul.com/0/v**/audio/sound/yujie/*.mp3
-</pre>
+
+    http://www.majsoul.com/0/sound/yujie/*.mp3
+    http://www.majsoul.com/0/v**/audio/sound/yujie/*.mp3
 
 右边2行写
-<pre>
-https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
-https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
-</pre>
+
+    https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
+    https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
 
 ----
 
-###追加教程，如何修改其他资源
+##追加教程，如何修改其他资源
 
 `如果 http://jpg.dog 的图床没法显示，可以试试用 http://sm.ms 图床`
 
