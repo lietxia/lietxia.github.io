@@ -59,6 +59,7 @@ chrome的插件:Resource Override
 
 
 如果想要紫色样式，右侧4行依次填入
+
     https://lietxia.github.io/mj/purple/mjui.png
     https://lietxia.github.io/mj/purple/myres3.png
     https://lietxia.github.io/mj/purple/small/*.png
@@ -151,6 +152,26 @@ chrome的插件:Resource Override
 
     https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
     https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
+
+----
+
+##解决iPad分屏时旋转
+
+![](img/011.png)
+
+用safari点击右上角的【分享】，再点【请求桌面站点】即可
+
+![](img/010.png)
+
+----
+
+##iOS系统：想在玩雀魂时全屏
+
+![](img/011.png)
+
+用safari点击右上角的【分享】，再点【添加到主屏幕】，再从主屏幕的图标进入雀魂，则不会有任何多余的东西
+
+![](img/009.png)
 
 ----
 
