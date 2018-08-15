@@ -115,7 +115,7 @@ chrome的插件:Resource Override
 
 如果要改成其他语音，则把qingshuigulonghua改成相应的拼音即可
 
-支持的CV
+支持列表
 
     清水谷龙华→qingshuigulonghua
     松实玄→songshixuan
@@ -127,6 +127,25 @@ chrome的插件:Resource Override
     天江衣→tianjiangyi
     原村和→yuancunhe
     竹井久→zhujingjiu
+    须贺京太郎→xuhejingtailang
+    宫永照→gongyongzhao
+    藤田靖子→tengtianjingzi
+    鹭森灼→lusenzhuo
+    小走八重→xiaozoubachong
+    江口夕→jiangkouxi
+    高鸭稳乃→gaoyawennai
+    新子憧→xinzichong
+    弘世堇→hongshijin
+    江崎仁美（政治羊）→jiangqirenmei
+    安河内美子→anheneimeizi
+    涩谷尧深（茶杯）→seguyaoshen
+    赤土晴绘→chituqinghui
+    亦野诚子→yiyechengzi
+    船久保浩子→chuanjiubaohaozi
+    大星淡→daxingdan
+    二条泉→ertiaoquan
+    花田煌（好棒姐）→huatianhuang
+    荒川憩→huangchuanqi
 
 ###改【一姬】的语音方法：
 
