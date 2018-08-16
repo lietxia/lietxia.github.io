@@ -80,6 +80,7 @@ chrome的插件:Resource Override
     紫色→purple
     红色→red
     黄色→yellow
+    玫瑰牌背红色->rose
 
 ※上面最后一行是改背景图的
 
