@@ -200,6 +200,22 @@ chrome的插件:Resource Override
 
 ----
 
+##改点数显示板
+
+添加2行规则，左边2行写
+
+    ***majsoul.com/0/v**/scene/Assets/Resource/table/tablemid/*.png
+    ***majsoul.com/0/v**/scene/Assets/Resource/table/box_color.png
+
+右边2行写
+
+    https://lietxia.github.io/board/white-black/*.png
+    https://lietxia.github.io/board/white-black/box_color.png
+
+> 目前只有2个样式，把white-black改成white则变成另一种
+
+----
+
 ##解决iPad分屏时旋转
 
 ![](img/011.png)
@@ -273,7 +289,7 @@ chrome进入雀魂，按f12打开控制台，然后按f5刷新一次
 ES文件管理器（官方）[http://www.estrongs.com/](http://www.estrongs.com/)
 
 直接下载【Yandex浏览器】（不可更新）：
-[https://lietxia.github.io/res/com.yandex.browser.apk](https://lietxia.github.io/res/com.yandex.browser.apk)
+[http://i.mahjong.pub/res/com.yandex.browser.apk](http://i.mahjong.pub/res/com.yandex.browser.apk)
 
 百度云下载【Yandex浏览器】（不可更新）：
 [https://pan.baidu.com/s/1zKjogJAQ02F2ZT-gRLVPRQ](https://pan.baidu.com/s/1zKjogJAQ02F2ZT-gRLVPRQ)
