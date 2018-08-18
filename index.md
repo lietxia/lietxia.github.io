@@ -6,6 +6,8 @@
 > Tab URL 改成 `http://www.majsoul.com/0/*`
 > 左侧FROM的 `***majsoul.com/0/v**/` 开头的部分改成 `http://www.majsoul.com/0/v版本/`
 
+![](img/021.png)
+
 > 教程里图片用的规则还是旧的，配置以文字说明为准
 
 > 魔改完有时一些元素没有显示->刷新
