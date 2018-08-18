@@ -59,7 +59,15 @@ chrome的插件:Resource Override
 
 ※如果360安全浏览器看不到图标，把浏览器拉宽一些就能看到了。
 
-6.插件设置页【Tab URL】的内容改成 `http://www.majsoul.com/0/*`
+6.可以导入配置：导入配置方法【option】→【load Rules】→文件名栏直接写
+
+`https://lietxia.github.io/res/rule2.json`
+
+※如果不行，就下载上方的json文件到桌面，再选择桌面的这个文件
+
+手动添加规则方法：
+
+插件设置页【Tab URL】的内容改成 `http://www.majsoul.com/0/*`
 
  点【add rule】->【url -> url 】添加4行规则
 
