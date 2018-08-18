@@ -1,9 +1,12 @@
 魔改雀魂
 =============
-目前魔改只能在PC+andriod，若有新的思路可以联系我 QQ252373009
+>目前魔改可以在PC+安卓+iOS运行，iOS方法稍后更新
+
+> 因为雀魂更新，建议规则改成`***majsoul.com/0/v**/`开头（原来是`http://www.majsoul.com/0/v版本/`）
+
 > 魔改完有时一些元素没有显示->刷新
 
-> 装了插件，魔改无效->插件设置页【Tab URL】的内容改成 * 
+> 装了插件，魔改无效->进www.开头的雀魂地址
 ----------
 
 ##效果
@@ -49,16 +52,18 @@ chrome的插件:Resource Override
 
 ※如果360安全浏览器看不到图标，把浏览器拉宽一些就能看到了。
 
-6.点【add rule】->【url -> url 】。添加4行规则
+6.插件设置页【Tab URL】的内容改成 `http://www.majsoul.com/0/*`
+
+ 点【add rule】->【url -> url 】添加4行规则
 
 ![](img/004.png)
 
 左侧4行依次填入
 
-    http://www.majsoul.com/0/v0.2.5/scene/Assets/Resource/effect/res_g1/mjui.png
-    http://www.majsoul.com/0/v0.2.5/res/atlas/myres3.png
-    http://www.majsoul.com/0/**/scene/Assets/Resource/mjpai/3d/*.png
-    http://www.majsoul.com/0/v0.2.1/scene/Assets/Resource/table/Table_Dif.png
+    ***majsoul.com/0/v**/scene/Assets/Resource/effect/res_g1/mjui.png
+    ***majsoul.com/0/v**/res/atlas/myres3.png
+    ***majsoul.com/0/v**/scene/Assets/Resource/mjpai/3d/*.png
+    ***majsoul.com/0/v**/scene/Assets/Resource/table/Table_Dif.png
 
 
 如果想要紫色样式，右侧4行依次填入
@@ -70,10 +75,10 @@ chrome的插件:Resource Override
 
 上方右侧的地址里 purple 改成 blue 则变成蓝色牌背，目前支持的颜色
 
-    黑色→black
+    玫瑰牌背双面黑→black
     蓝色→blue
     青色→cyan
-    只有背面是黑色→dark
+    黑色→dark
     绿色→green
     橙色→orange
     粉红→pink
@@ -84,7 +89,7 @@ chrome的插件:Resource Override
 
 ※上面最后一行是改背景图的
 
-5.进入雀魂 [http://majsoul.com](http://majsoul.com) 即可享受我魔改后的效果
+5.进入雀魂 [http://www.majsoul.com](http://www.majsoul.com) 即可享受我魔改后的效果
 
 ----
 
@@ -98,7 +103,7 @@ chrome的插件:Resource Override
 
 直接下载PSD [https://lietxia.github.io/res/bg.psd](https://lietxia.github.io/res/bg.psd)
 
-左边是`http://www.majsoul.com/0/v0.2.1/scene/Assets/Resource/table/Table_Dif.png`的这行，是执行【替换牌桌】的，上传图片到图床 [https://jpg.dog](https://jpg.dog) (图床还有[http://sm.ms](http://sm.ms) 等等) ，然后把url填入右侧
+左边是`***majsoul.com/0/v**/scene/Assets/Resource/table/Table_Dif.png`的这行，是执行【替换牌桌】的，上传图片到图床 [https://jpg.dog](https://jpg.dog) (图床还有[http://sm.ms](http://sm.ms) 等等) ，然后把url填入右侧
 
 比如我上传之后得到`https://i.jpg.dog/img/9169a0d1187ef648bc48a6b06101233f.png`则这样修改
 
@@ -154,8 +159,8 @@ chrome的插件:Resource Override
 
 左边2行写
 
-    http://www.majsoul.com/0/v**/audio/sound/girl/*.mp3
-    http://www.majsoul.com/0/sound/girl/*.mp3
+    ***majsoul.com/0/v**/audio/sound/girl/*.mp3
+    ***majsoul.com/0/sound/girl/*.mp3
 
 右边2行写
 
@@ -168,8 +173,8 @@ chrome的插件:Resource Override
 添加2行规则
 左边2行写
 
-    http://www.majsoul.com/0/sound/yujie/*.mp3
-    http://www.majsoul.com/0/v**/audio/sound/yujie/*.mp3
+    ***majsoul.com/0/sound/yujie/*.mp3
+    ***majsoul.com/0/v**/audio/sound/yujie/*.mp3
 
 右边2行写
 
