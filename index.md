@@ -1,6 +1,6 @@
 魔改雀魂
 =============
-> 目前魔改可以在PC+安卓+iOS运行，iOS方法稍后更新
+> 目前魔改可以在PC+安卓+iOS运行，iOS方法稍后更新,有疑问可以联系我 QQ252373009
 
 > 因为雀魂更新，原来魔改规则无效，建议大家这样修改，可以一劳永逸
 > Tab URL 改成 `http://www.majsoul.com/0/*`
@@ -88,7 +88,7 @@ chrome的插件:Resource Override
     https://lietxia.github.io/mj/purple/mjui.png
     https://lietxia.github.io/mj/purple/myres3.png
     https://lietxia.github.io/mj/purple/small/*.png
-    https://lietxia.github.io/res/001.png
+    https://lietxia.github.io/res/005.png
 
 上方右侧的地址里 purple 改成 blue 则变成蓝色牌背，目前支持的颜色
 
