@@ -16,6 +16,11 @@
 
 > 魔改完清理一下浏览器缓存
 
+本页介绍的是PC端魔改的方法，移动设备见↓
+[安卓魔改方法](android.md)
+
+[iOS魔改方法](ios.md)
+
 ----------
 
 ##效果
@@ -83,14 +88,30 @@ chrome的插件:Resource Override
     ***majsoul.com/0/v**/scene/Assets/Resource/table/Table_Dif.png
 
 
-如果想要紫色样式，右侧4行依次填入
+右侧4行依次填入
 
     https://lietxia.github.io/mj/purple/mjui.png
     https://lietxia.github.io/mj/purple/myres3.png
     https://lietxia.github.io/mj/purple/small/*.png
     https://lietxia.github.io/res/005.png
 
-上方右侧的地址里 purple 改成 blue 则变成蓝色牌背，目前支持的颜色
+上方4个规则改的东西如下（实际上你打开图片就知道改的是啥了）
+> 第一行：改手牌的2D图片
+> 第二行：改左上角【悬赏牌表示牌】的图片
+> 第二行：改牌3D的素材
+> 第四行：改背景图
+
+5.进入雀魂 [http://www.majsoul.com](http://www.majsoul.com) 即可享受我魔改后的效果
+
+----
+
+##改牌背
+
+    https://lietxia.github.io/mj/purple/mjui.png
+    https://lietxia.github.io/mj/purple/myres3.png
+    https://lietxia.github.io/mj/purple/small/*.png
+
+右侧规则中，第1~3行的`purple`改成其他字段可以变成其他颜色，目前支持的颜色：
 
     玫瑰牌背双面黑→black
     蓝色→blue
@@ -105,9 +126,6 @@ chrome的插件:Resource Override
     玫瑰牌背红色->rose
     saki2.0麻将牌（無聲鈴鹿制作）->saki2
 
-※上面最后一行是改背景图的
-
-5.进入雀魂 [http://www.majsoul.com](http://www.majsoul.com) 即可享受我魔改后的效果
 
 ----
 
@@ -173,30 +191,26 @@ chrome的插件:Resource Override
 
 ###改【一姬】的语音方法：
 
-添加2行规则
+添加1规则
 
-左边2行写
+左边写
 
     ***majsoul.com/0/v**/audio/sound/girl/*.mp3
-    ***majsoul.com/0/sound/girl/*.mp3
 
-右边2行写
+右边写
 
-    https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
     https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
 
 ----
 ###改【二阶堂】的语音方法：
 
-添加2行规则
-左边2行写
+添加1规则
+左边写
 
-    ***majsoul.com/0/sound/yujie/*.mp3
     ***majsoul.com/0/v**/audio/sound/yujie/*.mp3
 
-右边2行写
+右边写
 
-    https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
     https://lietxia.github.io/sound/qingshuigulonghua/*.mp3
 
 ----
@@ -214,26 +228,6 @@ chrome的插件:Resource Override
     https://lietxia.github.io/board/white-black/box_color.png
 
 > 目前只有2个样式，把white-black改成white则变成另一种
-
-----
-
-##解决iPad分屏时旋转
-
-![](img/011.png)
-
-用safari点击右上角的【分享】，再点【请求桌面站点】即可
-
-![](img/010.png)
-
-----
-
-##iOS系统：想在玩雀魂时全屏
-
-![](img/011.png)
-
-用safari点击右上角的【分享】，再点【添加到主屏幕】，再从主屏幕的图标进入雀魂，则不会有任何多余的东西
-
-![](img/009.png)
 
 ----
 
@@ -261,70 +255,3 @@ chrome进入雀魂，按f12打开控制台，然后按f5刷新一次
 ![](img/006.png)
 
 图床还有 [http://sm.ms](http://sm.ms) 等等，你们可以自己试试什么好
-
-----
-
-##安卓装插件的方法
-安卓需要【Yandex浏览器】和【ES文件管理器】和【Resource Override插件】
-
-###安卓能飜墻的场合
-谷歌PLAY下载【Yandex浏览器】（需飜墻，可更新）：
- [https://play.google.com/store/apps/details?id=com.yandex.browser&referrer=promopage](https://play.google.com/store/apps/details?id=com.yandex.browser&referrer=promopage)
-
-下载浏览器之后，用Yandex打开[https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii](https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii)
-
-再点【添加插件】即可，剩下的步骤跟桌面版一样，就是复制粘贴很麻烦
-
-----
-
-###安卓不能飜墻的场合
-
-不能飜墻的操作比较繁琐，需要一定知识。
-
-百度云下载【zip格式Resource Override插件】
-[https://pan.baidu.com/s/1blZfTNpEheH6KFxAYmNIUQ](https://pan.baidu.com/s/1blZfTNpEheH6KFxAYmNIUQ)
-
-直接下载【zip格式Resource Override插件】
-[https://lietxia.github.io/res/resource_override.zip](https://lietxia.github.io/res/resource_override.zip)
-
-ES文件管理器（官方）[http://www.estrongs.com/](http://www.estrongs.com/)
-
-直接下载【Yandex浏览器】（不可更新）：
-[http://i.mahjong.pub/res/com.yandex.browser.apk](http://i.mahjong.pub/res/com.yandex.browser.apk)
-
-百度云下载【Yandex浏览器】（不可更新）：
-[https://pan.baidu.com/s/1zKjogJAQ02F2ZT-gRLVPRQ](https://pan.baidu.com/s/1zKjogJAQ02F2ZT-gRLVPRQ)
-
-
-打开ES文件管理器，点左上方像【三】一样的按钮，打开侧边栏
-
-![](img/012.png)
-
-侧边栏选->本地->下载
-
-![](img/013.png)
-
-找到【resource_override.zip】解压缩它
-
-![](img/014.png)
-![](img/015.png)
-
-【Yandex浏览器】打开`chrome://extensions/`，点开右上角的【开发者模式】然后点击【加载已解压的扩展程序】，【选择操作】选【文件】
-
-![](img/016.png)
-
-弹出的程序，打开左侧的侧边栏，选ES文件管理器
-
-![](img/017.png)
-
-ES文件管理器，找到`/storage/emulated/0/Download/`(不同机型可能不一样，反正自己去找= =||)
-
-![](img/018.png)
-
-找到文件夹【resource_override】之后打开，然后选README.md，再选【文件方式】
-
-![](img/019.png)
-
-出现这个页面大功告成，安卓的操作太复杂了，所以不做详细解释了= =|||
-
-![](img/020.png)
