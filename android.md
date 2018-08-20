@@ -5,8 +5,6 @@
 
 [gimmick:TwitterFollow](@lietxia)
 
-[gimmick:Disqus](lietxia)
-
 ###安卓能飜墻的场合
 谷歌PLAY下载【Yandex浏览器】（需飜墻，可更新）：
  [https://play.google.com/store/apps/details?id=com.yandex.browser&referrer=promopage](https://play.google.com/store/apps/details?id=com.yandex.browser&referrer=promopage)

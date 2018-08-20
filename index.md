@@ -23,8 +23,8 @@
 [iOS魔改方法](ios.md)
 
 [gimmick:TwitterFollow](@lietxia)
-[gimmick:ForkMeOnGitHub](http://www.github.com/lietxia/lietxia.github.io)
-[gimmick:Disqus](lietxia)
+
+[gimmick:ForkMeOnGitHub](https://github.com/lietxia/lietxia.github.io)
 ----------
 
 ##效果
