@@ -1,8 +1,11 @@
 安卓魔改方法
 =============
 
-##安卓装插件的方法
 安卓需要【Yandex浏览器】和【ES文件管理器】和【Resource Override插件】
+
+[gimmick:TwitterFollow](@lietxia)
+
+[gimmick:Disqus](lietxia)
 
 ###安卓能飜墻的场合
 谷歌PLAY下载【Yandex浏览器】（需飜墻，可更新）：

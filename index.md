@@ -17,10 +17,14 @@
 > 魔改完清理一下浏览器缓存
 
 本页介绍的是PC端魔改的方法，移动设备见↓
+
 [安卓魔改方法](android.md)
 
 [iOS魔改方法](ios.md)
 
+[gimmick:TwitterFollow](@lietxia)
+
+[gimmick:Disqus](lietxia)
 ----------
 
 ##效果
