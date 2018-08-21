@@ -3779,7 +3779,7 @@ function googlemapsReady() {
     'use strict';
 
     var themes = [
-        { name: '初始', url: 'netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' },
+        { name: '初始', url: 'cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css' },
         { name: '蓝色', url: 'cdn.bootcss.com/bootswatch/3.3.7/cerulean/bootstrap.min.css' },
         { name: '深色', url: 'cdn.bootcss.com/bootswatch/3.3.7/darkly/bootstrap.min.css' },
         { name: '黑色', url: 'cdn.bootcss.com/bootswatch/3.3.7/cyborg/bootstrap.min.css' },
