@@ -1366,6 +1366,7 @@ if (typeof exports === 'object') {
                 url: $.md.mainHref,
                 dataType: 'text'
             };
+            console.log("1364"+ajaxReq);
             $.ajax(ajaxReq).done(function(data) {
                 // TODO do this elsewhere
                 md = data;
@@ -1437,7 +1438,7 @@ if (typeof exports === 'object') {
             var $el = $(e);
             var href = $el.attr('href');
             var text = $el.toptext();
-
+            console.log("1439 "+href);
             $.ajax({
                 url: href,
                 dataType: 'text'
