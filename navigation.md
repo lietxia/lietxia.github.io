@@ -8,6 +8,6 @@
 
 [gimmick:Disqus](lietxia)
 
-[gimmick:theme (inverse: false)](spacelab)
+[gimmick:theme (inverse: true)](cerulean)
 
 [gimmick:ThemeChooser](Change theme)
