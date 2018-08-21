@@ -1438,7 +1438,8 @@ if (typeof exports === 'object') {
             var href = $el.attr('href');
             var text = $el.toptext();
             $.ajax({
-                url: href+"?"+Math.random(),
+                url: href,
+                cache: false,
                 dataType: 'text'
             })
             .done(function (data) {
@@ -1550,7 +1551,8 @@ if (typeof exports === 'object') {
     $.md.NavigationDfd = $.Deferred();
     var ajaxReq = {
         url: 'navigation.md',
-        dataType: 'text'
+        dataType: 'text',
+        cache: false
     };
     $.ajax(ajaxReq).done(function(data) {
         navMD = data;
@@ -1615,7 +1617,7 @@ if (typeof exports === 'object') {
     }
 
     $.md.ConfigDfd = $.Deferred();
-    $.ajax({url: 'config.json', dataType: 'text'}).done(function(data) {
+    $.ajax({url: 'config.json',cache: false, dataType: 'text'}).done(function(data) {
         try {
             var data_json = JSON.parse(data);
             $.md.config = $.extend($.md.config, data_json);
