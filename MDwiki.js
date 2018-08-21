@@ -1363,10 +1363,9 @@ if (typeof exports === 'object') {
 
         $.md.stage('init').subscribe(function(done) {
             var ajaxReq = {
-                url: $.md.mainHref,
+                url: $.md.mainHref+"?"+Math.random(),
                 dataType: 'text'
             };
-            console.log("1364"+ajaxReq);
             $.ajax(ajaxReq).done(function(data) {
                 // TODO do this elsewhere
                 md = data;
@@ -1438,7 +1437,6 @@ if (typeof exports === 'object') {
             var $el = $(e);
             var href = $el.attr('href');
             var text = $el.toptext();
-            console.log("1439 "+href);
             $.ajax({
                 url: href,
                 dataType: 'text'
