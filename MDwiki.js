@@ -1363,7 +1363,7 @@ if (typeof exports === 'object') {
 
         $.md.stage('init').subscribe(function(done) {
             var ajaxReq = {
-                url: $.md.mainHref+"?"+Math.random(),
+                url: $.md.mainHref,
                 dataType: 'text'
             };
             $.ajax(ajaxReq).done(function(data) {
@@ -1438,7 +1438,7 @@ if (typeof exports === 'object') {
             var href = $el.attr('href');
             var text = $el.toptext();
             $.ajax({
-                url: href,
+                url: href+"?"+Math.random(),
                 dataType: 'text'
             })
             .done(function (data) {
