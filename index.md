@@ -56,7 +56,8 @@ chrome的插件:Resource Override
 
 直接下载  [https://lietxia.github.io/res/resource_override.crx](https://lietxia.github.io/res/resource_override.crx)
 
-※如果你能飜墙，直接去官方商店安装 [https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii](https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii)
+※如果你能飜墙，直接去官方商店安装
+ [https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii](https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii)
 
 4.将第3步下载的 1.0.0_0.crx 拖入 第2步的页面,选择安装插件
 
@@ -142,9 +143,17 @@ chrome的插件:Resource Override
 
 直接下载PSD [https://lietxia.github.io/res/bg.psd](https://lietxia.github.io/res/bg.psd)
 
-左边是`***majsoul.com/0/v**/scene/Assets/Resource/table/Table_Dif.png`的这行，是执行【替换牌桌】的，上传图片到图床 [https://jpg.dog](https://jpg.dog) (图床还有[http://sm.ms](http://sm.ms) 等等) ，然后把url填入右侧
+左边是
 
-比如我上传之后得到`https://i.jpg.dog/img/9169a0d1187ef648bc48a6b06101233f.png`则这样修改
+    ***majsoul.com/0/v**/scene/Assets/Resource/table/Table_Dif.png
+
+的这行，是执行【替换牌桌】的，上传图片到图床 [https://jpg.dog](https://jpg.dog) (图床还有[http://sm.ms](http://sm.ms) 等等) ，然后把url填入右侧
+
+比如我上传之后得到
+
+    https://i.jpg.dog/img/9169a0d1187ef648bc48a6b06101233f.png
+
+则这样修改
 
 ![](img/007.png)
 
