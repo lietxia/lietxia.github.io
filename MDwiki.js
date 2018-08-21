@@ -1,1126 +1,1126 @@
-(function() {
-
-/**
- * Block-Level Grammar
- */
-
-var block = {
-  newline: /^\n+/,
-  code: /^( {4}[^\n]+\n*)+/,
-  fences: noop,
-  hr: /^( *[-*_]){3,} *(?:\n+|$)/,
-  heading: /^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,
-  nptable: noop,
-  lheading: /^([^\n]+)\n *(=|-){3,} *\n*/,
-  blockquote: /^( *>[^\n]+(\n[^\n]+)*\n*)+/,
-  list: /^( *)(bull) [\s\S]+?(?:hr|\n{2,}(?! )(?!\1bull )\n*|\s*$)/,
-  html: /^ *(?:comment|closed|closing) *(?:\n{2,}|\s*$)/,
-  def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$)/,
-  table: noop,
-  paragraph: /^((?:[^\n]+\n?(?!hr|heading|lheading|blockquote|tag|def))+)\n*/,
-  text: /^[^\n]+/
-};
-
-block.bullet = /(?:[*+-]|\d+\.)/;
-block.item = /^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/;
-block.item = replace(block.item, 'gm')
-  (/bull/g, block.bullet)
-  ();
-
-block.list = replace(block.list)
-  (/bull/g, block.bullet)
-  ('hr', /\n+(?=(?: *[-*_]){3,} *(?:\n+|$))/)
-  ();
-
-block._tag = '(?!(?:'
-  + 'a|em|strong|small|s|cite|q|dfn|abbr|data|time|code'
-  + '|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo'
-  + '|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|@)\\b';
-
-block.html = replace(block.html)
-  ('comment', /<!--[\s\S]*?-->/)
-  ('closed', /<(tag)[\s\S]+?<\/\1>/)
-  ('closing', /<tag(?:"[^"]*"|'[^']*'|[^'">])*?>/)
-  (/tag/g, block._tag)
-  ();
-
-block.paragraph = replace(block.paragraph)
-  ('hr', block.hr)
-  ('heading', block.heading)
-  ('lheading', block.lheading)
-  ('blockquote', block.blockquote)
-  ('tag', '<' + block._tag)
-  ('def', block.def)
-  ();
-
-/**
- * Normal Block Grammar
- */
-
-block.normal = merge({}, block);
-
-/**
- * GFM Block Grammar
- */
-
-block.gfm = merge({}, block.normal, {
-  fences: /^ *(`{3,}|~{3,}) *(\S+)? *\n([\s\S]+?)\s*\1 *(?:\n+|$)/,
-  paragraph: /^/
-});
-
-block.gfm.paragraph = replace(block.paragraph)
-  ('(?!', '(?!' + block.gfm.fences.source.replace('\\1', '\\2') + '|')
-  ();
-
-/**
- * GFM + Tables Block Grammar
- */
-
-block.tables = merge({}, block.gfm, {
-  nptable: /^ *(\S.*\|.*)\n *([-:]+ *\|[-| :]*)\n((?:.*\|.*(?:\n|$))*)\n*/,
-  table: /^ *\|(.+)\n *\|( *[-:]+[-| :]*)\n((?: *\|.*(?:\n|$))*)\n*/
-});
-
-/**
- * Block Lexer
- */
-
-function Lexer(options) {
-  this.tokens = [];
-  this.tokens.links = {};
-  this.options = options || marked.defaults;
-  this.rules = block.normal;
-
-  if (this.options.gfm) {
-    if (this.options.tables) {
-      this.rules = block.tables;
-    } else {
-      this.rules = block.gfm;
-    }
-  }
-}
-
-/**
- * Expose Block Rules
- */
-
-Lexer.rules = block;
-
-/**
- * Static Lex Method
- */
-
-Lexer.lex = function(src, options) {
-  var lexer = new Lexer(options);
-  return lexer.lex(src);
-};
-
-/**
- * Preprocessing
- */
-
-Lexer.prototype.lex = function(src) {
-  src = src
-    .replace(/\r\n|\r/g, '\n')
-    .replace(/\t/g, '    ')
-    .replace(/\u00a0/g, ' ')
-    .replace(/\u2424/g, '\n');
-
-  return this.token(src, true);
-};
-
-/**
- * Lexing
- */
-
-Lexer.prototype.token = function(src, top) {
-  var src = src.replace(/^ +$/gm, '')
-    , next
-    , loose
-    , cap
-    , bull
-    , b
-    , item
-    , space
-    , i
-    , l;
-
-  while (src) {
-    // newline
-    if (cap = this.rules.newline.exec(src)) {
-      src = src.substring(cap[0].length);
-      if (cap[0].length > 1) {
-        this.tokens.push({
-          type: 'space'
-        });
-      }
-    }
-
-    // code
-    if (cap = this.rules.code.exec(src)) {
-      src = src.substring(cap[0].length);
-      cap = cap[0].replace(/^ {4}/gm, '');
-      this.tokens.push({
-        type: 'code',
-        text: !this.options.pedantic
-          ? cap.replace(/\n+$/, '')
-          : cap
-      });
-      continue;
-    }
-
-    // fences (gfm)
-    if (cap = this.rules.fences.exec(src)) {
-      src = src.substring(cap[0].length);
-      this.tokens.push({
-        type: 'code',
-        lang: cap[2],
-        text: cap[3]
-      });
-      continue;
-    }
-
-    // heading
-    if (cap = this.rules.heading.exec(src)) {
-      src = src.substring(cap[0].length);
-      this.tokens.push({
-        type: 'heading',
-        depth: cap[1].length,
-        text: cap[2]
-      });
-      continue;
-    }
-
-    // table no leading pipe (gfm)
-    if (top && (cap = this.rules.nptable.exec(src))) {
-      src = src.substring(cap[0].length);
-
-      item = {
-        type: 'table',
-        header: cap[1].replace(/^ *| *\| *$/g, '').split(/ *\| */),
-        align: cap[2].replace(/^ *|\| *$/g, '').split(/ *\| */),
-        cells: cap[3].replace(/\n$/, '').split('\n')
-      };
-
-      for (i = 0; i < item.align.length; i++) {
-        if (/^ *-+: *$/.test(item.align[i])) {
-          item.align[i] = 'right';
-        } else if (/^ *:-+: *$/.test(item.align[i])) {
-          item.align[i] = 'center';
-        } else if (/^ *:-+ *$/.test(item.align[i])) {
-          item.align[i] = 'left';
-        } else {
-          item.align[i] = null;
-        }
-      }
-
-      for (i = 0; i < item.cells.length; i++) {
-        item.cells[i] = item.cells[i].split(/ *\| */);
-      }
-
-      this.tokens.push(item);
-
-      continue;
-    }
-
-    // lheading
-    if (cap = this.rules.lheading.exec(src)) {
-      src = src.substring(cap[0].length);
-      this.tokens.push({
-        type: 'heading',
-        depth: cap[2] === '=' ? 1 : 2,
-        text: cap[1]
-      });
-      continue;
-    }
-
-    // hr
-    if (cap = this.rules.hr.exec(src)) {
-      src = src.substring(cap[0].length);
-      this.tokens.push({
-        type: 'hr'
-      });
-      continue;
-    }
-
-    // blockquote
-    if (cap = this.rules.blockquote.exec(src)) {
-      src = src.substring(cap[0].length);
-
-      this.tokens.push({
-        type: 'blockquote_start'
-      });
-
-      cap = cap[0].replace(/^ *> ?/gm, '');
-
-      // Pass `top` to keep the current
-      // "toplevel" state. This is exactly
-      // how markdown.pl works.
-      this.token(cap, top);
-
-      this.tokens.push({
-        type: 'blockquote_end'
-      });
-
-      continue;
-    }
-
-    // list
-    if (cap = this.rules.list.exec(src)) {
-      src = src.substring(cap[0].length);
-      bull = cap[2];
-
-      this.tokens.push({
-        type: 'list_start',
-        ordered: bull.length > 1
-      });
-
-      // Get each top-level item.
-      cap = cap[0].match(this.rules.item);
-
-      next = false;
-      l = cap.length;
-      i = 0;
-
-      for (; i < l; i++) {
-        item = cap[i];
-
-        // Remove the list item's bullet
-        // so it is seen as the next token.
-        space = item.length;
-        item = item.replace(/^ *([*+-]|\d+\.) +/, '');
-
-        // Outdent whatever the
-        // list item contains. Hacky.
-        if (~item.indexOf('\n ')) {
-          space -= item.length;
-          item = !this.options.pedantic
-            ? item.replace(new RegExp('^ {1,' + space + '}', 'gm'), '')
-            : item.replace(/^ {1,4}/gm, '');
-        }
-
-        // Determine whether the next list item belongs here.
-        // Backpedal if it does not belong in this list.
-        if (this.options.smartLists && i !== l - 1) {
-          b = block.bullet.exec(cap[i+1])[0];
-          if (bull !== b && !(bull.length > 1 && b.length > 1)) {
-            src = cap.slice(i + 1).join('\n') + src;
-            i = l - 1;
-          }
-        }
-
-        // Determine whether item is loose or not.
-        // Use: /(^|\n)(?! )[^\n]+\n\n(?!\s*$)/
-        // for discount behavior.
-        loose = next || /\n\n(?!\s*$)/.test(item);
-        if (i !== l - 1) {
-          next = item[item.length-1] === '\n';
-          if (!loose) loose = next;
-        }
-
-        this.tokens.push({
-          type: loose
-            ? 'loose_item_start'
-            : 'list_item_start'
-        });
-
-        // Recurse.
-        this.token(item, false);
-
-        this.tokens.push({
-          type: 'list_item_end'
-        });
-      }
-
-      this.tokens.push({
-        type: 'list_end'
-      });
-
-      continue;
-    }
-
-    // html
-    if (cap = this.rules.html.exec(src)) {
-      src = src.substring(cap[0].length);
-      this.tokens.push({
-        type: this.options.sanitize
-          ? 'paragraph'
-          : 'html',
-        pre: cap[1] === 'pre' || cap[1] === 'script',
-        text: cap[0]
-      });
-      continue;
-    }
-
-    // def
-    if (top && (cap = this.rules.def.exec(src))) {
-      src = src.substring(cap[0].length);
-      this.tokens.links[cap[1].toLowerCase()] = {
-        href: cap[2],
-        title: cap[3]
-      };
-      continue;
-    }
-
-    // table (gfm)
-    if (top && (cap = this.rules.table.exec(src))) {
-      src = src.substring(cap[0].length);
-
-      item = {
-        type: 'table',
-        header: cap[1].replace(/^ *| *\| *$/g, '').split(/ *\| */),
-        align: cap[2].replace(/^ *|\| *$/g, '').split(/ *\| */),
-        cells: cap[3].replace(/(?: *\| *)?\n$/, '').split('\n')
-      };
-
-      for (i = 0; i < item.align.length; i++) {
-        if (/^ *-+: *$/.test(item.align[i])) {
-          item.align[i] = 'right';
-        } else if (/^ *:-+: *$/.test(item.align[i])) {
-          item.align[i] = 'center';
-        } else if (/^ *:-+ *$/.test(item.align[i])) {
-          item.align[i] = 'left';
-        } else {
-          item.align[i] = null;
-        }
-      }
-
-      for (i = 0; i < item.cells.length; i++) {
-        item.cells[i] = item.cells[i]
-          .replace(/^ *\| *| *\| *$/g, '')
-          .split(/ *\| */);
-      }
-
-      this.tokens.push(item);
-
-      continue;
-    }
-
-    // top-level paragraph
-    if (top && (cap = this.rules.paragraph.exec(src))) {
-      src = src.substring(cap[0].length);
-      this.tokens.push({
-        type: 'paragraph',
-        text: cap[1][cap[1].length-1] === '\n'
-          ? cap[1].slice(0, -1)
-          : cap[1]
-      });
-      continue;
-    }
-
-    // text
-    if (cap = this.rules.text.exec(src)) {
-      // Top-level should never reach here.
-      src = src.substring(cap[0].length);
-      this.tokens.push({
-        type: 'text',
-        text: cap[0]
-      });
-      continue;
-    }
-
-    if (src) {
-      throw new
-        Error('Infinite loop on byte: ' + src.charCodeAt(0));
-    }
-  }
-
-  return this.tokens;
-};
-
-/**
- * Inline-Level Grammar
- */
-
-var inline = {
-  escape: /^\\([\\`*{}\[\]()#+\-.!_>])/,
-  autolink: /^<([^ >]+(@|:\/)[^ >]+)>/,
-  url: noop,
-  tag: /^<!--[\s\S]*?-->|^<\/?\w+(?:"[^"]*"|'[^']*'|[^'">])*?>/,
-  link: /^!?\[(inside)\]\(href\)/,
-  reflink: /^!?\[(inside)\]\s*\[([^\]]*)\]/,
-  nolink: /^!?\[((?:\[[^\]]*\]|[^\[\]])*)\]/,
-  strong: /^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/,
-  em: /^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,
-  code: /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,
-  br: /^ {2,}\n(?!\s*$)/,
-  del: noop,
-  text: /^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/
-};
-
-inline._inside = /(?:\[[^\]]*\]|[^\]]|\](?=[^\[]*\]))*/;
-inline._href = /\s*<?(.*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*/;
-
-inline.link = replace(inline.link)
-  ('inside', inline._inside)
-  ('href', inline._href)
-  ();
-
-inline.reflink = replace(inline.reflink)
-  ('inside', inline._inside)
-  ();
-
-/**
- * Normal Inline Grammar
- */
-
-inline.normal = merge({}, inline);
-
-/**
- * Pedantic Inline Grammar
- */
-
-inline.pedantic = merge({}, inline.normal, {
-  strong: /^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
-  em: /^_(?=\S)([\s\S]*?\S)_(?!_)|^\*(?=\S)([\s\S]*?\S)\*(?!\*)/
-});
-
-/**
- * GFM Inline Grammar
- */
-
-inline.gfm = merge({}, inline.normal, {
-  escape: replace(inline.escape)('])', '~|])')(),
-  url: /^(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/,
-  del: /^~~(?=\S)([\s\S]*?\S)~~/,
-  text: replace(inline.text)
-    (']|', '~]|')
-    ('|', '|https?://|')
-    ()
-});
-
-/**
- * GFM + Line Breaks Inline Grammar
- */
-
-inline.breaks = merge({}, inline.gfm, {
-  br: replace(inline.br)('{2,}', '*')(),
-  text: replace(inline.gfm.text)('{2,}', '*')()
-});
-
-/**
- * Inline Lexer & Compiler
- */
-
-function InlineLexer(links, options) {
-  this.options = options || marked.defaults;
-  this.links = links;
-  this.rules = inline.normal;
-
-  if (!this.links) {
-    throw new
-      Error('Tokens array requires a `links` property.');
-  }
-
-  if (this.options.gfm) {
-    if (this.options.breaks) {
-      this.rules = inline.breaks;
-    } else {
-      this.rules = inline.gfm;
-    }
-  } else if (this.options.pedantic) {
-    this.rules = inline.pedantic;
-  }
-}
-
-/**
- * Expose Inline Rules
- */
-
-InlineLexer.rules = inline;
-
-/**
- * Static Lexing/Compiling Method
- */
-
-InlineLexer.output = function(src, links, options) {
-  var inline = new InlineLexer(links, options);
-  return inline.output(src);
-};
-
-/**
- * Lexing/Compiling
- */
-
-InlineLexer.prototype.output = function(src) {
-  var out = ''
-    , link
-    , text
-    , href
-    , cap;
-
-  while (src) {
-    // escape
-    if (cap = this.rules.escape.exec(src)) {
-      src = src.substring(cap[0].length);
-      out += cap[1];
-      continue;
-    }
-
-    // autolink
-    if (cap = this.rules.autolink.exec(src)) {
-      src = src.substring(cap[0].length);
-      if (cap[2] === '@') {
-        text = cap[1][6] === ':'
-          ? this.mangle(cap[1].substring(7))
-          : this.mangle(cap[1]);
-        href = this.mangle('mailto:') + text;
-      } else {
-        text = escape(cap[1]);
-        href = text;
-      }
-      out += '<a href="'
-        + href
-        + '">'
-        + text
-        + '</a>';
-      continue;
-    }
-
-    // url (gfm)
-    if (cap = this.rules.url.exec(src)) {
-      src = src.substring(cap[0].length);
-      text = escape(cap[1]);
-      href = text;
-      out += '<a href="'
-        + href
-        + '">'
-        + text
-        + '</a>';
-      continue;
-    }
-
-    // tag
-    if (cap = this.rules.tag.exec(src)) {
-      src = src.substring(cap[0].length);
-      out += this.options.sanitize
-        ? escape(cap[0])
-        : cap[0];
-      continue;
-    }
-
-    // link
-    if (cap = this.rules.link.exec(src)) {
-      src = src.substring(cap[0].length);
-      out += this.outputLink(cap, {
-        href: cap[2],
-        title: cap[3]
-      });
-      continue;
-    }
-
-    // reflink, nolink
-    if ((cap = this.rules.reflink.exec(src))
-        || (cap = this.rules.nolink.exec(src))) {
-      src = src.substring(cap[0].length);
-      link = (cap[2] || cap[1]).replace(/\s+/g, ' ');
-      link = this.links[link.toLowerCase()];
-      if (!link || !link.href) {
-        out += cap[0][0];
-        src = cap[0].substring(1) + src;
-        continue;
-      }
-      out += this.outputLink(cap, link);
-      continue;
-    }
-
-    // strong
-    if (cap = this.rules.strong.exec(src)) {
-      src = src.substring(cap[0].length);
-      out += '<strong>'
-        + this.output(cap[2] || cap[1])
-        + '</strong>';
-      continue;
-    }
-
-    // em
-    if (cap = this.rules.em.exec(src)) {
-      src = src.substring(cap[0].length);
-      out += '<em>'
-        + this.output(cap[2] || cap[1])
-        + '</em>';
-      continue;
-    }
-
-    // code
-    if (cap = this.rules.code.exec(src)) {
-      src = src.substring(cap[0].length);
-      out += '<code>'
-        + escape(cap[2], true)
-        + '</code>';
-      continue;
-    }
-
-    // br
-    if (cap = this.rules.br.exec(src)) {
-      src = src.substring(cap[0].length);
-      out += '<br>';
-      continue;
-    }
-
-    // del (gfm)
-    if (cap = this.rules.del.exec(src)) {
-      src = src.substring(cap[0].length);
-      out += '<del>'
-        + this.output(cap[1])
-        + '</del>';
-      continue;
-    }
-
-    // text
-    if (cap = this.rules.text.exec(src)) {
-      src = src.substring(cap[0].length);
-      out += escape(cap[0]);
-      continue;
-    }
-
-    if (src) {
-      throw new
-        Error('Infinite loop on byte: ' + src.charCodeAt(0));
-    }
-  }
-
-  return out;
-};
-
-/**
- * Compile Link
- */
-
-InlineLexer.prototype.outputLink = function(cap, link) {
-  if (cap[0][0] !== '!') {
-    return '<a href="'
-      + escape(link.href)
-      + '"'
-      + (link.title
-      ? ' title="'
-      + escape(link.title)
-      + '"'
-      : '')
-      + '>'
-      + this.output(cap[1])
-      + '</a>';
-  } else {
-    return '<img src="'
-      + escape(link.href)
-      + '" alt="'
-      + escape(cap[1])
-      + '"'
-      + (link.title
-      ? ' title="'
-      + escape(link.title)
-      + '"'
-      : '')
-      + '>';
-  }
-};
-
-/**
- * Smartypants Transformations
- */
-
-InlineLexer.prototype.smartypants = function(text) {
-  if (!this.options.smartypants) return text;
-  return text
-    .replace(/--/g, 'โ��')
-    .replace(/'([^']*)'/g, 'โ��$1โ��')
-    .replace(/"([^"]*)"/g, 'โ��$1โ��')
-    .replace(/\.{3}/g, 'โ�ฆ');
-};
-
-/**
- * Mangle Links
- */
-
-InlineLexer.prototype.mangle = function(text) {
-  var out = ''
-    , l = text.length
-    , i = 0
-    , ch;
-
-  for (; i < l; i++) {
-    ch = text.charCodeAt(i);
-    if (Math.random() > 0.5) {
-      ch = 'x' + ch.toString(16);
-    }
-    out += '&#' + ch + ';';
-  }
-
-  return out;
-};
-
-/**
- * Parsing & Compiling
- */
-
-function Parser(options) {
-  this.tokens = [];
-  this.token = null;
-  this.options = options || marked.defaults;
-}
-
-/**
- * Static Parse Method
- */
-
-Parser.parse = function(src, options) {
-  var parser = new Parser(options);
-  return parser.parse(src);
-};
-
-/**
- * Parse Loop
- */
-
-Parser.prototype.parse = function(src) {
-  this.inline = new InlineLexer(src.links, this.options);
-  this.tokens = src.reverse();
-
-  var out = '';
-  while (this.next()) {
-    out += this.tok();
-  }
-
-  return out;
-};
-
-/**
- * Next Token
- */
-
-Parser.prototype.next = function() {
-  return this.token = this.tokens.pop();
-};
-
-/**
- * Preview Next Token
- */
-
-Parser.prototype.peek = function() {
-  return this.tokens[this.tokens.length-1] || 0;
-};
-
-/**
- * Parse Text Tokens
- */
-
-Parser.prototype.parseText = function() {
-  var body = this.token.text;
-
-  while (this.peek().type === 'text') {
-    body += '\n' + this.next().text;
-  }
-
-  return this.inline.output(body);
-};
-
-/**
- * Parse Current Token
- */
-
-Parser.prototype.tok = function() {
-  switch (this.token.type) {
-    case 'space': {
-      return '';
-    }
-    case 'hr': {
-      return '<hr>\n';
-    }
-    case 'heading': {
-      return '<h'
-        + this.token.depth
-        + '>'
-        + this.inline.output(this.token.text)
-        + '</h'
-        + this.token.depth
-        + '>\n';
-    }
-    case 'code': {
-      if (this.options.highlight) {
-        var code = this.options.highlight(this.token.text, this.token.lang);
-        if (code != null && code !== this.token.text) {
-          this.token.escaped = true;
-          this.token.text = code;
-        }
-      }
-
-      if (!this.token.escaped) {
-        this.token.text = escape(this.token.text, true);
-      }
-
-      return '<pre><code'
-        + (this.token.lang
-        ? ' class="'
-        + this.options.langPrefix
-        + this.token.lang
-        + '"'
-        : '')
-        + '>'
-        + this.token.text
-        + '</code></pre>\n';
-    }
-    case 'table': {
-      var body = ''
-        , heading
-        , i
-        , row
-        , cell
-        , j;
-
-      // header
-      body += '<thead>\n<tr>\n';
-      for (i = 0; i < this.token.header.length; i++) {
-        heading = this.inline.output(this.token.header[i]);
-        body += this.token.align[i]
-          ? '<th align="' + this.token.align[i] + '">' + heading + '</th>\n'
-          : '<th>' + heading + '</th>\n';
-      }
-      body += '</tr>\n</thead>\n';
-
-      // body
-      body += '<tbody>\n'
-      for (i = 0; i < this.token.cells.length; i++) {
-        row = this.token.cells[i];
-        body += '<tr>\n';
-        for (j = 0; j < row.length; j++) {
-          cell = this.inline.output(row[j]);
-          body += this.token.align[j]
-            ? '<td align="' + this.token.align[j] + '">' + cell + '</td>\n'
-            : '<td>' + cell + '</td>\n';
-        }
-        body += '</tr>\n';
-      }
-      body += '</tbody>\n';
-
-      return '<table>\n'
-        + body
-        + '</table>\n';
-    }
-    case 'blockquote_start': {
-      var body = '';
-
-      while (this.next().type !== 'blockquote_end') {
-        body += this.tok();
-      }
-
-      return '<blockquote>\n'
-        + body
-        + '</blockquote>\n';
-    }
-    case 'list_start': {
-      var type = this.token.ordered ? 'ol' : 'ul'
-        , body = '';
-
-      while (this.next().type !== 'list_end') {
-        body += this.tok();
-      }
-
-      return '<'
-        + type
-        + '>\n'
-        + body
-        + '</'
-        + type
-        + '>\n';
-    }
-    case 'list_item_start': {
-      var body = '';
-
-      while (this.next().type !== 'list_item_end') {
-        body += this.token.type === 'text'
-          ? this.parseText()
-          : this.tok();
-      }
-
-      return '<li>'
-        + body
-        + '</li>\n';
-    }
-    case 'loose_item_start': {
-      var body = '';
-
-      while (this.next().type !== 'list_item_end') {
-        body += this.tok();
-      }
-
-      return '<li>'
-        + body
-        + '</li>\n';
-    }
-    case 'html': {
-      return !this.token.pre && !this.options.pedantic
-        ? this.inline.output(this.token.text)
-        : this.token.text;
-    }
-    case 'paragraph': {
-      return '<p>'
-        + this.inline.output(this.token.text)
-        + '</p>\n';
-    }
-    case 'text': {
-      return '<p>'
-        + this.parseText()
-        + '</p>\n';
-    }
-  }
-};
-
-/**
- * Helpers
- */
-
-function escape(html, encode) {
-  return html
-    .replace(!encode ? /&(?!#?\w+;)/g : /&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-function replace(regex, opt) {
-  regex = regex.source;
-  opt = opt || '';
-  return function self(name, val) {
-    if (!name) return new RegExp(regex, opt);
-    val = val.source || val;
-    val = val.replace(/(^|[^\[])\^/g, '$1');
-    regex = regex.replace(name, val);
-    return self;
-  };
-}
-
-function noop() {}
-noop.exec = noop;
-
-function merge(obj) {
-  var i = 1
-    , target
-    , key;
-
-  for (; i < arguments.length; i++) {
-    target = arguments[i];
-    for (key in target) {
-      if (Object.prototype.hasOwnProperty.call(target, key)) {
-        obj[key] = target[key];
-      }
-    }
-  }
-
-  return obj;
-}
-
-/**
- * Marked
- */
-
-function marked(src, opt, callback) {
-  if (callback || typeof opt === 'function') {
-    if (!callback) {
-      callback = opt;
-      opt = null;
-    }
-
-    if (opt) opt = merge({}, marked.defaults, opt);
-
-    var tokens = Lexer.lex(tokens, opt)
-      , highlight = opt.highlight
-      , pending = 0
-      , l = tokens.length
-      , i = 0;
-
-    if (!highlight || highlight.length < 3) {
-      return callback(null, Parser.parse(tokens, opt));
-    }
-
-    var done = function() {
-      delete opt.highlight;
-      var out = Parser.parse(tokens, opt);
-      opt.highlight = highlight;
-      return callback(null, out);
+(function () {
+
+    /**
+     * Block-Level Grammar
+     */
+
+    var block = {
+        newline: /^\n+/,
+        code: /^( {4}[^\n]+\n*)+/,
+        fences: noop,
+        hr: /^( *[-*_]){3,} *(?:\n+|$)/,
+        heading: /^ *(#{1,6}) *([^\n]+?) *#* *(?:\n+|$)/,
+        nptable: noop,
+        lheading: /^([^\n]+)\n *(=|-){3,} *\n*/,
+        blockquote: /^( *>[^\n]+(\n[^\n]+)*\n*)+/,
+        list: /^( *)(bull) [\s\S]+?(?:hr|\n{2,}(?! )(?!\1bull )\n*|\s*$)/,
+        html: /^ *(?:comment|closed|closing) *(?:\n{2,}|\s*$)/,
+        def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +["(]([^\n]+)[")])? *(?:\n+|$)/,
+        table: noop,
+        paragraph: /^((?:[^\n]+\n?(?!hr|heading|lheading|blockquote|tag|def))+)\n*/,
+        text: /^[^\n]+/
     };
 
-    for (; i < l; i++) {
-      (function(token) {
-        if (token.type !== 'code') return;
-        pending++;
-        return highlight(token.text, token.lang, function(err, code) {
-          if (code == null || code === token.text) {
-            return --pending || done();
-          }
-          token.text = code;
-          token.escaped = true;
-          --pending || done();
-        });
-      })(tokens[i]);
+    block.bullet = /(?:[*+-]|\d+\.)/;
+    block.item = /^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/;
+    block.item = replace(block.item, 'gm')
+        (/bull/g, block.bullet)
+        ();
+
+    block.list = replace(block.list)
+        (/bull/g, block.bullet)
+        ('hr', /\n+(?=(?: *[-*_]){3,} *(?:\n+|$))/)
+        ();
+
+    block._tag = '(?!(?:'
+        + 'a|em|strong|small|s|cite|q|dfn|abbr|data|time|code'
+        + '|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo'
+        + '|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|@)\\b';
+
+    block.html = replace(block.html)
+        ('comment', /<!--[\s\S]*?-->/)
+        ('closed', /<(tag)[\s\S]+?<\/\1>/)
+        ('closing', /<tag(?:"[^"]*"|'[^']*'|[^'">])*?>/)
+        (/tag/g, block._tag)
+        ();
+
+    block.paragraph = replace(block.paragraph)
+        ('hr', block.hr)
+        ('heading', block.heading)
+        ('lheading', block.lheading)
+        ('blockquote', block.blockquote)
+        ('tag', '<' + block._tag)
+        ('def', block.def)
+        ();
+
+    /**
+     * Normal Block Grammar
+     */
+
+    block.normal = merge({}, block);
+
+    /**
+     * GFM Block Grammar
+     */
+
+    block.gfm = merge({}, block.normal, {
+        fences: /^ *(`{3,}|~{3,}) *(\S+)? *\n([\s\S]+?)\s*\1 *(?:\n+|$)/,
+        paragraph: /^/
+    });
+
+    block.gfm.paragraph = replace(block.paragraph)
+        ('(?!', '(?!' + block.gfm.fences.source.replace('\\1', '\\2') + '|')
+        ();
+
+    /**
+     * GFM + Tables Block Grammar
+     */
+
+    block.tables = merge({}, block.gfm, {
+        nptable: /^ *(\S.*\|.*)\n *([-:]+ *\|[-| :]*)\n((?:.*\|.*(?:\n|$))*)\n*/,
+        table: /^ *\|(.+)\n *\|( *[-:]+[-| :]*)\n((?: *\|.*(?:\n|$))*)\n*/
+    });
+
+    /**
+     * Block Lexer
+     */
+
+    function Lexer(options) {
+        this.tokens = [];
+        this.tokens.links = {};
+        this.options = options || marked.defaults;
+        this.rules = block.normal;
+
+        if (this.options.gfm) {
+            if (this.options.tables) {
+                this.rules = block.tables;
+            } else {
+                this.rules = block.gfm;
+            }
+        }
     }
 
-    return;
-  }
-  try {
-    if (opt) opt = merge({}, marked.defaults, opt);
-    return Parser.parse(Lexer.lex(src, opt), opt);
-  } catch (e) {
-    e.message += '\nPlease report this to https://github.com/chjj/marked.';
-    if ((opt || marked.defaults).silent) {
-      return '<p>An error occured:</p><pre>'
-        + escape(e.message + '', true)
-        + '</pre>';
+    /**
+     * Expose Block Rules
+     */
+
+    Lexer.rules = block;
+
+    /**
+     * Static Lex Method
+     */
+
+    Lexer.lex = function (src, options) {
+        var lexer = new Lexer(options);
+        return lexer.lex(src);
+    };
+
+    /**
+     * Preprocessing
+     */
+
+    Lexer.prototype.lex = function (src) {
+        src = src
+            .replace(/\r\n|\r/g, '\n')
+            .replace(/\t/g, '    ')
+            .replace(/\u00a0/g, ' ')
+            .replace(/\u2424/g, '\n');
+
+        return this.token(src, true);
+    };
+
+    /**
+     * Lexing
+     */
+
+    Lexer.prototype.token = function (src, top) {
+        var src = src.replace(/^ +$/gm, '')
+            , next
+            , loose
+            , cap
+            , bull
+            , b
+            , item
+            , space
+            , i
+            , l;
+
+        while (src) {
+            // newline
+            if (cap = this.rules.newline.exec(src)) {
+                src = src.substring(cap[0].length);
+                if (cap[0].length > 1) {
+                    this.tokens.push({
+                        type: 'space'
+                    });
+                }
+            }
+
+            // code
+            if (cap = this.rules.code.exec(src)) {
+                src = src.substring(cap[0].length);
+                cap = cap[0].replace(/^ {4}/gm, '');
+                this.tokens.push({
+                    type: 'code',
+                    text: !this.options.pedantic
+                        ? cap.replace(/\n+$/, '')
+                        : cap
+                });
+                continue;
+            }
+
+            // fences (gfm)
+            if (cap = this.rules.fences.exec(src)) {
+                src = src.substring(cap[0].length);
+                this.tokens.push({
+                    type: 'code',
+                    lang: cap[2],
+                    text: cap[3]
+                });
+                continue;
+            }
+
+            // heading
+            if (cap = this.rules.heading.exec(src)) {
+                src = src.substring(cap[0].length);
+                this.tokens.push({
+                    type: 'heading',
+                    depth: cap[1].length,
+                    text: cap[2]
+                });
+                continue;
+            }
+
+            // table no leading pipe (gfm)
+            if (top && (cap = this.rules.nptable.exec(src))) {
+                src = src.substring(cap[0].length);
+
+                item = {
+                    type: 'table',
+                    header: cap[1].replace(/^ *| *\| *$/g, '').split(/ *\| */),
+                    align: cap[2].replace(/^ *|\| *$/g, '').split(/ *\| */),
+                    cells: cap[3].replace(/\n$/, '').split('\n')
+                };
+
+                for (i = 0; i < item.align.length; i++) {
+                    if (/^ *-+: *$/.test(item.align[i])) {
+                        item.align[i] = 'right';
+                    } else if (/^ *:-+: *$/.test(item.align[i])) {
+                        item.align[i] = 'center';
+                    } else if (/^ *:-+ *$/.test(item.align[i])) {
+                        item.align[i] = 'left';
+                    } else {
+                        item.align[i] = null;
+                    }
+                }
+
+                for (i = 0; i < item.cells.length; i++) {
+                    item.cells[i] = item.cells[i].split(/ *\| */);
+                }
+
+                this.tokens.push(item);
+
+                continue;
+            }
+
+            // lheading
+            if (cap = this.rules.lheading.exec(src)) {
+                src = src.substring(cap[0].length);
+                this.tokens.push({
+                    type: 'heading',
+                    depth: cap[2] === '=' ? 1 : 2,
+                    text: cap[1]
+                });
+                continue;
+            }
+
+            // hr
+            if (cap = this.rules.hr.exec(src)) {
+                src = src.substring(cap[0].length);
+                this.tokens.push({
+                    type: 'hr'
+                });
+                continue;
+            }
+
+            // blockquote
+            if (cap = this.rules.blockquote.exec(src)) {
+                src = src.substring(cap[0].length);
+
+                this.tokens.push({
+                    type: 'blockquote_start'
+                });
+
+                cap = cap[0].replace(/^ *> ?/gm, '');
+
+                // Pass `top` to keep the current
+                // "toplevel" state. This is exactly
+                // how markdown.pl works.
+                this.token(cap, top);
+
+                this.tokens.push({
+                    type: 'blockquote_end'
+                });
+
+                continue;
+            }
+
+            // list
+            if (cap = this.rules.list.exec(src)) {
+                src = src.substring(cap[0].length);
+                bull = cap[2];
+
+                this.tokens.push({
+                    type: 'list_start',
+                    ordered: bull.length > 1
+                });
+
+                // Get each top-level item.
+                cap = cap[0].match(this.rules.item);
+
+                next = false;
+                l = cap.length;
+                i = 0;
+
+                for (; i < l; i++) {
+                    item = cap[i];
+
+                    // Remove the list item's bullet
+                    // so it is seen as the next token.
+                    space = item.length;
+                    item = item.replace(/^ *([*+-]|\d+\.) +/, '');
+
+                    // Outdent whatever the
+                    // list item contains. Hacky.
+                    if (~item.indexOf('\n ')) {
+                        space -= item.length;
+                        item = !this.options.pedantic
+                            ? item.replace(new RegExp('^ {1,' + space + '}', 'gm'), '')
+                            : item.replace(/^ {1,4}/gm, '');
+                    }
+
+                    // Determine whether the next list item belongs here.
+                    // Backpedal if it does not belong in this list.
+                    if (this.options.smartLists && i !== l - 1) {
+                        b = block.bullet.exec(cap[i + 1])[0];
+                        if (bull !== b && !(bull.length > 1 && b.length > 1)) {
+                            src = cap.slice(i + 1).join('\n') + src;
+                            i = l - 1;
+                        }
+                    }
+
+                    // Determine whether item is loose or not.
+                    // Use: /(^|\n)(?! )[^\n]+\n\n(?!\s*$)/
+                    // for discount behavior.
+                    loose = next || /\n\n(?!\s*$)/.test(item);
+                    if (i !== l - 1) {
+                        next = item[item.length - 1] === '\n';
+                        if (!loose) loose = next;
+                    }
+
+                    this.tokens.push({
+                        type: loose
+                            ? 'loose_item_start'
+                            : 'list_item_start'
+                    });
+
+                    // Recurse.
+                    this.token(item, false);
+
+                    this.tokens.push({
+                        type: 'list_item_end'
+                    });
+                }
+
+                this.tokens.push({
+                    type: 'list_end'
+                });
+
+                continue;
+            }
+
+            // html
+            if (cap = this.rules.html.exec(src)) {
+                src = src.substring(cap[0].length);
+                this.tokens.push({
+                    type: this.options.sanitize
+                        ? 'paragraph'
+                        : 'html',
+                    pre: cap[1] === 'pre' || cap[1] === 'script',
+                    text: cap[0]
+                });
+                continue;
+            }
+
+            // def
+            if (top && (cap = this.rules.def.exec(src))) {
+                src = src.substring(cap[0].length);
+                this.tokens.links[cap[1].toLowerCase()] = {
+                    href: cap[2],
+                    title: cap[3]
+                };
+                continue;
+            }
+
+            // table (gfm)
+            if (top && (cap = this.rules.table.exec(src))) {
+                src = src.substring(cap[0].length);
+
+                item = {
+                    type: 'table',
+                    header: cap[1].replace(/^ *| *\| *$/g, '').split(/ *\| */),
+                    align: cap[2].replace(/^ *|\| *$/g, '').split(/ *\| */),
+                    cells: cap[3].replace(/(?: *\| *)?\n$/, '').split('\n')
+                };
+
+                for (i = 0; i < item.align.length; i++) {
+                    if (/^ *-+: *$/.test(item.align[i])) {
+                        item.align[i] = 'right';
+                    } else if (/^ *:-+: *$/.test(item.align[i])) {
+                        item.align[i] = 'center';
+                    } else if (/^ *:-+ *$/.test(item.align[i])) {
+                        item.align[i] = 'left';
+                    } else {
+                        item.align[i] = null;
+                    }
+                }
+
+                for (i = 0; i < item.cells.length; i++) {
+                    item.cells[i] = item.cells[i]
+                        .replace(/^ *\| *| *\| *$/g, '')
+                        .split(/ *\| */);
+                }
+
+                this.tokens.push(item);
+
+                continue;
+            }
+
+            // top-level paragraph
+            if (top && (cap = this.rules.paragraph.exec(src))) {
+                src = src.substring(cap[0].length);
+                this.tokens.push({
+                    type: 'paragraph',
+                    text: cap[1][cap[1].length - 1] === '\n'
+                        ? cap[1].slice(0, -1)
+                        : cap[1]
+                });
+                continue;
+            }
+
+            // text
+            if (cap = this.rules.text.exec(src)) {
+                // Top-level should never reach here.
+                src = src.substring(cap[0].length);
+                this.tokens.push({
+                    type: 'text',
+                    text: cap[0]
+                });
+                continue;
+            }
+
+            if (src) {
+                throw new
+                    Error('Infinite loop on byte: ' + src.charCodeAt(0));
+            }
+        }
+
+        return this.tokens;
+    };
+
+    /**
+     * Inline-Level Grammar
+     */
+
+    var inline = {
+        escape: /^\\([\\`*{}\[\]()#+\-.!_>])/,
+        autolink: /^<([^ >]+(@|:\/)[^ >]+)>/,
+        url: noop,
+        tag: /^<!--[\s\S]*?-->|^<\/?\w+(?:"[^"]*"|'[^']*'|[^'">])*?>/,
+        link: /^!?\[(inside)\]\(href\)/,
+        reflink: /^!?\[(inside)\]\s*\[([^\]]*)\]/,
+        nolink: /^!?\[((?:\[[^\]]*\]|[^\[\]])*)\]/,
+        strong: /^__([\s\S]+?)__(?!_)|^\*\*([\s\S]+?)\*\*(?!\*)/,
+        em: /^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,
+        code: /^(`+)\s*([\s\S]*?[^`])\s*\1(?!`)/,
+        br: /^ {2,}\n(?!\s*$)/,
+        del: noop,
+        text: /^[\s\S]+?(?=[\\<!\[_*`]| {2,}\n|$)/
+    };
+
+    inline._inside = /(?:\[[^\]]*\]|[^\]]|\](?=[^\[]*\]))*/;
+    inline._href = /\s*<?(.*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*/;
+
+    inline.link = replace(inline.link)
+        ('inside', inline._inside)
+        ('href', inline._href)
+        ();
+
+    inline.reflink = replace(inline.reflink)
+        ('inside', inline._inside)
+        ();
+
+    /**
+     * Normal Inline Grammar
+     */
+
+    inline.normal = merge({}, inline);
+
+    /**
+     * Pedantic Inline Grammar
+     */
+
+    inline.pedantic = merge({}, inline.normal, {
+        strong: /^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
+        em: /^_(?=\S)([\s\S]*?\S)_(?!_)|^\*(?=\S)([\s\S]*?\S)\*(?!\*)/
+    });
+
+    /**
+     * GFM Inline Grammar
+     */
+
+    inline.gfm = merge({}, inline.normal, {
+        escape: replace(inline.escape)('])', '~|])')(),
+        url: /^(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/,
+        del: /^~~(?=\S)([\s\S]*?\S)~~/,
+        text: replace(inline.text)
+            (']|', '~]|')
+            ('|', '|https?://|')
+            ()
+    });
+
+    /**
+     * GFM + Line Breaks Inline Grammar
+     */
+
+    inline.breaks = merge({}, inline.gfm, {
+        br: replace(inline.br)('{2,}', '*')(),
+        text: replace(inline.gfm.text)('{2,}', '*')()
+    });
+
+    /**
+     * Inline Lexer & Compiler
+     */
+
+    function InlineLexer(links, options) {
+        this.options = options || marked.defaults;
+        this.links = links;
+        this.rules = inline.normal;
+
+        if (!this.links) {
+            throw new
+                Error('Tokens array requires a `links` property.');
+        }
+
+        if (this.options.gfm) {
+            if (this.options.breaks) {
+                this.rules = inline.breaks;
+            } else {
+                this.rules = inline.gfm;
+            }
+        } else if (this.options.pedantic) {
+            this.rules = inline.pedantic;
+        }
     }
-    throw e;
-  }
-}
 
-/**
- * Options
- */
+    /**
+     * Expose Inline Rules
+     */
 
-marked.options =
-marked.setOptions = function(opt) {
-  merge(marked.defaults, opt);
-  return marked;
-};
+    InlineLexer.rules = inline;
 
-marked.defaults = {
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false,
-  smartLists: false,
-  silent: false,
-  highlight: null,
-  langPrefix: 'lang-'
-};
+    /**
+     * Static Lexing/Compiling Method
+     */
 
-/**
- * Expose
- */
+    InlineLexer.output = function (src, links, options) {
+        var inline = new InlineLexer(links, options);
+        return inline.output(src);
+    };
 
-marked.Parser = Parser;
-marked.parser = Parser.parse;
+    /**
+     * Lexing/Compiling
+     */
 
-marked.Lexer = Lexer;
-marked.lexer = Lexer.lex;
+    InlineLexer.prototype.output = function (src) {
+        var out = ''
+            , link
+            , text
+            , href
+            , cap;
 
-marked.InlineLexer = InlineLexer;
-marked.inlineLexer = InlineLexer.output;
+        while (src) {
+            // escape
+            if (cap = this.rules.escape.exec(src)) {
+                src = src.substring(cap[0].length);
+                out += cap[1];
+                continue;
+            }
 
-marked.parse = marked;
+            // autolink
+            if (cap = this.rules.autolink.exec(src)) {
+                src = src.substring(cap[0].length);
+                if (cap[2] === '@') {
+                    text = cap[1][6] === ':'
+                        ? this.mangle(cap[1].substring(7))
+                        : this.mangle(cap[1]);
+                    href = this.mangle('mailto:') + text;
+                } else {
+                    text = escape(cap[1]);
+                    href = text;
+                }
+                out += '<a href="'
+                    + href
+                    + '">'
+                    + text
+                    + '</a>';
+                continue;
+            }
 
-if (typeof exports === 'object') {
-  module.exports = marked;
-} else if (typeof define === 'function' && define.amd) {
-  define(function() { return marked; });
-} else {
-  this.marked = marked;
-}
+            // url (gfm)
+            if (cap = this.rules.url.exec(src)) {
+                src = src.substring(cap[0].length);
+                text = escape(cap[1]);
+                href = text;
+                out += '<a href="'
+                    + href
+                    + '">'
+                    + text
+                    + '</a>';
+                continue;
+            }
 
-}).call(function() {
-  return this || (typeof window !== 'undefined' ? window : global);
+            // tag
+            if (cap = this.rules.tag.exec(src)) {
+                src = src.substring(cap[0].length);
+                out += this.options.sanitize
+                    ? escape(cap[0])
+                    : cap[0];
+                continue;
+            }
+
+            // link
+            if (cap = this.rules.link.exec(src)) {
+                src = src.substring(cap[0].length);
+                out += this.outputLink(cap, {
+                    href: cap[2],
+                    title: cap[3]
+                });
+                continue;
+            }
+
+            // reflink, nolink
+            if ((cap = this.rules.reflink.exec(src))
+                || (cap = this.rules.nolink.exec(src))) {
+                src = src.substring(cap[0].length);
+                link = (cap[2] || cap[1]).replace(/\s+/g, ' ');
+                link = this.links[link.toLowerCase()];
+                if (!link || !link.href) {
+                    out += cap[0][0];
+                    src = cap[0].substring(1) + src;
+                    continue;
+                }
+                out += this.outputLink(cap, link);
+                continue;
+            }
+
+            // strong
+            if (cap = this.rules.strong.exec(src)) {
+                src = src.substring(cap[0].length);
+                out += '<strong>'
+                    + this.output(cap[2] || cap[1])
+                    + '</strong>';
+                continue;
+            }
+
+            // em
+            if (cap = this.rules.em.exec(src)) {
+                src = src.substring(cap[0].length);
+                out += '<em>'
+                    + this.output(cap[2] || cap[1])
+                    + '</em>';
+                continue;
+            }
+
+            // code
+            if (cap = this.rules.code.exec(src)) {
+                src = src.substring(cap[0].length);
+                out += '<code>'
+                    + escape(cap[2], true)
+                    + '</code>';
+                continue;
+            }
+
+            // br
+            if (cap = this.rules.br.exec(src)) {
+                src = src.substring(cap[0].length);
+                out += '<br>';
+                continue;
+            }
+
+            // del (gfm)
+            if (cap = this.rules.del.exec(src)) {
+                src = src.substring(cap[0].length);
+                out += '<del>'
+                    + this.output(cap[1])
+                    + '</del>';
+                continue;
+            }
+
+            // text
+            if (cap = this.rules.text.exec(src)) {
+                src = src.substring(cap[0].length);
+                out += escape(cap[0]);
+                continue;
+            }
+
+            if (src) {
+                throw new
+                    Error('Infinite loop on byte: ' + src.charCodeAt(0));
+            }
+        }
+
+        return out;
+    };
+
+    /**
+     * Compile Link
+     */
+
+    InlineLexer.prototype.outputLink = function (cap, link) {
+        if (cap[0][0] !== '!') {
+            return '<a href="'
+                + escape(link.href)
+                + '"'
+                + (link.title
+                    ? ' title="'
+                    + escape(link.title)
+                    + '"'
+                    : '')
+                + '>'
+                + this.output(cap[1])
+                + '</a>';
+        } else {
+            return '<img src="'
+                + escape(link.href)
+                + '" alt="'
+                + escape(cap[1])
+                + '"'
+                + (link.title
+                    ? ' title="'
+                    + escape(link.title)
+                    + '"'
+                    : '')
+                + '>';
+        }
+    };
+
+    /**
+     * Smartypants Transformations
+     */
+
+    InlineLexer.prototype.smartypants = function (text) {
+        if (!this.options.smartypants) return text;
+        return text
+            .replace(/--/g, 'โ��')
+            .replace(/'([^']*)'/g, 'โ��$1โ��')
+            .replace(/"([^"]*)"/g, 'โ��$1โ��')
+            .replace(/\.{3}/g, 'โ�ฆ');
+    };
+
+    /**
+     * Mangle Links
+     */
+
+    InlineLexer.prototype.mangle = function (text) {
+        var out = ''
+            , l = text.length
+            , i = 0
+            , ch;
+
+        for (; i < l; i++) {
+            ch = text.charCodeAt(i);
+            if (Math.random() > 0.5) {
+                ch = 'x' + ch.toString(16);
+            }
+            out += '&#' + ch + ';';
+        }
+
+        return out;
+    };
+
+    /**
+     * Parsing & Compiling
+     */
+
+    function Parser(options) {
+        this.tokens = [];
+        this.token = null;
+        this.options = options || marked.defaults;
+    }
+
+    /**
+     * Static Parse Method
+     */
+
+    Parser.parse = function (src, options) {
+        var parser = new Parser(options);
+        return parser.parse(src);
+    };
+
+    /**
+     * Parse Loop
+     */
+
+    Parser.prototype.parse = function (src) {
+        this.inline = new InlineLexer(src.links, this.options);
+        this.tokens = src.reverse();
+
+        var out = '';
+        while (this.next()) {
+            out += this.tok();
+        }
+
+        return out;
+    };
+
+    /**
+     * Next Token
+     */
+
+    Parser.prototype.next = function () {
+        return this.token = this.tokens.pop();
+    };
+
+    /**
+     * Preview Next Token
+     */
+
+    Parser.prototype.peek = function () {
+        return this.tokens[this.tokens.length - 1] || 0;
+    };
+
+    /**
+     * Parse Text Tokens
+     */
+
+    Parser.prototype.parseText = function () {
+        var body = this.token.text;
+
+        while (this.peek().type === 'text') {
+            body += '\n' + this.next().text;
+        }
+
+        return this.inline.output(body);
+    };
+
+    /**
+     * Parse Current Token
+     */
+
+    Parser.prototype.tok = function () {
+        switch (this.token.type) {
+            case 'space': {
+                return '';
+            }
+            case 'hr': {
+                return '<hr>\n';
+            }
+            case 'heading': {
+                return '<h'
+                    + this.token.depth
+                    + '>'
+                    + this.inline.output(this.token.text)
+                    + '</h'
+                    + this.token.depth
+                    + '>\n';
+            }
+            case 'code': {
+                if (this.options.highlight) {
+                    var code = this.options.highlight(this.token.text, this.token.lang);
+                    if (code != null && code !== this.token.text) {
+                        this.token.escaped = true;
+                        this.token.text = code;
+                    }
+                }
+
+                if (!this.token.escaped) {
+                    this.token.text = escape(this.token.text, true);
+                }
+
+                return '<pre><code'
+                    + (this.token.lang
+                        ? ' class="'
+                        + this.options.langPrefix
+                        + this.token.lang
+                        + '"'
+                        : '')
+                    + '>'
+                    + this.token.text
+                    + '</code></pre>\n';
+            }
+            case 'table': {
+                var body = ''
+                    , heading
+                    , i
+                    , row
+                    , cell
+                    , j;
+
+                // header
+                body += '<thead>\n<tr>\n';
+                for (i = 0; i < this.token.header.length; i++) {
+                    heading = this.inline.output(this.token.header[i]);
+                    body += this.token.align[i]
+                        ? '<th align="' + this.token.align[i] + '">' + heading + '</th>\n'
+                        : '<th>' + heading + '</th>\n';
+                }
+                body += '</tr>\n</thead>\n';
+
+                // body
+                body += '<tbody>\n'
+                for (i = 0; i < this.token.cells.length; i++) {
+                    row = this.token.cells[i];
+                    body += '<tr>\n';
+                    for (j = 0; j < row.length; j++) {
+                        cell = this.inline.output(row[j]);
+                        body += this.token.align[j]
+                            ? '<td align="' + this.token.align[j] + '">' + cell + '</td>\n'
+                            : '<td>' + cell + '</td>\n';
+                    }
+                    body += '</tr>\n';
+                }
+                body += '</tbody>\n';
+
+                return '<table>\n'
+                    + body
+                    + '</table>\n';
+            }
+            case 'blockquote_start': {
+                var body = '';
+
+                while (this.next().type !== 'blockquote_end') {
+                    body += this.tok();
+                }
+
+                return '<blockquote>\n'
+                    + body
+                    + '</blockquote>\n';
+            }
+            case 'list_start': {
+                var type = this.token.ordered ? 'ol' : 'ul'
+                    , body = '';
+
+                while (this.next().type !== 'list_end') {
+                    body += this.tok();
+                }
+
+                return '<'
+                    + type
+                    + '>\n'
+                    + body
+                    + '</'
+                    + type
+                    + '>\n';
+            }
+            case 'list_item_start': {
+                var body = '';
+
+                while (this.next().type !== 'list_item_end') {
+                    body += this.token.type === 'text'
+                        ? this.parseText()
+                        : this.tok();
+                }
+
+                return '<li>'
+                    + body
+                    + '</li>\n';
+            }
+            case 'loose_item_start': {
+                var body = '';
+
+                while (this.next().type !== 'list_item_end') {
+                    body += this.tok();
+                }
+
+                return '<li>'
+                    + body
+                    + '</li>\n';
+            }
+            case 'html': {
+                return !this.token.pre && !this.options.pedantic
+                    ? this.inline.output(this.token.text)
+                    : this.token.text;
+            }
+            case 'paragraph': {
+                return '<p>'
+                    + this.inline.output(this.token.text)
+                    + '</p>\n';
+            }
+            case 'text': {
+                return '<p>'
+                    + this.parseText()
+                    + '</p>\n';
+            }
+        }
+    };
+
+    /**
+     * Helpers
+     */
+
+    function escape(html, encode) {
+        return html
+            .replace(!encode ? /&(?!#?\w+;)/g : /&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function replace(regex, opt) {
+        regex = regex.source;
+        opt = opt || '';
+        return function self(name, val) {
+            if (!name) return new RegExp(regex, opt);
+            val = val.source || val;
+            val = val.replace(/(^|[^\[])\^/g, '$1');
+            regex = regex.replace(name, val);
+            return self;
+        };
+    }
+
+    function noop() { }
+    noop.exec = noop;
+
+    function merge(obj) {
+        var i = 1
+            , target
+            , key;
+
+        for (; i < arguments.length; i++) {
+            target = arguments[i];
+            for (key in target) {
+                if (Object.prototype.hasOwnProperty.call(target, key)) {
+                    obj[key] = target[key];
+                }
+            }
+        }
+
+        return obj;
+    }
+
+    /**
+     * Marked
+     */
+
+    function marked(src, opt, callback) {
+        if (callback || typeof opt === 'function') {
+            if (!callback) {
+                callback = opt;
+                opt = null;
+            }
+
+            if (opt) opt = merge({}, marked.defaults, opt);
+
+            var tokens = Lexer.lex(tokens, opt)
+                , highlight = opt.highlight
+                , pending = 0
+                , l = tokens.length
+                , i = 0;
+
+            if (!highlight || highlight.length < 3) {
+                return callback(null, Parser.parse(tokens, opt));
+            }
+
+            var done = function () {
+                delete opt.highlight;
+                var out = Parser.parse(tokens, opt);
+                opt.highlight = highlight;
+                return callback(null, out);
+            };
+
+            for (; i < l; i++) {
+                (function (token) {
+                    if (token.type !== 'code') return;
+                    pending++;
+                    return highlight(token.text, token.lang, function (err, code) {
+                        if (code == null || code === token.text) {
+                            return --pending || done();
+                        }
+                        token.text = code;
+                        token.escaped = true;
+                        --pending || done();
+                    });
+                })(tokens[i]);
+            }
+
+            return;
+        }
+        try {
+            if (opt) opt = merge({}, marked.defaults, opt);
+            return Parser.parse(Lexer.lex(src, opt), opt);
+        } catch (e) {
+            e.message += '\nPlease report this to https://github.com/chjj/marked.';
+            if ((opt || marked.defaults).silent) {
+                return '<p>An error occured:</p><pre>'
+                    + escape(e.message + '', true)
+                    + '</pre>';
+            }
+            throw e;
+        }
+    }
+
+    /**
+     * Options
+     */
+
+    marked.options =
+        marked.setOptions = function (opt) {
+            merge(marked.defaults, opt);
+            return marked;
+        };
+
+    marked.defaults = {
+        gfm: true,
+        tables: true,
+        breaks: false,
+        pedantic: false,
+        sanitize: false,
+        smartLists: false,
+        silent: false,
+        highlight: null,
+        langPrefix: 'lang-'
+    };
+
+    /**
+     * Expose
+     */
+
+    marked.Parser = Parser;
+    marked.parser = Parser.parse;
+
+    marked.Lexer = Lexer;
+    marked.lexer = Lexer.lex;
+
+    marked.InlineLexer = InlineLexer;
+    marked.inlineLexer = InlineLexer.output;
+
+    marked.parse = marked;
+
+    if (typeof exports === 'object') {
+        module.exports = marked;
+    } else if (typeof define === 'function' && define.amd) {
+        define(function () { return marked; });
+    } else {
+        this.marked = marked;
+    }
+
+}).call(function () {
+    return this || (typeof window !== 'undefined' ? window : global);
 }());
 
-(function($) {
+(function ($) {
     'use strict';
 
     // hide the whole page so we dont see the DOM flickering
@@ -1128,7 +1128,7 @@ if (typeof exports === 'object') {
     $('html').addClass('md-hidden-load');
 
     // register our $.md object
-    $.md = function (method){
+    $.md = function (method) {
         if ($.md.publicMethods[method]) {
             return $.md.publicMethods[method].apply(this,
                 Array.prototype.slice.call(arguments, 1)
@@ -1139,7 +1139,7 @@ if (typeof exports === 'object') {
     };
     // default config
     $.md.config = {
-        title:  null,
+        title: null,
         useSideMenu: true,
         lineBreaks: 'gfm',
         additionalFooterText: '',
@@ -1171,16 +1171,16 @@ if (typeof exports === 'object') {
 
 }(jQuery));
 
-(function($) {
+(function ($) {
     'use strict';
-    $.md.getLogger = function() {
+    $.md.getLogger = function () {
 
         var loglevel = $.md.loglevel;
 
-        var log = function(logtarget) {
+        var log = function (logtarget) {
             var self = this;
             var level = loglevel[logtarget];
-            return function(msg) {
+            return function (msg) {
                 if ($.md.logThreshold <= level) {
                     console.log('[' + logtarget + '] ' + msg);
                 }
@@ -1199,30 +1199,30 @@ if (typeof exports === 'object') {
     };
 }(jQuery));
 
-(function($) {
+(function ($) {
     'use strict';
     var log = $.md.getLogger();
 
-    $.Stage = function(name) {
+    $.Stage = function (name) {
         var self = $.extend($.Deferred(), {});
         self.name = name;
         self.events = [];
         self.started = false;
 
-        self.reset = function() {
+        self.reset = function () {
             self.complete = $.Deferred();
             self.outstanding = [];
         };
 
         self.reset();
 
-        self.subscribe = function(fn) {
+        self.subscribe = function (fn) {
             if (self.started) {
                 $.error('Subscribing to stage which already started!');
             }
             self.events.push(fn);
         };
-        self.unsubscribe = function(fn) {
+        self.unsubscribe = function (fn) {
             self.events.remove(fn);
         };
 
@@ -1231,23 +1231,23 @@ if (typeof exports === 'object') {
             self.outstanding.push(d);
 
             // display an error if our done() callback is not called
-            $.md.util.wait(2500).done(function() {
-                if(d.state() !== 'resolved') {
+            $.md.util.wait(2500).done(function () {
+                if (d.state() !== 'resolved') {
                     log.fatal('Timeout reached for done callback in stage: ' + self.name +
                         '. Did you forget a done() call in a .subscribe() ?');
-                    log.fatal('stage ' + name + ' failed running subscribed function: ' + fn );
+                    log.fatal('stage ' + name + ' failed running subscribed function: ' + fn);
                 }
             });
 
-            var done = function() {
+            var done = function () {
                 d.resolve();
             };
             fn(done);
         };
 
-        self.run = function() {
+        self.run = function () {
             self.started = true;
-            $(self.events).each(function (i,fn) {
+            $(self.events).each(function (i, fn) {
                 self.executeSubscribedFn(fn);
             });
 
@@ -1258,25 +1258,25 @@ if (typeof exports === 'object') {
 
             // we resolve when all our registered events have completed
             $.when.apply($, self.outstanding)
-            .done(function() {
-                self.resolve();
-            })
-            .fail(function() {
-                self.resolve();
-            });
+                .done(function () {
+                    self.resolve();
+                })
+                .fail(function () {
+                    self.resolve();
+                });
         };
 
-        self.done(function() {
+        self.done(function () {
             log.debug('stage ' + self.name + ' completed successfully.');
         });
-        self.fail(function() {
+        self.fail(function () {
             log.debug('stage ' + self.name + ' completed with errors!');
         });
         return self;
     };
 }(jQuery));
 
-(function($) {
+(function ($) {
     'use strict';
 
     var log = $.md.getLogger();
@@ -1315,8 +1315,8 @@ if (typeof exports === 'object') {
             $.Stage('final_tests')
         ];
 
-        $.md.stage = function(name) {
-            var m = $.grep($.md.stages, function(e,i) {
+        $.md.stage = function (name) {
+            var m = $.grep($.md.stages, function (e, i) {
                 return e.name === name;
             });
             if (m.length === 0) {
@@ -1331,15 +1331,15 @@ if (typeof exports === 'object') {
     function resetStages() {
         var old_stages = $.md.stages;
         $.md.stages = [];
-        $(old_stages).each(function(i,e) {
+        $(old_stages).each(function (i, e) {
             $.md.stages.push($.Stage(e.name));
         });
     }
 
     var publicMethods = {};
-    $.md.publicMethods = $.extend ({}, $.md.publicMethods, publicMethods);
+    $.md.publicMethods = $.extend({}, $.md.publicMethods, publicMethods);
 
-    function transformMarkdown (markdown) {
+    function transformMarkdown(markdown) {
         var options = {
             gfm: true,
             tables: true,
@@ -1361,17 +1361,17 @@ if (typeof exports === 'object') {
 
         var md = '';
 
-        $.md.stage('init').subscribe(function(done) {
+        $.md.stage('init').subscribe(function (done) {
             var ajaxReq = {
                 url: $.md.mainHref,
                 dataType: 'text',
                 cache: false
             };
-            $.ajax(ajaxReq).done(function(data) {
+            $.ajax(ajaxReq).done(function (data) {
                 // TODO do this elsewhere
                 md = data;
                 done();
-            }).fail(function() {
+            }).fail(function () {
                 var log = $.md.getLogger();
                 log.fatal('Could not get ' + $.md.mainHref);
                 done();
@@ -1379,14 +1379,14 @@ if (typeof exports === 'object') {
         });
 
         // find baseUrl
-        $.md.stage('transform').subscribe(function(done) {
+        $.md.stage('transform').subscribe(function (done) {
             var len = $.md.mainHref.lastIndexOf('/');
-            var baseUrl = $.md.mainHref.substring(0, len+1);
+            var baseUrl = $.md.mainHref.substring(0, len + 1);
             $.md.baseUrl = baseUrl;
             done();
         });
 
-        $.md.stage('transform').subscribe(function(done) {
+        $.md.stage('transform').subscribe(function (done) {
             var uglyHtml = transformMarkdown(md);
             $('#md-content').html(uglyHtml);
             md = '';
@@ -1401,8 +1401,8 @@ if (typeof exports === 'object') {
     // load [include](/foo/bar.md) external links
     function loadExternalIncludes(parent_dfd) {
 
-        function findExternalIncludes () {
-            return $('a').filter (function () {
+        function findExternalIncludes() {
+            return $('a').filter(function () {
                 var href = $(this).attr('href');
                 var text = $(this).toptext();
                 var isMarkdown = $.md.util.hasMarkdownFileExtension(href);
@@ -1412,13 +1412,13 @@ if (typeof exports === 'object') {
             });
         }
 
-        function selectPreviewElements ($jqcol, num_elements) {
+        function selectPreviewElements($jqcol, num_elements) {
             function isTextNode(node) {
                 return node.nodeType === 3;
             }
             var count = 0;
             var elements = [];
-            $jqcol.each(function (i,e) {
+            $jqcol.each(function (i, e) {
                 if (count < num_elements) {
                     elements.push(e);
                     if (!isTextNode(e)) count++;
@@ -1427,14 +1427,14 @@ if (typeof exports === 'object') {
             return $(elements);
         }
 
-        var external_links = findExternalIncludes ();
+        var external_links = findExternalIncludes();
         // continue execution when all external resources are fully loaded
-        var latch = $.md.util.countDownLatch (external_links.length);
-        latch.always (function () {
+        var latch = $.md.util.countDownLatch(external_links.length);
+        latch.always(function () {
             parent_dfd.resolve();
         });
 
-        external_links.each(function (i,e) {
+        external_links.each(function (i, e) {
             var $el = $(e);
             var href = $el.attr('href');
             var text = $el.toptext();
@@ -1443,22 +1443,22 @@ if (typeof exports === 'object') {
                 cache: false,
                 dataType: 'text'
             })
-            .done(function (data) {
-                var $html = $(transformMarkdown(data));
-                if (text.startsWith('preview:')) {
-                    // only insert the selected number of paragraphs; default 3
-                    var num_preview_elements = parseInt(text.substring(8), 10) ||3;
-                    var $preview = selectPreviewElements ($html, num_preview_elements);
-                    $preview.last().append('<a href="' + href +'"> ...read more &#10140;</a>');
-                    $preview.insertBefore($el.parent('p').eq(0));
-                    $el.remove();
-                } else {
-                    $html.insertAfter($el.parents('p'));
-                    $el.remove();
-                }
-            }).always(function () {
-                latch.countDown();
-            });
+                .done(function (data) {
+                    var $html = $(transformMarkdown(data));
+                    if (text.startsWith('preview:')) {
+                        // only insert the selected number of paragraphs; default 3
+                        var num_preview_elements = parseInt(text.substring(8), 10) || 3;
+                        var $preview = selectPreviewElements($html, num_preview_elements);
+                        $preview.last().append('<a href="' + href + '"> ...read more &#10140;</a>');
+                        $preview.insertBefore($el.parent('p').eq(0));
+                        $el.remove();
+                    } else {
+                        $html.insertAfter($el.parents('p'));
+                        $el.remove();
+                    }
+                }).always(function () {
+                    latch.countDown();
+                });
         });
     }
 
@@ -1496,7 +1496,7 @@ if (typeof exports === 'object') {
                 $this.removeAttr('href');
         });
 
-        html.find('a, img').each(function(i,e) {
+        html.find('a, img').each(function (i, e) {
             var link = $(e);
             // link must be jquery collection
             var isImage = false;
@@ -1508,31 +1508,31 @@ if (typeof exports === 'object') {
             }
             var href = link.attr(hrefAttribute);
 
-            if (href && href.lastIndexOf ('#!') >= 0)
+            if (href && href.lastIndexOf('#!') >= 0)
                 return;
 
             if (isSpecialLink(href))
                 return;
 
-            if (!isImage && href.startsWith ('#') && !href.startsWith('#!')) {
+            if (!isImage && href.startsWith('#') && !href.startsWith('#!')) {
                 // in-page link
-                link.click(function(ev) {
+                link.click(function (ev) {
                     ev.preventDefault();
-                    $.md.scrollToInPageAnchor (href);
+                    $.md.scrollToInPageAnchor(href);
                 });
             }
 
-            if (! $.md.util.isRelativeUrl(href))
+            if (!$.md.util.isRelativeUrl(href))
                 return;
 
-            if (isImage && ! $.md.util.isRelativePath(href))
+            if (isImage && !$.md.util.isRelativePath(href))
                 return;
 
             if (!isImage && $.md.util.isGimmickLink(link))
                 return;
 
-            function build_link (url) {
-                if ($.md.util.hasMarkdownFileExtension (url))
+            function build_link(url) {
+                if ($.md.util.hasMarkdownFileExtension(url))
                     return '#!' + url;
                 else
                     return url;
@@ -1541,7 +1541,7 @@ if (typeof exports === 'object') {
             var newHref = baseUrl + href;
             if (isImage)
                 link.attr(hrefAttribute, newHref);
-            else if ($.md.util.isRelativePath (href))
+            else if ($.md.util.isRelativePath(href))
                 link.attr(hrefAttribute, build_link(newHref));
             else
                 link.attr(hrefAttribute, build_link(href));
@@ -1555,25 +1555,25 @@ if (typeof exports === 'object') {
         dataType: 'text',
         cache: false
     };
-    $.ajax(ajaxReq).done(function(data) {
+    $.ajax(ajaxReq).done(function (data) {
         navMD = data;
         $.md.NavigationDfd.resolve();
-    }).fail(function() {
+    }).fail(function () {
         $.md.NavigationDfd.reject();
     });
 
     function registerBuildNavigation() {
 
-        $.md.stage('init').subscribe(function(done) {
-            $.md.NavigationDfd.done(function() {
+        $.md.stage('init').subscribe(function (done) {
+            $.md.NavigationDfd.done(function () {
                 done();
             })
-            .fail(function() {
-                done();
-            });
+                .fail(function () {
+                    done();
+                });
         });
 
-        $.md.stage('transform').subscribe(function(done) {
+        $.md.stage('transform').subscribe(function (done) {
             if (navMD === '') {
                 var log = $.md.getLogger();
                 log.info('no navgiation.md found, not using a navbar');
@@ -1586,7 +1586,7 @@ if (typeof exports === 'object') {
             var $h = $('<div>' + navHtml + '</div>');
 
             // insert <scripts> from navigation.md into the DOM
-            $h.each(function (i,e) {
+            $h.each(function (i, e) {
                 if (e.tagName === 'SCRIPT') {
                     $('script').first().before(e);
                 }
@@ -1594,7 +1594,7 @@ if (typeof exports === 'object') {
 
             // TODO .html() is evil!!!
             var $navContent = $h.eq(0);
-            $navContent.find('p').each(function(i,e) {
+            $navContent.find('p').each(function (i, e) {
                 var $el = $(e);
                 $el.replaceWith($el.html());
             });
@@ -1602,12 +1602,12 @@ if (typeof exports === 'object') {
             done();
         });
 
-        $.md.stage('bootstrap').subscribe(function(done) {
+        $.md.stage('bootstrap').subscribe(function (done) {
             processPageLinks($('#md-menu'));
             done();
         });
 
-        $.md.stage('postgimmick').subscribe(function(done) {
+        $.md.stage('postgimmick').subscribe(function (done) {
             var num_links = $('#md-menu a').length;
             var has_header = $('#md-menu .navbar-brand').eq(0).toptext().trim().length > 0;
             if (!has_header && num_links <= 1)
@@ -1618,28 +1618,28 @@ if (typeof exports === 'object') {
     }
 
     $.md.ConfigDfd = $.Deferred();
-    $.ajax({url: 'config.json',cache: false, dataType: 'text'}).done(function(data) {
+    $.ajax({ url: 'config.json', cache: false, dataType: 'text' }).done(function (data) {
         try {
             var data_json = JSON.parse(data);
             $.md.config = $.extend($.md.config, data_json);
             log.info('Found a valid config.json file, using configuration');
-        } catch(err) {
+        } catch (err) {
             log.error('config.json was not JSON parsable: ' + err);
         }
         $.md.ConfigDfd.resolve();
-    }).fail(function(err, textStatus) {
+    }).fail(function (err, textStatus) {
         log.error('unable to retrieve config.json: ' + textStatus);
         $.md.ConfigDfd.reject();
     });
     function registerFetchConfig() {
 
-        $.md.stage('init').subscribe(function(done) {
+        $.md.stage('init').subscribe(function (done) {
             // TODO 404 won't get cached, requesting it every reload is not good
             // maybe use cookies? or disable re-loading of the page
             //$.ajax('config.json').done(function(data){
-            $.md.ConfigDfd.done(function(){
+            $.md.ConfigDfd.done(function () {
                 done();
-            }).fail(function() {
+            }).fail(function () {
                 var log = $.md.getLogger();
                 log.info('No config.json found, using default settings');
                 done();
@@ -1649,9 +1649,9 @@ if (typeof exports === 'object') {
 
     function registerClearContent() {
 
-        $.md.stage('init').subscribe(function(done) {
+        $.md.stage('init').subscribe(function (done) {
             $('#md-all').empty();
-            var skel ='<div id="md-body"><div id="md-title"></div><div id="md-menu">'+
+            var skel = '<div id="md-body"><div id="md-title"></div><div id="md-menu">' +
                 '</div><div id="md-content"></div></div>';
             $('#md-all').prepend($(skel));
             done();
@@ -1665,29 +1665,29 @@ if (typeof exports === 'object') {
         registerClearContent();
 
         // find out which link gimmicks we need
-        $.md.stage('ready').subscribe(function(done) {
+        $.md.stage('ready').subscribe(function (done) {
             $.md.initializeGimmicks();
             $.md.registerLinkGimmicks();
             done();
         });
 
         // wire up the load method of the modules
-        $.each($.md.gimmicks, function(i, module) {
+        $.each($.md.gimmicks, function (i, module) {
             if (module.load === undefined) {
                 return;
             }
-            $.md.stage('load').subscribe(function(done) {
+            $.md.stage('load').subscribe(function (done) {
                 module.load();
                 done();
             });
         });
 
-        $.md.stage('ready').subscribe(function(done) {
+        $.md.stage('ready').subscribe(function (done) {
             $.md('createBasicSkeleton');
             done();
         });
 
-        $.md.stage('bootstrap').subscribe(function(done){
+        $.md.stage('bootstrap').subscribe(function (done) {
             $.mdbootstrap('bootstrapify');
             processPageLinks($('#md-content'), $.md.baseUrl);
             done();
@@ -1698,34 +1698,34 @@ if (typeof exports === 'object') {
     function runStages() {
 
         // wire the stages up
-        $.md.stage('init').done(function() {
+        $.md.stage('init').done(function () {
             $.md.stage('load').run();
         });
-        $.md.stage('load').done(function() {
+        $.md.stage('load').done(function () {
             $.md.stage('transform').run();
         });
-        $.md.stage('transform').done(function() {
+        $.md.stage('transform').done(function () {
             $.md.stage('ready').run();
         });
-        $.md.stage('ready').done(function() {
+        $.md.stage('ready').done(function () {
             $.md.stage('skel_ready').run();
         });
-        $.md.stage('skel_ready').done(function() {
+        $.md.stage('skel_ready').done(function () {
             $.md.stage('bootstrap').run();
         });
-        $.md.stage('bootstrap').done(function() {
+        $.md.stage('bootstrap').done(function () {
             $.md.stage('pregimmick').run();
         });
-        $.md.stage('pregimmick').done(function() {
+        $.md.stage('pregimmick').done(function () {
             $.md.stage('gimmick').run();
         });
-        $.md.stage('gimmick').done(function() {
+        $.md.stage('gimmick').done(function () {
             $.md.stage('postgimmick').run();
         });
-        $.md.stage('postgimmick').done(function() {
+        $.md.stage('postgimmick').done(function () {
             $.md.stage('all_ready').run();
         });
-        $.md.stage('all_ready').done(function() {
+        $.md.stage('all_ready').done(function () {
             $('html').removeClass('md-hidden-load');
 
             // phantomjs hook when we are done
@@ -1735,7 +1735,7 @@ if (typeof exports === 'object') {
 
             $.md.stage('final_tests').run();
         });
-        $.md.stage('final_tests').done(function() {
+        $.md.stage('final_tests').done(function () {
             // reset the stages for next iteration
             resetStages();
 
@@ -1769,18 +1769,17 @@ if (typeof exports === 'object') {
         }
     }
 
-    function appendDefaultFilenameToHash () {
+    function appendDefaultFilenameToHash() {
         var newHashString = '';
-        var currentHashString = window.location.hash ||'';
+        var currentHashString = window.location.hash || '';
         if (currentHashString === '' ||
-            currentHashString === '#'||
-            currentHashString === '#!')
-        {
+            currentHashString === '#' ||
+            currentHashString === '#!') {
             newHashString = '#!index.md';
         }
-        else if (currentHashString.startsWith ('#!') &&
-                 currentHashString.endsWith('/')
-                ) {
+        else if (currentHashString.startsWith('#!') &&
+            currentHashString.endsWith('/')
+        ) {
             newHashString = currentHashString + 'index.md';
         }
         if (newHashString)
@@ -1804,9 +1803,9 @@ if (typeof exports === 'object') {
     });
 }(jQuery));
 
-(function($) {
+(function ($) {
     var publicMethods = {
-        isRelativeUrl: function(url) {
+        isRelativeUrl: function (url) {
             if (url === undefined) {
                 return false;
             }
@@ -1818,59 +1817,59 @@ if (typeof exports === 'object') {
                 return false;
             }
         },
-        isRelativePath: function(path) {
+        isRelativePath: function (path) {
             if (path === undefined)
                 return false;
             if (path.startsWith('/'))
                 return false;
             return true;
         },
-        isGimmickLink: function(domAnchor) {
-            if (domAnchor.toptext().indexOf ('gimmick:') !== -1) {
+        isGimmickLink: function (domAnchor) {
+            if (domAnchor.toptext().indexOf('gimmick:') !== -1) {
                 return true;
             } else {
                 return false;
             }
         },
         hasMarkdownFileExtension: function (str) {
-            var markdownExtensions = [ '.md', '.markdown', '.mdown' ];
+            var markdownExtensions = ['.md', '.markdown', '.mdown'];
             var result = false;
             var value = str.toLowerCase().split('#')[0];
-            $(markdownExtensions).each(function (i,ext) {
-                if (value.toLowerCase().endsWith (ext)) {
+            $(markdownExtensions).each(function (i, ext) {
+                if (value.toLowerCase().endsWith(ext)) {
                     result = true;
                 }
             });
             return result;
         },
-        wait: function(time) {
-            return $.Deferred(function(dfd) {
+        wait: function (time) {
+            return $.Deferred(function (dfd) {
                 setTimeout(dfd.resolve, time);
             });
         }
     };
-    $.md.util = $.extend ({}, $.md.util, publicMethods);
+    $.md.util = $.extend({}, $.md.util, publicMethods);
 
     if (typeof String.prototype.startsWith !== 'function') {
-        String.prototype.startsWith = function(str) {
+        String.prototype.startsWith = function (str) {
             return this.slice(0, str.length) === str;
         };
     }
     if (typeof String.prototype.endsWith !== 'function') {
-        String.prototype.endsWith = function(str) {
+        String.prototype.endsWith = function (str) {
             return this.slice(this.length - str.length, this.length) === str;
         };
     }
 
-    $.fn.extend ({
+    $.fn.extend({
         toptext: function () {
             return this.clone().children().remove().end().text();
         }
     });
 
     // adds a :icontains selector to jQuery that is case insensitive
-    $.expr[':'].icontains = $.expr.createPseudo(function(arg) {
-        return function(elem) {
+    $.expr[':'].icontains = $.expr.createPseudo(function (arg) {
+        return function (elem) {
             return $(elem).toptext().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
         };
     });
@@ -1890,7 +1889,7 @@ if (typeof exports === 'object') {
     $.md.util.repeatUntil = function (interval, predicate, maxRepeats) {
         maxRepeats = maxRepeats || 10;
         var dfd = $.Deferred();
-        function recursive_repeat (interval, predicate, maxRepeats) {
+        function recursive_repeat(interval, predicate, maxRepeats) {
             if (maxRepeats === 0) {
                 dfd.reject();
                 return;
@@ -1924,11 +1923,11 @@ if (typeof exports === 'object') {
 
 }(jQuery));
 
-(function($) {
+(function ($) {
     'use strict';
 
     // PUBLIC API
-    $.md.registerGimmick = function(module) {
+    $.md.registerGimmick = function (module) {
         $.md.gimmicks.push(module);
         return;
     };
@@ -1938,7 +1937,7 @@ if (typeof exports === 'object') {
     // src may be an URL or direct javascript sourcecode. When options.callback
     // is provided, the done() function is passed to the function and needs to
     // be called.
-    $.md.registerScript = function(module, src, options) {
+    $.md.registerScript = function (module, src, options) {
         var scriptinfo = new ScriptInfo({
             module: module,
             src: src,
@@ -1949,14 +1948,14 @@ if (typeof exports === 'object') {
 
     // same as registerScript but for css. Note that we do not provide a
     // callback when the load finishes
-    $.md.registerCss = function(module, url, options) {
+    $.md.registerCss = function (module, url, options) {
         var license = options.license,
             stage = options.stage || 'skel_ready',
             callback = options.callback;
 
         checkLicense(license, module);
         var tag = '<link rel="stylesheet" href="' + url + '" type="text/css"></link>';
-        $.md.stage(stage).subscribe(function(done) {
+        $.md.stage(stage).subscribe(function (done) {
             $('head').append(tag);
             if (callback !== undefined) {
                 callback(done);
@@ -1969,7 +1968,7 @@ if (typeof exports === 'object') {
     // turns hostname/path links into http://hostname/path links
     // we need to do this because if accessed by file:///, we need a different
     // transport scheme for external resources (like http://)
-    $.md.prepareLink = function(link, options) {
+    $.md.prepareLink = function (link, options) {
         options = options || {};
         var ownProtocol = window.location.protocol;
 
@@ -1987,7 +1986,7 @@ if (typeof exports === 'object') {
 
     // associate a link trigger for a gimmick. i.e. [gimmick:foo]() then
     // foo is the trigger and will invoke the corresponding gimmick
-    $.md.linkGimmick = function(module, trigger, callback, stage) {
+    $.md.linkGimmick = function (module, trigger, callback, stage) {
         if (stage === undefined) {
             stage = 'gimmick';
         }
@@ -2000,7 +1999,7 @@ if (typeof exports === 'object') {
         linkTriggers.push(linktrigger);
     };
 
-    $.md.triggerIsActive = function(trigger) {
+    $.md.triggerIsActive = function (trigger) {
         if (activeLinkTriggers.indexOf(trigger) === -1) {
             return false;
         } else {
@@ -2010,7 +2009,7 @@ if (typeof exports === 'object') {
 
     var initialized = false;
     // TODO combine main.js and modules.js closure
-    $.md.initializeGimmicks = function() {
+    $.md.initializeGimmicks = function () {
         findActiveLinkTrigger();
         runGimmicksOnce();
         loadRequiredScripts();
@@ -2071,8 +2070,8 @@ if (typeof exports === 'object') {
             log.warn('Known licenses:' + availLicenses);
 
         } else if (license === 'OTHER') {
-            log.warn('WARNING: Module ' + module.name + ' uses a script'+
-                ' with unknown license. This may be a GPL license violation if'+
+            log.warn('WARNING: Module ' + module.name + ' uses a script' +
+                ' with unknown license. This may be a GPL license violation if' +
                 ' this website is publically available!');
         }
     }
@@ -2094,9 +2093,9 @@ if (typeof exports === 'object') {
         checkLicense(license, module);
         // start script loading
         log.debug('subscribing ' + module.name + ' to start: ' + loadstage + ' end in: ' + finishstage);
-        $.md.stage(loadstage).subscribe(function(done) {
+        $.md.stage(loadstage).subscribe(function (done) {
             if (src.startsWith('//') || src.startsWith('http')) {
-                $.getScript(src, function() {
+                $.getScript(src, function () {
                     if (callback !== undefined) {
                         callback(done);
                     } else {
@@ -2115,8 +2114,8 @@ if (typeof exports === 'object') {
         });
         // if loading is not yet finished in stage finishstage, wait
         // for the loading to complete
-        $.md.stage(finishstage).subscribe(function(done) {
-            loadDone.done(function() {
+        $.md.stage(finishstage).subscribe(function (done) {
+            loadDone.done(function () {
                 done();
             });
         });
@@ -2126,7 +2125,7 @@ if (typeof exports === 'object') {
     // this is most likely a very small subset of all available gimmicks
     function findActiveLinkTrigger() {
         var $gimmicks = $('a:icontains(gimmick:)');
-        $gimmicks.each(function(i,e) {
+        $gimmicks.each(function (i, e) {
             var parts = getGimmickLinkParts($(e));
             if (activeLinkTriggers.indexOf(parts.trigger) === -1) {
                 activeLinkTriggers.push(parts.trigger);
@@ -2137,13 +2136,13 @@ if (typeof exports === 'object') {
 
     function loadRequiredScripts() {
         // find each module responsible for the link trigger
-        $.each(activeLinkTriggers, function(i,trigger) {
+        $.each(activeLinkTriggers, function (i, trigger) {
             var module = findModuleByTrigger(trigger);
             if (module === undefined) {
                 log.error('Gimmick link: "' + trigger + '" found but no suitable gimmick loaded');
                 return;
             }
-            var scriptinfo = registeredScripts.filter(function(info) {
+            var scriptinfo = registeredScripts.filter(function (info) {
                 return info.module.name === module.name;
             })[0];
             // register to load the script
@@ -2155,7 +2154,7 @@ if (typeof exports === 'object') {
 
     function findModuleByTrigger(trigger) {
         var ret;
-        $.each(linkTriggers, function(i,e) {
+        $.each(linkTriggers, function (i, e) {
             if (e.trigger === trigger) {
                 ret = e.module;
             }
@@ -2183,7 +2182,7 @@ if (typeof exports === 'object') {
             // remove whitespaces
             var params = $.trim(matches[3].toString());
             // remove the closing } if present
-            if (params.charAt (params.length - 1) === '}') {
+            if (params.charAt(params.length - 1) === '}') {
                 params = params.substring(0, params.length - 1);
             }
             // add surrounding braces and paranthese
@@ -2203,7 +2202,7 @@ if (typeof exports === 'object') {
 
     function runGimmicksOnce() {
         // runs the once: callback for each gimmick within the init stage
-        $.each($.md.gimmicks, function(i, module) {
+        $.each($.md.gimmicks, function (i, module) {
             if (module.once === undefined) {
                 return;
             }
@@ -2215,11 +2214,11 @@ if (typeof exports === 'object') {
     // TODO make private / merge closures
     $.md.registerLinkGimmicks = function () {
         var $gimmick_links = $('a:icontains(gimmick:)');
-        $gimmick_links.each(function(i, e) {
+        $gimmick_links.each(function (i, e) {
             var $link = $(e);
             var gimmick_arguments = getGimmickLinkParts($link);
 
-            $.each(linkTriggers, function(i, linktrigger) {
+            $.each(linkTriggers, function (i, linktrigger) {
                 if (gimmick_arguments.trigger === linktrigger.trigger) {
                     subscribeLinkTrigger($link, gimmick_arguments, linktrigger);
                 }
@@ -2230,13 +2229,13 @@ if (typeof exports === 'object') {
     function subscribeLinkTrigger($link, args, linktrigger) {
         log.debug('Subscribing gimmick ' + linktrigger.module.name + ' to stage: ' + linktrigger.stage);
 
-        $.md.stage(linktrigger.stage).subscribe(function(done) {
-            args.options = args.options ||{};
+        $.md.stage(linktrigger.stage).subscribe(function (done) {
+            args.options = args.options || {};
 
             // it is possible that broken modules or any other transformation removed the $link
             // from the dom in the meantime
             if (!jQuery.contains(document.documentElement, $link[0])) {
-                log.error ('LINK IS NOT IN THE DOM ANYMORE: ');
+                log.error('LINK IS NOT IN THE DOM ANYMORE: ');
                 console.log($link);
             }
 
@@ -2249,18 +2248,18 @@ if (typeof exports === 'object') {
     }
 }(jQuery));
 
-(function($) {
+(function ($) {
     var publicMethods = {
-        createBasicSkeleton: function() {
+        createBasicSkeleton: function () {
 
             setPageTitle();
             wrapParagraphText();
             linkImagesToSelf();
             groupImages();
             removeBreaks();
-            addInpageAnchors ();
+            addInpageAnchors();
 
-            $.md.stage('all_ready').subscribe(function(done) {
+            $.md.stage('all_ready').subscribe(function (done) {
                 if ($.md.inPageAnchor !== '') {
                     $.md.util.wait(500).then(function () {
                         $.md.scrollToInPageAnchor($.md.inPageAnchor);
@@ -2272,7 +2271,7 @@ if (typeof exports === 'object') {
 
         }
     };
-    $.md.publicMethods = $.extend ({}, $.md.publicMethods, publicMethods);
+    $.md.publicMethods = $.extend({}, $.md.publicMethods, publicMethods);
 
     // set the page title to the browser document title, optionally picking
     // the first h1 element as title if no title is given
@@ -2290,25 +2289,25 @@ if (typeof exports === 'object') {
             $('#md-title').remove();
         }
     }
-    function wrapParagraphText () {
+    function wrapParagraphText() {
         // TODO is this true for marked.js?
 
         // markdown gives us sometime paragraph that contain child tags (like img),
         // but the containing text is not wrapped. Make sure to wrap the text in the
         // paragraph into a <div>
 
-		// this also moves ANY child tags to the front of the paragraph!
-		$('#md-content p').each (function () {
-			var $p = $(this);
-			// nothing to do for paragraphs without text
-			if ($.trim($p.text ()).length === 0) {
-				// make sure no whitespace are in the p and then exit
-				//$p.text ('');
-				return;
-			}
-			// children elements of the p
-            var children = $p.contents ().filter (function () {
-                var $child =  $(this);
+        // this also moves ANY child tags to the front of the paragraph!
+        $('#md-content p').each(function () {
+            var $p = $(this);
+            // nothing to do for paragraphs without text
+            if ($.trim($p.text()).length === 0) {
+                // make sure no whitespace are in the p and then exit
+                //$p.text ('');
+                return;
+            }
+            // children elements of the p
+            var children = $p.contents().filter(function () {
+                var $child = $(this);
                 // we extract images and hyperlinks with images out of the paragraph
                 if (this.tagName === 'A' && $child.find('img').length > 0) {
                     return true;
@@ -2320,7 +2319,7 @@ if (typeof exports === 'object') {
                 return false;
             });
             var floatClass = getFloatClass($p);
-            $p.wrapInner ('<div class="md-text" />');
+            $p.wrapInner('<div class="md-text" />');
 
             // if there are no children, we are done
             if (children.length === 0) {
@@ -2332,56 +2331,56 @@ if (typeof exports === 'object') {
             // at this point, we now have a paragraph that holds text AND images
             // we mark that paragraph to be a floating environment
             // TODO determine floatenv left/right
-            $p.addClass ('md-floatenv').addClass (floatClass);
-		});
-	}
-	function removeBreaks (){
-		// since we use non-markdown-standard line wrapping, we get lots of
-		// <br> elements we don't want.
+            $p.addClass('md-floatenv').addClass(floatClass);
+        });
+    }
+    function removeBreaks() {
+        // since we use non-markdown-standard line wrapping, we get lots of
+        // <br> elements we don't want.
 
         // remove a leading <br> from floatclasses, that happen to
         // get insertet after an image
-        $('.md-floatenv').find ('.md-text').each (function () {
-            var $first = $(this).find ('*').eq(0);
-            if ($first.is ('br')) {
-                $first.remove ();
+        $('.md-floatenv').find('.md-text').each(function () {
+            var $first = $(this).find('*').eq(0);
+            if ($first.is('br')) {
+                $first.remove();
             }
         });
 
         // remove any breaks from image groups
-        $('.md-image-group').find ('br').remove ();
+        $('.md-image-group').find('br').remove();
     }
-	function getFloatClass (par) {
-		var $p = $(par);
-		var floatClass = '';
+    function getFloatClass(par) {
+        var $p = $(par);
+        var floatClass = '';
 
-		// reduce content of the paragraph to images
-		var nonTextContents = $p.contents().filter(function () {
-			if (this.tagName === 'IMG' || this.tagName === 'IFRAME') {
+        // reduce content of the paragraph to images
+        var nonTextContents = $p.contents().filter(function () {
+            if (this.tagName === 'IMG' || this.tagName === 'IFRAME') {
                 return true;
             }
-			else if (this.tagName === 'A') {
+            else if (this.tagName === 'A') {
                 return $(this).find('img').length > 0;
             }
-			else {
-				return $.trim($(this).text ()).length > 0;
-			}
-		});
-		// check the first element - if its an image or a link with image, we go left
-		var elem = nonTextContents[0];
-		if (elem !== undefined && elem !== null) {
-			if (elem.tagName === 'IMG' || elem.tagName === 'IFRAME') {
+            else {
+                return $.trim($(this).text()).length > 0;
+            }
+        });
+        // check the first element - if its an image or a link with image, we go left
+        var elem = nonTextContents[0];
+        if (elem !== undefined && elem !== null) {
+            if (elem.tagName === 'IMG' || elem.tagName === 'IFRAME') {
                 floatClass = 'md-float-left';
             }
-			else if (elem.tagName === 'A' && $(elem).find('img').length > 0) {
+            else if (elem.tagName === 'A' && $(elem).find('img').length > 0) {
                 floatClass = 'md-float-left';
             }
-			else {
+            else {
                 floatClass = 'md-float-right';
             }
-		}
-		return floatClass;
-	}
+        }
+        return floatClass;
+    }
     // images are put in the same image group as long as there is
     // not separating paragraph between them
     function groupImages() {
@@ -2393,10 +2392,10 @@ if (typeof exports === 'object') {
     // takes a standard <img> tag and adds a hyperlink to the image source
     // needed since we scale down images via css and want them to be accessible
     // in original format
-    function linkImagesToSelf () {
-        function selectNonLinkedImages () {
+    function linkImagesToSelf() {
+        function selectNonLinkedImages() {
             // only select images that do not have a non-empty parent link
-            $images = $('img').filter(function(index) {
+            $images = $('img').filter(function (index) {
                 var $parent_link = $(this).parents('a').eq(0);
                 if ($parent_link.length === 0) return true;
                 var attr = $parent_link.attr('href');
@@ -2404,8 +2403,8 @@ if (typeof exports === 'object') {
             });
             return $images;
         }
-        var $images = selectNonLinkedImages ();
-        return $images.each(function() {
+        var $images = selectNonLinkedImages();
+        return $images.each(function () {
             var $this = $(this);
             var img_src = $this.attr('src');
             var img_title = $this.attr('title');
@@ -2413,15 +2412,14 @@ if (typeof exports === 'object') {
                 img_title = '';
             }
             // wrap the <img> tag in an anchor and copy the title of the image
-            $this.wrap('<a class="md-image-selfref" href="' + img_src + '" title="'+ img_title +'"/> ');
+            $this.wrap('<a class="md-image-selfref" href="' + img_src + '" title="' + img_title + '"/> ');
         });
     }
 
-    function addInpageAnchors()
-    {
+    function addInpageAnchors() {
         // adds a pilcrow (paragraph) character to heading with a link for the
         // inpage anchor
-        function addPilcrow ($heading, href) {
+        function addPilcrow($heading, href) {
             var c = $.md.config.anchorCharacter;
             var $pilcrow = $('<span class="anchor-highlight"><a>' + c + '</a></span>');
             $pilcrow.find('a').attr('href', href);
@@ -2444,15 +2442,15 @@ if (typeof exports === 'object') {
 
         // adds a link to the navigation at the top of the page
         function addJumpLinkToTOC($heading) {
-            if($.md.config.useSideMenu === false) return;
-            if($heading.prop("tagName") !== 'H2') return;
+            if ($.md.config.useSideMenu === false) return;
+            if ($heading.prop("tagName") !== 'H2') return;
 
             var c = $.md.config.tocAnchor;
             if (c === '')
                 return;
 
             var $jumpLink = $('<a class="visible-xs visible-sm jumplink" href="#md-page-menu">' + c + '</a>');
-            $jumpLink.click(function(ev) {
+            $jumpLink.click(function (ev) {
                 ev.preventDefault();
 
                 $('body').scrollTop($('#md-page-menu').position().top);
@@ -2465,7 +2463,7 @@ if (typeof exports === 'object') {
 
         // adds a page inline anchor to each h1,h2,h3,h4,h5,h6 element
         // which can be accessed by the headings text
-        $('h1,h2,h3,h4,h5,h6').not('#md-title h1').each (function () {
+        $('h1,h2,h3,h4,h5,h6').not('#md-title h1').each(function () {
             var $heading = $(this);
             $heading.addClass('md-inpage-anchor');
             var text = $heading.clone().children('.anchor-highlight').remove().end().text();
@@ -2477,19 +2475,19 @@ if (typeof exports === 'object') {
         });
     }
 
-    $.md.scrollToInPageAnchor = function(anchortext) {
-        if (anchortext.startsWith ('#'))
-            anchortext = anchortext.substring (1, anchortext.length);
+    $.md.scrollToInPageAnchor = function (anchortext) {
+        if (anchortext.startsWith('#'))
+            anchortext = anchortext.substring(1, anchortext.length);
         // we match case insensitive
         var doBreak = false;
-        $('.md-inpage-anchor').each (function () {
+        $('.md-inpage-anchor').each(function () {
             if (doBreak) { return; }
             var $this = $(this);
             // don't use the text of any subnode
             var text = $this.toptext();
-            var match = $.md.util.getInpageAnchorText (text);
+            var match = $.md.util.getInpageAnchorText(text);
             if (anchortext === match) {
-                this.scrollIntoView (true);
+                this.scrollIntoView(true);
                 var navbar_offset = $('.navbar-collapse').height() + 5;
                 window.scrollBy(0, -navbar_offset + 5);
                 doBreak = true;
@@ -2499,10 +2497,10 @@ if (typeof exports === 'object') {
 
 }(jQuery));
 
-(function($) {
+(function ($) {
     'use strict';
     // call the gimmick
-    $.mdbootstrap = function (method){
+    $.mdbootstrap = function (method) {
         if ($.mdbootstrap.publicMethods[method]) {
             return $.mdbootstrap.publicMethods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else {
@@ -2511,12 +2509,12 @@ if (typeof exports === 'object') {
     };
     // simple wrapper around $().bind
     $.mdbootstrap.events = [];
-    $.mdbootstrap.bind =  function (ev, func) {
-        $(document).bind (ev, func);
-        $.mdbootstrap.events.push (ev);
+    $.mdbootstrap.bind = function (ev, func) {
+        $(document).bind(ev, func);
+        $.mdbootstrap.events.push(ev);
     };
     $.mdbootstrap.trigger = function (ev) {
-        $(document).trigger (ev);
+        $(document).trigger(ev);
     };
 
     var navStyle = '';
@@ -2525,7 +2523,7 @@ if (typeof exports === 'object') {
     var publicMethods = {
         bootstrapify: function () {
             createPageSkeleton();
-            buildMenu ();
+            buildMenu();
             changeHeading();
             replaceImageParagraphs();
 
@@ -2538,7 +2536,7 @@ if (typeof exports === 'object') {
             //    $(".md-first-heading").css ("margin-top", "0");
 
             // external content should run after gimmicks were run
-            $.md.stage('pregimmick').subscribe(function(done) {
+            $.md.stage('pregimmick').subscribe(function (done) {
                 if ($.md.config.useSideMenu !== false) {
                     createPageContentMenu();
                 }
@@ -2546,7 +2544,7 @@ if (typeof exports === 'object') {
                 addAdditionalFooterText();
                 done();
             });
-            $.md.stage('postgimmick').subscribe(function(done) {
+            $.md.stage('postgimmick').subscribe(function (done) {
                 adjustExternalContent();
                 highlightActiveLink();
 
@@ -2555,7 +2553,7 @@ if (typeof exports === 'object') {
         }
     };
     // register the public API functions
-    $.mdbootstrap.publicMethods = $.extend ({}, $.mdbootstrap.publicMethods, publicMethods);
+    $.mdbootstrap.publicMethods = $.extend({}, $.mdbootstrap.publicMethods, publicMethods);
 
     // PRIVATE FUNCTIONS:
 
@@ -2575,20 +2573,20 @@ if (typeof exports === 'object') {
 
         var navbar = '';
         navbar += '<div id="md-main-navbar" class="navbar navbar-default navbar-fixed-top" role="navigation">';
-        navbar +=   '<div class="navbar-header">';
-        navbar +=     '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">';
-        navbar +=       '<span class="sr-only">Toggle navigation</span>';
-        navbar +=       '<span class="icon-bar"></span>';
-        navbar +=       '<span class="icon-bar"></span>';
-        navbar +=       '<span class="icon-bar"></span>';
-        navbar +=     '</button>';
-        navbar +=     '<a class="navbar-brand" href="#"></a>';
-        navbar +=   '</div>';
+        navbar += '<div class="navbar-header">';
+        navbar += '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">';
+        navbar += '<span class="sr-only">Toggle navigation</span>';
+        navbar += '<span class="icon-bar"></span>';
+        navbar += '<span class="icon-bar"></span>';
+        navbar += '<span class="icon-bar"></span>';
+        navbar += '</button>';
+        navbar += '<a class="navbar-brand" href="#"></a>';
+        navbar += '</div>';
 
-        navbar +=   '<div class="collapse navbar-collapse navbar-ex1-collapse">';
-        navbar +=     '<ul class="nav navbar-nav" />';
-        navbar +=     '<ul class="nav navbar-nav navbar-right" />';
-        navbar +=   '</div>';
+        navbar += '<div class="collapse navbar-collapse navbar-ex1-collapse">';
+        navbar += '<ul class="nav navbar-nav" />';
+        navbar += '<ul class="nav navbar-nav navbar-right" />';
+        navbar += '</div>';
         navbar += '</div>';
         var $navbar = $(navbar);
 
@@ -2597,7 +2595,7 @@ if (typeof exports === 'object') {
         $('#md-menu ul.nav').eq(0).append($menuContent);
 
         // the menu should be the first element in the body
-        $('#md-menu').prependTo ('#md-all');
+        $('#md-menu').prependTo('#md-all');
 
         var brand_text = $('#md-menu h1').toptext();
         $('#md-menu h1').remove();
@@ -2612,17 +2610,17 @@ if (typeof exports === 'object') {
     }
     // the navbar has different height depending on theme, number of navbar entries,
     // and window/device width. Therefore recalculate on start and upon window resize
-    function set_offset_to_navbar () {
+    function set_offset_to_navbar() {
         var height = $('#md-main-navbar').height() + 10;
         $('#md-body').css('margin-top', height + 'px');
     }
-    function check_offset_to_navbar () {
+    function check_offset_to_navbar() {
         // HACK this is VERY UGLY. When an external theme is used, we don't know when the
         // css style will be finished loading - and we can only correctly calculate
         // the height AFTER it has completely loaded.
         var navbar_height = 0;
 
-        var dfd1 = $.md.util.repeatUntil(40, function() {
+        var dfd1 = $.md.util.repeatUntil(40, function () {
             navbar_height = $('#md-main-navbar').height();
             return (navbar_height > 35) && (navbar_height < 481);
         }, 25);
@@ -2634,7 +2632,7 @@ if (typeof exports === 'object') {
             var dfd2 = $.md.util.repeatUntil(20, function () {
                 return navbar_height !== $('#md-main-navbar').height();
             }, 25);
-            dfd2.done(function() {
+            dfd2.done(function () {
                 // it changed, so we need to change it again
                 set_offset_to_navbar();
             });
@@ -2666,7 +2664,7 @@ if (typeof exports === 'object') {
         */
     }
 
-    function buildMenu () {
+    function buildMenu() {
         if ($('#md-menu a').length === 0) {
             return;
         }
@@ -2676,13 +2674,13 @@ if (typeof exports === 'object') {
         h.find('> a[href=""]')
             .attr('data-toggle', 'dropdown')
             .addClass('dropdown-toggle')
-            .attr('href','')
+            .attr('href', '')
             .append('<b class="caret"/>');
         h.find('ul').addClass('dropdown-menu');
         h.find('ul li').addClass('dropdown');
 
         // replace hr with dividers
-        $('#md-menu hr').each(function(i,e) {
+        $('#md-menu hr').each(function (i, e) {
             var hr = $(e);
             var prev = hr.prev();
             var next = hr.next();
@@ -2699,7 +2697,7 @@ if (typeof exports === 'object') {
         });
 
         // remove empty uls
-        $('#md-menu ul').each(function(i,e) {
+        $('#md-menu ul').each(function (i, e) {
             var ul = $(e);
             if (ul.find('li').length === 0) {
                 ul.remove();
@@ -2711,14 +2709,14 @@ if (typeof exports === 'object') {
 
         // wrap the toplevel links in <li>
         $('#md-menu > a').wrap('<li />');
-        $('#md-menu ul').each(function(i,e) {
+        $('#md-menu ul').each(function (i, e) {
             var ul = $(e);
             ul.appendTo(ul.prev());
             ul.parent('li').addClass('dropdown');
         });
 
         // submenu headers
-        $('#md-menu li.dropdown').find('h1, h2, h3').each(function(i,e) {
+        $('#md-menu li.dropdown').find('h1, h2, h3').each(function (i, e) {
             var $e = $(e);
             var text = $e.toptext();
             var header = $('<li class="dropdown-header" />');
@@ -2740,7 +2738,7 @@ if (typeof exports === 'object') {
         return (elbottom <= bottom) && (eltop >= top);
     }
 
-    function createPageContentMenu () {
+    function createPageContentMenu() {
 
         // assemble the menu
         var $headings = $('#md-content').find('h2').clone();
@@ -2751,8 +2749,8 @@ if (typeof exports === 'object') {
             return;
         }
 
-        $('#md-content').removeClass ('col-md-12');
-        $('#md-content').addClass ('col-md-9');
+        $('#md-content').removeClass('col-md-12');
+        $('#md-content').addClass('col-md-9');
         $('#md-content-row').prepend('<div class="col-md-3" id="md-left-column"/>');
 
         var recalc_width = function () {
@@ -2763,10 +2761,10 @@ if (typeof exports === 'object') {
             $('#md-page-menu').css('width', width_left_column);
         };
 
-        $(window).scroll(function() {
+        $(window).scroll(function () {
             recalc_width($('#md-page-menu'));
             var $first;
-            $('*.md-inpage-anchor').each(function(i,e) {
+            $('*.md-inpage-anchor').each(function (i, e) {
                 if ($first === undefined) {
                     var h = $(e);
                     if (isVisibleInViewport(h)) {
@@ -2775,7 +2773,7 @@ if (typeof exports === 'object') {
                 }
             });
             // highlight in the right menu
-            $('#md-page-menu a').each(function(i,e) {
+            $('#md-page-menu a').each(function (i, e) {
                 var $a = $(e);
                 if ($first && $a.toptext() === $first.toptext()) {
                     $('#md-page-menu a.active').removeClass('active');
@@ -2801,12 +2799,12 @@ if (typeof exports === 'object') {
         var $ul = $pannel.find("ul");
         affixDiv.append($pannel);
 
-        $headings.each(function(i,e) {
+        $headings.each(function (i, e) {
             var $heading = $(e);
             var $li = $('<li class="list-group-item" />');
             var $a = $('<a />');
             $a.attr('href', $.md.util.getInpageAnchorHref($heading.toptext()));
-            $a.click(function(ev) {
+            $a.click(function (ev) {
                 ev.preventDefault();
 
                 var $this = $(this);
@@ -2850,13 +2848,13 @@ if (typeof exports === 'object') {
         $('#md-content').addClass('col-md-12');
 
     }
-    function pullRightBumper (){
- /*     $("span.bumper").each (function () {
-			$this = $(this);
-			$this.prev().addClass ("pull-right");
-		});
-		$('span.bumper').addClass ('pull-right');
-*/
+    function pullRightBumper() {
+        /*     $("span.bumper").each (function () {
+                   $this = $(this);
+                   $this.prev().addClass ("pull-right");
+               });
+               $('span.bumper').addClass ('pull-right');
+       */
     }
 
     function changeHeading() {
@@ -2866,18 +2864,18 @@ if (typeof exports === 'object') {
         $('#md-title').wrapInner(jumbo);
     }
 
-    function highlightActiveLink () {
+    function highlightActiveLink() {
         // when no menu is used, return
-        if ($('#md-menu').find ('li').length === 0) {
+        if ($('#md-menu').find('li').length === 0) {
             return;
         }
-		var filename = window.location.hash;
+        var filename = window.location.hash;
 
-		if (filename.length === 0) {
+        if (filename.length === 0) {
             filename = '#!index.md';
         }
-		var selector = 'li:has(a[href="' + filename + '"])';
-		$('#md-menu').find (selector).addClass ('active');
+        var selector = 'li:has(a[href="' + filename + '"])';
+        $('#md-menu').find(selector).addClass('active');
     }
 
     // replace all <p> around images with a <div class="thumbnail" >
@@ -2885,15 +2883,15 @@ if (typeof exports === 'object') {
 
         // only select those paragraphs that have images in them
         var $pars = $('p img').parents('p');
-        $pars.each(function() {
+        $pars.each(function () {
             var $p = $(this);
             var $images = $(this).find('img')
-                .filter(function() {
+                .filter(function () {
                     // only select those images that have no parent anchor
                     return $(this).parents('a').length === 0;
                 })
                 // add those anchors including images
-                .add($(this).find ('img'))
+                .add($(this).find('img'))
                 .addClass('img-responsive')
                 .addClass('img-thumbnail');
 
@@ -2906,7 +2904,7 @@ if (typeof exports === 'object') {
             // the number of images in a paragraphs determines thei width / span
 
             // if the image is a link, wrap around the link to avoid
-            function wrapImage ($imgages, wrapElement) {
+            function wrapImage($imgages, wrapElement) {
                 return $images.each(function (i, img) {
                     var $img = $(img);
                     var $parent_img = $img.parent('a');
@@ -2917,7 +2915,7 @@ if (typeof exports === 'object') {
                 });
             }
 
-            if ($p.hasClass ('md-floatenv')) {
+            if ($p.hasClass('md-floatenv')) {
                 if ($images.length === 1) {
                     wrapImage($images, '<div class="col-sm-8" />');
                 } else if ($images.length === 2) {
@@ -2960,13 +2958,13 @@ if (typeof exports === 'object') {
         // example: youtube iframes, google maps div canvas
         // all external content are in the md-external class
 
-        $('iframe.md-external').not ('.md-external-nowidth')
+        $('iframe.md-external').not('.md-external-nowidth')
             .attr('width', '450')
-            .css ('width', '450px');
+            .css('width', '450px');
 
-        $('iframe.md-external').not ('.md-external-noheight')
+        $('iframe.md-external').not('.md-external-noheight')
             .attr('height', '280')
-            .css ('height', '280px');
+            .css('height', '280px');
 
         // make it appear like an image thumbnal
         //$('.md-external').addClass('img-thumbnail');
@@ -2988,19 +2986,19 @@ if (typeof exports === 'object') {
     function addFooter() {
         var navbar = '';
         navbar += '<hr><div class="scontainer">';
-        navbar +=   '<div class="pull-right md-copyright-footer"> ';
-        navbar +=     '<span id="md-footer-additional"></span>';
-        navbar +=     'Website generated with <a href="//www.mdwiki.info">MDwiki</a> ';
-        navbar +=     '&copy; Timo D&ouml;rr and contributors. ';
-        navbar +=   '</div>';
+        navbar += '<div class="pull-right md-copyright-footer"> ';
+        navbar += '<span id="md-footer-additional"></span>';
+        navbar += 'Website generated with <a href="//www.mdwiki.info">MDwiki</a> ';
+        navbar += '&copy; Timo D&ouml;rr and contributors. ';
+        navbar += '</div>';
         navbar += '</div>';
         var $navbar = $(navbar);
         $navbar.css('position', 'relative');
         $navbar.css('margin-top', '1em');
-        $('#md-all').append ($navbar);
+        $('#md-all').append($navbar);
     }
 
-    function addAdditionalFooterText () {
+    function addAdditionalFooterText() {
         var text = $.md.config.additionalFooterText;
         if (text) {
             $('.md-copyright-footer #md-footer-additional').html(text);
@@ -3008,8 +3006,8 @@ if (typeof exports === 'object') {
     }
 }(jQuery));
 
-(function($) {
-    $.gimmicks = $.fn.gimmicks = function(method) {
+(function ($) {
+    $.gimmicks = $.fn.gimmicks = function (method) {
         if (method === undefined) {
             return;
         }
@@ -3026,14 +3024,14 @@ if (typeof exports === 'object') {
 
 }(jQuery));
 
-(function($) {
+(function ($) {
     //'use strict';
     var alertsGimmick = {
         name: 'alerts',
         // TODO
         //version: $.md.version,
-        load: function() {
-            $.md.stage('bootstrap').subscribe(function(done) {
+        load: function () {
+            $.md.stage('bootstrap').subscribe(function (done) {
                 createAlerts();
                 done();
             });
@@ -3046,7 +3044,7 @@ if (typeof exports === 'object') {
     // in original format
     function createAlerts() {
         var matches = $(select_paragraphs());
-        matches.each(function() {
+        matches.each(function () {
             var $p = $(this.p);
             var type = this.alertType;
             $p.addClass('alert');
@@ -3063,23 +3061,23 @@ if (typeof exports === 'object') {
 
     // picks out the paragraphs that start with a trigger word
     function select_paragraphs() {
-        var note = ['note', 'beachte' ];
-        var warning = [ 'achtung', 'attention', 'warnung', 'warning', 'atenciรณn', 'guarda', 'advertimiento' ];
+        var note = ['note', 'beachte'];
+        var warning = ['achtung', 'attention', 'warnung', 'warning', 'atenciรณn', 'guarda', 'advertimiento'];
         var hint = ['hint', 'tipp', 'tip', 'hinweis'];
         var exp = note.concat(warning);
         exp = exp.concat(hint);
         var matches = [];
 
-        $('p').filter (function () {
+        $('p').filter(function () {
             var $par = $(this);
             // check against each expression
-            $(exp).each (function (i,trigger) {
-                var txt = $par.text().toLowerCase ();
+            $(exp).each(function (i, trigger) {
+                var txt = $par.text().toLowerCase();
                 // we match only paragrachps in which the 'trigger' expression
                 // is follow by a ! or :
-                var re = new RegExp (trigger + '(:|!)+.*','i');
+                var re = new RegExp(trigger + '(:|!)+.*', 'i');
                 var alertType = 'none';
-                if (txt.match (re) !== null) {
+                if (txt.match(re) !== null) {
                     if ($.inArray(trigger, note) >= 0) {
                         alertType = 'note';
                     } else if ($.inArray(trigger, warning) >= 0) {
@@ -3087,7 +3085,7 @@ if (typeof exports === 'object') {
                     } else if ($.inArray(trigger, hint) >= 0) {
                         alertType = 'hint';
                     }
-                    matches.push ({
+                    matches.push({
                         p: $par,
                         alertType: alertType
                     });
@@ -3098,13 +3096,13 @@ if (typeof exports === 'object') {
     }
 }(jQuery));
 
-(function($) {
+(function ($) {
     // makes trouble, find out why
     //'use strict';
     var colorboxGimmick = {
         name: 'colorbox',
-        load: function() {
-            $.md.stage('gimmick').subscribe(function(done) {
+        load: function () {
+            $.md.stage('gimmick').subscribe(function (done) {
                 $.gimmicks('colorbox');
                 done();
             });
@@ -3116,7 +3114,7 @@ if (typeof exports === 'object') {
         // takes a standard <img> tag and adds a hyperlink to the image source
         // needed since we scale down images via css and want them to be accessible
         // in original format
-        colorbox: function() {
+        colorbox: function () {
             var $image_groups;
             if (!(this instanceof jQuery)) {
                 // select the image groups of the page
@@ -3127,7 +3125,7 @@ if (typeof exports === 'object') {
             // operate on md-image-group, which holds one
             // or more images that are to be colorbox'ed
             var counter = 0;
-            return $image_groups.each(function() {
+            return $image_groups.each(function () {
                 var $this = $(this);
 
                 // each group requires a unique name
@@ -3135,33 +3133,33 @@ if (typeof exports === 'object') {
 
                 // create a hyperlink around the image
                 $this.find('a.md-image-selfref img')
-                // filter out images that already are a hyperlink
-                // (so won't be part of the gallery)
+                    // filter out images that already are a hyperlink
+                    // (so won't be part of the gallery)
 
-                // apply colorbox on their parent anchors
-                .parents('a').colorbox({
-                    rel: gal_group,
-                    opacity: 0.75,
-                    slideshow: true,
-                    maxWidth: '95%',
-                    maxHeight: '95%',
-                    scalePhotos: true,
-                    photo: true,
-                    slideshowAuto: false
-                });
+                    // apply colorbox on their parent anchors
+                    .parents('a').colorbox({
+                        rel: gal_group,
+                        opacity: 0.75,
+                        slideshow: true,
+                        maxWidth: '95%',
+                        maxHeight: '95%',
+                        scalePhotos: true,
+                        photo: true,
+                        slideshowAuto: false
+                    });
             });
         }
     };
     $.gimmicks.methods = $.extend({}, $.fn.gimmicks.methods, methods);
 }(jQuery));
 
-(function($) {
+(function ($) {
     'use strict';
 
     var themeChooserGimmick = {
         name: 'Themes',
         version: $.md.version,
-        once: function() {
+        once: function () {
             $.md.linkGimmick(this, 'carousel', carousel);
         }
     };
@@ -3175,7 +3173,7 @@ if (typeof exports === 'object') {
 
         var imageUrls = [];
         var i = 0;
-        $.each(href.split(','), function(i, e) {
+        $.each(href.split(','), function (i, e) {
             imageUrls.push($.trim(e));
             $c.find('ol').append('<li data-target="#myCarousel" data-slide-to="' + i + '" class="active" /');
             var div;
@@ -3193,25 +3191,25 @@ if (typeof exports === 'object') {
     }
 }(jQuery));
 
-(function($) {
+(function ($) {
     var disqusGimmick = {
         name: 'disqus',
         version: $.md.version,
-        once: function() {
+        once: function () {
             $.md.linkGimmick(this, 'disqus', disqus);
         }
     };
     $.md.registerGimmick(disqusGimmick);
 
     var alreadyDone = false;
-    var disqus = function($links, opt, text) {
+    var disqus = function ($links, opt, text) {
         var default_options = {
             identifier: ''
         };
-        var options = $.extend (default_options, opt);
+        var options = $.extend(default_options, opt);
         var disqus_div = $('<div id="disqus_thread" class="md-external md-external-noheight md-external-nowidth" >' + '<a href="//disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></div>');
-        disqus_div.css ('margin-top', '2em');
-        return $links.each(function(i,link) {
+        disqus_div.css('margin-top', '2em');
+        return $links.each(function (i, link) {
             if (alreadyDone === true) {
                 return;
             }
@@ -3222,11 +3220,11 @@ if (typeof exports === 'object') {
 
             if (disqus_shortname !== undefined && disqus_shortname.length > 0) {
                 // insert the div
-                $link.remove ();
+                $link.remove();
                 // since disqus need lot of height, always but it on the bottom of the page
                 $('#md-content').append(disqus_div);
                 if ($('#disqus_thread').length > 0) {
-                    (function() {
+                    (function () {
                         // all disqus_ variables are used by the script, they
                         // change the config behavious.
                         // see: http://help.disqus.com/customer/portal/articles/472098-javascript-configuration-variables
@@ -3259,17 +3257,17 @@ if (typeof exports === 'object') {
     };
 }(jQuery));
 
-(function($) {
+(function ($) {
     var language = window.navigator.userLanguage || window.navigator.language;
     var code = language + "_" + language.toUpperCase();
     var fbRootDiv = $('<div id="fb-root" />');
-    var fbScriptHref = $.md.prepareLink ('connect.facebook.net/' + code + '/all.js#xfbml=1', {forceHTTP: true });
-    var fbscript ='(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "' + fbScriptHref + '"; fjs.parentNode.insertBefore(js, fjs);}(document, "script", "facebook-jssdk"));';
+    var fbScriptHref = $.md.prepareLink('connect.facebook.net/' + code + '/all.js#xfbml=1', { forceHTTP: true });
+    var fbscript = '(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "' + fbScriptHref + '"; fjs.parentNode.insertBefore(js, fjs);}(document, "script", "facebook-jssdk"));';
 
     var facebookLikeGimmick = {
         name: 'FacebookLike',
         version: $.md.version,
-        once: function() {
+        once: function () {
             $.md.linkGimmick(this, 'facebooklike', facebooklike);
             $.md.registerScript(this, fbscript, {
                 license: 'APACHE2',
@@ -3285,7 +3283,7 @@ if (typeof exports === 'object') {
             layout: 'standard',
             showfaces: true
         };
-        var options = $.extend ({}, default_options, opt);
+        var options = $.extend({}, default_options, opt);
         // Due to a bug, we can have underscores _ in a markdown link
         // so we insert the underscores needed by facebook here
         if (options.layout === 'boxcount') {
@@ -3295,41 +3293,41 @@ if (typeof exports === 'object') {
             options.layout = 'button_count';
         }
 
-        return $link.each(function(i,e) {
+        return $link.each(function (i, e) {
             var $this = $(e);
             var href = $this.attr('href');
             $('body').append(fbRootDiv);
 
             var $fb_div = $('<div class="fb-like" data-send="false" data-width="450"></div>');
-            $fb_div.attr ('data-href', href);
-            $fb_div.attr ('data-layout', options.layout);
-            $fb_div.attr ('data-show-faces', options.showfaces);
+            $fb_div.attr('data-href', href);
+            $fb_div.attr('data-layout', options.layout);
+            $fb_div.attr('data-show-faces', options.showfaces);
 
-            $this.replaceWith ($fb_div);
+            $this.replaceWith($fb_div);
         });
     }
 }(jQuery));
 
-(function($) {
+(function ($) {
     'use strict';
     var forkmeongithubGimmick = {
         name: 'forkmeongithub',
         version: $.md.version,
-        once: function() {
+        once: function () {
             $.md.linkGimmick(this, 'forkmeongithub', forkmeongithub);
         }
     };
     $.md.registerGimmick(forkmeongithubGimmick);
 
     function forkmeongithub($links, opt, text) {
-        return $links.each (function (i, link){
+        return $links.each(function (i, link) {
             var $link = $(link);
             // default options
             var default_options = {
                 color: 'red',
-                position : 'right'
+                position: 'right'
             };
-            var options = $.extend ({}, default_options, opt);
+            var options = $.extend({}, default_options, opt);
             var color = options.color;
             var pos = options.position;
 
@@ -3357,24 +3355,24 @@ if (typeof exports === 'object') {
             }
 
             var href = $link.attr('href');
-    //                var body_pos_top = $('#md-body').offset ().top;
+            //                var body_pos_top = $('#md-body').offset ().top;
             var body_pos_top = 0;
-            var github_link = $('<a class="forkmeongithub" href="'+ href +'"><img style="position: absolute; top: ' + body_pos_top + ';'+pos+': 0; border: 0;" src="'+base_href+'" alt="Fork me on GitHub"></a>');
+            var github_link = $('<a class="forkmeongithub" href="' + href + '"><img style="position: absolute; top: ' + body_pos_top + ';' + pos + ': 0; border: 0;" src="' + base_href + '" alt="Fork me on GitHub"></a>');
             // to avoid interfering with other div / scripts, we remove the link and prepend it to the body
             // the fork me ribbon is positioned absolute anyways
-            $('body').prepend (github_link);
-            github_link.find('img').css ('z-index', '2000');
+            $('body').prepend(github_link);
+            github_link.find('img').css('z-index', '2000');
             $link.remove();
         });
     }
 
 }(jQuery));
 
-(function($){
+(function ($) {
     'use strict';
     var gistGimmick = {
         name: 'gist',
-        once: function() {
+        once: function () {
             $.md.linkGimmick(this, 'gist', gist);
         }
     };
@@ -3382,7 +3380,7 @@ if (typeof exports === 'object') {
 
     function gist($links, opt, href) {
         $().lazygist('init');
-        return $links.each(function(i,link) {
+        return $links.each(function (i, link) {
             var $link = $(link);
             var gistDiv = $('<div class="gist_here" data-id="' + href + '" />');
             $link.replaceWith(gistDiv);
@@ -3395,21 +3393,21 @@ if (typeof exports === 'object') {
 }(jQuery));
 
 
- /**
- * Lazygist v0.2pre
- *
- * a jQuery plugin that will lazy load your gists.
- *
- * since jQuery 1.7.2
- * https://github.com/tammo/jquery-lazy-gist
- *
- * Copyright, Tammo Pape
- * http://tammopape.de
- *
- * Licensed under the MIT license.
- */
+/**
+* Lazygist v0.2pre
+*
+* a jQuery plugin that will lazy load your gists.
+*
+* since jQuery 1.7.2
+* https://github.com/tammo/jquery-lazy-gist
+*
+* Copyright, Tammo Pape
+* http://tammopape.de
+*
+* Licensed under the MIT license.
+*/
 
-(function( $, window, document, undefined ){
+(function ($, window, document, undefined) {
     "use strict";
 
     //
@@ -3419,99 +3417,99 @@ if (typeof exports === 'object') {
     //
 
     var pluginName = "lazygist",
-    version = "0.2pre",
+        version = "0.2pre",
 
-    defaults = {
-        // adding the ?file parameter to choose a file
-        'url_template': 'https://gist.github.com/{id}.js?file={file}',
+        defaults = {
+            // adding the ?file parameter to choose a file
+            'url_template': 'https://gist.github.com/{id}.js?file={file}',
 
-        // if these are strings, the attributes will be read from the element
-        'id': 'data-id',
-        'file': 'data-file'
-    },
-
-    options,
-
-    // will be replaced
-    /*jshint -W060 */
-    originwrite = document.write,
-
-    // stylesheet urls found in document.write calls
-    // they are cached to write them once to the document,
-    // not three times for three gists
-    stylesheets = [],
-
-    // cache gist-ids to know which are already appended to the dom
-    ids_dom = [],
-
-    // remember gist-ids if their javascript is already loaded
-    ids_ajax = [],
-
-    methods = {
-
-        /**
-         * Standard init function
-         * No magic here
-         */
-        init : function( options_input ){
-
-            // default options are default
-            options = $.extend({}, defaults, options_input);
-
-            // can be reset
-            /*jshint -W061 */
-            document.write = _write;
-
-            $.each(options, function(index, value) {
-                if(typeof value !== 'string') {
-                    throw new TypeError(value + ' (' + (typeof value) + ') is not a string');
-                }
-            });
-
-            return this.lazygist('load');
+            // if these are strings, the attributes will be read from the element
+            'id': 'data-id',
+            'file': 'data-file'
         },
 
-        /**
-         * Load the gists
-         */
-        load : function() {
-            // (1) iterate over gist anchors
-            // (2) append the gist-html through the new document.write func (see _write)
+        options,
 
-            // (1)
-            return this.filter('[' + options.id + ']').each(function(){
+        // will be replaced
+        /*jshint -W060 */
+        originwrite = document.write,
 
-                var id = $(this).attr(options.id),
-                    file = $(this).attr(options.file),
-                    src;
+        // stylesheet urls found in document.write calls
+        // they are cached to write them once to the document,
+        // not three times for three gists
+        stylesheets = [],
 
-                if( id !== undefined ) {
+        // cache gist-ids to know which are already appended to the dom
+        ids_dom = [],
 
-                    if( $.inArray(id, ids_ajax) !== -1 ) {
-                        // just do nothin, if gist is already ajaxed
-                        return;
+        // remember gist-ids if their javascript is already loaded
+        ids_ajax = [],
+
+        methods = {
+
+            /**
+             * Standard init function
+             * No magic here
+             */
+            init: function (options_input) {
+
+                // default options are default
+                options = $.extend({}, defaults, options_input);
+
+                // can be reset
+                /*jshint -W061 */
+                document.write = _write;
+
+                $.each(options, function (index, value) {
+                    if (typeof value !== 'string') {
+                        throw new TypeError(value + ' (' + (typeof value) + ') is not a string');
                     }
+                });
 
-                    ids_ajax.push(id);
+                return this.lazygist('load');
+            },
 
-                    src = options.url_template.replace(/\{id\}/g, id).replace(/\{file\}/g, file);
+            /**
+             * Load the gists
+             */
+            load: function () {
+                // (1) iterate over gist anchors
+                // (2) append the gist-html through the new document.write func (see _write)
 
-                    // (2) this will trigger our _write function
-                    $.getScript(src, function() {
-                    });
-                }
-            });
-        },
+                // (1)
+                return this.filter('[' + options.id + ']').each(function () {
 
-        /**
-         * Just reset the write function
-         */
-        reset_write: function() {
-            document.write = originwrite;
+                    var id = $(this).attr(options.id),
+                        file = $(this).attr(options.file),
+                        src;
 
-            return this;
-        }
-    };
+                    if (id !== undefined) {
+
+                        if ($.inArray(id, ids_ajax) !== -1) {
+                            // just do nothin, if gist is already ajaxed
+                            return;
+                        }
+
+                        ids_ajax.push(id);
+
+                        src = options.url_template.replace(/\{id\}/g, id).replace(/\{file\}/g, file);
+
+                        // (2) this will trigger our _write function
+                        $.getScript(src, function () {
+                        });
+                    }
+                });
+            },
+
+            /**
+             * Just reset the write function
+             */
+            reset_write: function () {
+                document.write = originwrite;
+
+                return this;
+            }
+        };
 
     /**
      * private special document.write function
@@ -3525,30 +3523,30 @@ if (typeof exports === 'object') {
      * an ajax call by jQuery. One *cannot* know which gist-anchor
      * to use. You can only read the id from the content.
      */
-    function _write( content ) {
+    function _write(content) {
 
         var expression, // for regexp results
             href, // from the url
             id; // from the content
 
-        if( content.indexOf( 'rel="stylesheet"' ) !== -1 ) {
+        if (content.indexOf('rel="stylesheet"') !== -1) {
             href = $(content).attr('href');
 
             // check if stylesheet is already inserted
-            if ( $.inArray(href, stylesheets) === -1 ) {
+            if ($.inArray(href, stylesheets) === -1) {
 
                 $('head').append(content);
                 stylesheets.push(href);
             }
 
-        } else if( content.indexOf( 'id="gist' ) !== -1 ) {
+        } else if (content.indexOf('id="gist') !== -1) {
             expression = /gist([\d]{1,})/g.exec(content);
             id = expression[1];
 
-            if( id !== undefined ) {
+            if (id !== undefined) {
 
                 // test if id is already loaded
-                if( $.inArray(id, ids_dom) !== -1 ) {
+                if ($.inArray(id, ids_dom) !== -1) {
                     // just do nothin, if gist is already attached to the dom
                     return;
                 }
@@ -3559,21 +3557,21 @@ if (typeof exports === 'object') {
             }
         } else {
             // this is a fallback for interoperability
-            originwrite.apply( document, arguments );
+            originwrite.apply(document, arguments);
         }
     }
 
     // method invocation - from jQuery.com
-    $.fn[pluginName] = function( method ) {
+    $.fn[pluginName] = function (method) {
 
-        if ( methods[method] ) {
-            return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
 
-        } else if ( typeof method === 'object' || ! method ) {
-            return methods.init.apply( this, arguments );
+        } else if (typeof method === 'object' || !method) {
+            return methods.init.apply(this, arguments);
 
         } else {
-            $.error( 'Method ' +  method + ' does not exist on jQuery.lazygist' );
+            $.error('Method ' + method + ' does not exist on jQuery.lazygist');
         }
     };
 
@@ -3590,14 +3588,14 @@ function googlemapsReady() {
     googlemapsLoadDone.resolve();
 }
 
-(function($) {
+(function ($) {
     //'use strict';
     var scripturl = 'http://maps.google.com/maps/api/js?sensor=false&callback=googlemapsReady';
 
     function googlemaps($links, opt, text) {
         var $maps_links = $links;
-        var counter = (new Date()).getTime ();
-        return $maps_links.each(function(i,e) {
+        var counter = (new Date()).getTime();
+        return $maps_links.each(function (i, e) {
             var $link = $(e);
             var default_options = {
                 zoom: 11,
@@ -3607,9 +3605,9 @@ function googlemapsReady() {
             };
             var options = $.extend({}, default_options, opt);
             if (options.address === undefined) {
-                options.address = $link.attr ('href');
+                options.address = $link.attr('href');
             }
-            var div_id = 'google-map-' + Math.floor (Math.random() * 100000);
+            var div_id = 'google-map-' + Math.floor(Math.random() * 100000);
             var $mapsdiv = $('<div class="md-external md-external-nowidth" id="' + div_id + '"/>');
             /* TODO height & width must be set AFTER the theme script went through
             implement an on event, maybe?
@@ -3622,21 +3620,21 @@ function googlemapsReady() {
                 options["height"] = null;
             }
             */
-            $link.replaceWith ($mapsdiv);
+            $link.replaceWith($mapsdiv);
             // the div is already put into the site and will be formated,
             // we can now run async
-            set_map (options, div_id);
+            set_map(options, div_id);
         });
     }
     function set_map(opt, div_id) {
 
         // google uses rather complicated mapnames, we transform our simple ones
-        var mt = opt.maptype.toUpperCase ();
+        var mt = opt.maptype.toUpperCase();
         opt.mapTypeId = google.maps.MapTypeId[mt];
-        var geocoder = new google.maps.Geocoder ();
+        var geocoder = new google.maps.Geocoder();
 
         // geocode performs address to coordinate transformation
-        geocoder.geocode ({ address: opt.address }, function (result, status) {
+        geocoder.geocode({ address: opt.address }, function (result, status) {
             if (status !== 'OK') {
                 return;
             }
@@ -3644,10 +3642,10 @@ function googlemapsReady() {
             // add the retrieved coords to the options object
             var coords = result[0].geometry.location;
 
-            var options = $.extend({}, opt, { center: coords  });
+            var options = $.extend({}, opt, { center: coords });
             var gmap = new google.maps.Map(document.getElementById(div_id), options);
             if (options.marker === true) {
-                var marker = new google.maps.Marker ({ position: coords, map : gmap});
+                var marker = new google.maps.Marker({ position: coords, map: gmap });
             }
         });
     }
@@ -3655,7 +3653,7 @@ function googlemapsReady() {
     var googleMapsGimmick = {
         name: 'googlemaps',
         version: $.md.version,
-        once: function() {
+        once: function () {
             googlemapsLoadDone = $.Deferred();
 
             // register the gimmick:googlemaps identifier
@@ -3668,10 +3666,10 @@ function googlemapsReady() {
                 finishstage: 'bootstrap'
             });
 
-            $.md.stage('bootstrap').subscribe(function(done) {
+            $.md.stage('bootstrap').subscribe(function (done) {
                 // defer the pregimmick phase until the google script fully loaded
                 if ($.md.triggerIsActive('googlemaps')) {
-                    googlemapsLoadDone.done(function() {
+                    googlemapsLoadDone.done(function () {
                         done();
                     });
                 } else {
@@ -3684,11 +3682,11 @@ function googlemapsReady() {
     $.md.registerGimmick(googleMapsGimmick);
 }(jQuery));
 
-(function($) {
+(function ($) {
     var highlightGimmick = {
         name: 'highlight',
-        load: function() {
-            $.md.stage('gimmick').subscribe(function(done) {
+        load: function () {
+            $.md.stage('gimmick').subscribe(function (done) {
                 highlight();
                 done();
             });
@@ -3697,10 +3695,10 @@ function googlemapsReady() {
     $.md.registerGimmick(highlightGimmick);
 
 
-    function highlight () {
+    function highlight() {
         // marked adds lang-ruby, lang-csharp etc to the <code> block like in GFM
         var $codeblocks = $('pre code[class^=lang-]');
-        return $codeblocks.each(function() {
+        return $codeblocks.each(function () {
             var $this = $(this);
             var classes = $this.attr('class');
             // TODO check for other classes and only find the lang- one
@@ -3714,19 +3712,19 @@ function googlemapsReady() {
 
 }(jQuery));
 
-(function($) {
+(function ($) {
     'use strict';
-    var iframeGimmick= {
+    var iframeGimmick = {
         name: 'iframe',
         version: $.md.version,
-        once: function() {
+        once: function () {
             $.md.linkGimmick(this, 'iframe', create_iframe);
         }
     };
     $.md.registerGimmick(iframeGimmick);
 
     function create_iframe($links, opt, text) {
-        return $links.each (function (i, link){
+        return $links.each(function (i, link) {
             var $link = $(link);
             var href = $link.attr('href');
             var $iframe = $('<iframe class="col-md-12" style="border: 0px solid red; height: 650px;"></iframe>');
@@ -3745,7 +3743,7 @@ function googlemapsReady() {
                     $iframe.height(newHeight);
                 };
 
-                $iframe.load(function(done) {
+                $iframe.load(function (done) {
                     updateSizeFn();
                 });
 
@@ -3758,10 +3756,10 @@ function googlemapsReady() {
     }
 }(jQuery));
 
-(function($) {
+(function ($) {
     var mathGimmick = {
         name: 'math',
-        once: function() {
+        once: function () {
             $.md.linkGimmick(this, 'math', load_mathjax);
         }
     };
@@ -3771,13 +3769,13 @@ function googlemapsReady() {
         $links.remove();
         var script = document.createElement('script');
         script.type = 'text/javascript';
-        script.src  = $.md.prepareLink('cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML', { forceHTTP: true });
+        script.src = $.md.prepareLink('cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML', { forceHTTP: true });
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
 }(jQuery));
 
-(function($) {
+(function ($) {
     'use strict';
 
     var themes = [
@@ -3785,6 +3783,7 @@ function googlemapsReady() {
         { name: 'amelia', url: 'netdna.bootstrapcdn.com/bootswatch/3.0.0/amelia/bootstrap.min.css' },
         { name: 'cerulean', url: 'netdna.bootstrapcdn.com/bootswatch/3.0.0/cerulean/bootstrap.min.css' },
         { name: 'cosmo', url: 'netdna.bootstrapcdn.com/bootswatch/3.0.0/cosmo/bootstrap.min.css' },
+        { name: 'darkly', url: 'cdn.bootcss.com/bootswatch/3.3.7/darkly/bootstrap.css' },
         { name: 'cyborg', url: 'netdna.bootstrapcdn.com/bootswatch/3.0.0/cyborg/bootstrap.min.css' },
         { name: 'flatly', url: 'netdna.bootstrapcdn.com/bootswatch/3.0.0/flatly/bootstrap.min.css' },
         { name: 'journal', url: 'netdna.bootstrapcdn.com/bootswatch/3.0.0/journal/bootstrap.min.css' },
@@ -3799,7 +3798,7 @@ function googlemapsReady() {
     var themeChooserGimmick = {
         name: 'Themes',
         version: $.md.version,
-        once: function() {
+        once: function () {
             $.md.linkGimmick(this, 'themechooser', themechooser, 'skel_ready');
             $.md.linkGimmick(this, 'theme', apply_theme);
 
@@ -3809,7 +3808,7 @@ function googlemapsReady() {
 
     var log = $.md.getLogger();
 
-    var set_theme = function(theme) {
+    var set_theme = function (theme) {
         theme.inverse = theme.inverse || false;
 
         if (theme.url === undefined) {
@@ -3817,11 +3816,11 @@ function googlemapsReady() {
                 log.error('Theme name must be given!');
                 return;
             }
-            var saved_theme = themes.filter(function(t) {
+            var saved_theme = themes.filter(function (t) {
                 return t.name === theme.name;
             })[0];
             if (!saved_theme) {
-                log.error('Theme ' + name + ' not found, removing link')    ;
+                log.error('Theme ' + name + ' not found, removing link');
                 return;
             }
             theme = $.extend(theme, saved_theme);
@@ -3844,18 +3843,18 @@ function googlemapsReady() {
         }
 
         if (theme.inverse === true) {
-            $('#md-main-navbar').removeClass ('navbar-default');
-            $('#md-main-navbar').addClass ('navbar-inverse');
+            $('#md-main-navbar').removeClass('navbar-default');
+            $('#md-main-navbar').addClass('navbar-inverse');
         } else {
-            $('#md-main-navbar').addClass ('navbar-default');
-            $('#md-main-navbar').removeClass ('navbar-inverse');
+            $('#md-main-navbar').addClass('navbar-default');
+            $('#md-main-navbar').removeClass('navbar-inverse');
         }
     };
 
-    var apply_theme = function($links, opt, text) {
+    var apply_theme = function ($links, opt, text) {
         opt.name = opt.name || text;
-        $links.each(function(i, link) {
-            $.md.stage('postgimmick').subscribe(function(done) {
+        $links.each(function (i, link) {
+            $.md.stage('postgimmick').subscribe(function (done) {
                 var $link = $(link);
 
                 // only set a theme if no theme from the chooser is selected,
@@ -3870,27 +3869,27 @@ function googlemapsReady() {
         $links.remove();
     };
 
-    var themechooser = function($links, opt, text) {
+    var themechooser = function ($links, opt, text) {
 
         useChooser = true;
-        $.md.stage('bootstrap').subscribe(function(done) {
+        $.md.stage('bootstrap').subscribe(function (done) {
             restore_theme(opt);
             done();
         });
 
-        return $links.each(function(i, e) {
+        return $links.each(function (i, e) {
             var $this = $(e);
             var $chooser = $('<a href=""></a><ul></ul>'
             );
             $chooser.eq(0).text(text);
 
-            $.each(themes, function(i, theme) {
+            $.each(themes, function (i, theme) {
                 var $li = $('<li></li>');
                 $chooser.eq(1).append($li);
                 var $a = $('<a/>')
                     .text(theme.name)
                     .attr('href', '')
-                    .click(function(ev) {
+                    .click(function (ev) {
                         ev.preventDefault();
                         window.localStorage.theme = theme.name;
                         window.location.reload();
@@ -3901,7 +3900,7 @@ function googlemapsReady() {
             $chooser.eq(1).append('<li class="divider" />');
             var $li = $('<li/>');
             var $a_use_default = $('<a>Use default</a>');
-            $a_use_default.click(function(ev) {
+            $a_use_default.click(function (ev) {
                 ev.preventDefault();
                 window.localStorage.removeItem('theme');
                 window.location.reload();
@@ -3915,7 +3914,7 @@ function googlemapsReady() {
         });
     };
 
-    var restore_theme = function(opt) {
+    var restore_theme = function (opt) {
         if (window.localStorage.theme) {
             opt = $.extend({ name: window.localStorage.theme }, opt);
             set_theme(opt);
@@ -3923,7 +3922,7 @@ function googlemapsReady() {
     };
 }(jQuery));
 
-(function($) {
+(function ($) {
     //'use strict';
     // no license information given in the widget.js -> OTHER
     var widgetHref = $.md.prepareLink('platform.twitter.com/widgets.js');
@@ -3931,7 +3930,7 @@ function googlemapsReady() {
     var twitterGimmick = {
         name: 'TwitterGimmick',
         version: $.md.version,
-        once: function() {
+        once: function () {
             $.md.linkGimmick(this, 'twitterfollow', twitterfollow);
 
             $.md.registerScript(this, twitterscript, {
@@ -3944,45 +3943,45 @@ function googlemapsReady() {
     };
     $.md.registerGimmick(twitterGimmick);
 
-	var twitterfollow = function($links, opt, text) {
-		return $links.each(function(i, link) {
-			var $link = $(link);
-			var user;
-			var href = $link.attr('href');
-			if (href.indexOf ('twitter.com') <= 0) {
-				user = $link.attr('href');
-				href = $.md.prepareLink('twitter.com/' + user);
-			}
-			else {
-				return;
-			}
-			// remove the leading @ if given
-			if (user[0] === '@') {
-				user = user.substring(1);
-			}
-			var twitter_src = $('<a href="' + href + '" class="twitter-follow-button" data-show-count="false" data-lang="en" data-show-screen-name="false">'+ '@' + user + '</a>');
-			$link.replaceWith (twitter_src);
-		});
+    var twitterfollow = function ($links, opt, text) {
+        return $links.each(function (i, link) {
+            var $link = $(link);
+            var user;
+            var href = $link.attr('href');
+            if (href.indexOf('twitter.com') <= 0) {
+                user = $link.attr('href');
+                href = $.md.prepareLink('twitter.com/' + user);
+            }
+            else {
+                return;
+            }
+            // remove the leading @ if given
+            if (user[0] === '@') {
+                user = user.substring(1);
+            }
+            var twitter_src = $('<a href="' + href + '" class="twitter-follow-button" data-show-count="false" data-lang="en" data-show-screen-name="false">' + '@' + user + '</a>');
+            $link.replaceWith(twitter_src);
+        });
     };
 }(jQuery));
 
-(function($) {
+(function ($) {
     //'use strict';
     var youtubeGimmick = {
         name: 'youtube',
-        load: function() {
-            $.md.stage('gimmick').subscribe(function(done) {
+        load: function () {
+            $.md.stage('gimmick').subscribe(function (done) {
                 youtubeLinkToIframe();
                 done();
             });
         }
-    } ;
+    };
     $.md.registerGimmick(youtubeGimmick);
 
     function youtubeLinkToIframe() {
         var $youtube_links = $('a[href*=youtube\\.com]:empty, a[href*=youtu\\.be]:empty');
 
-        $youtube_links.each(function() {
+        $youtube_links.each(function () {
             var $this = $(this);
             var href = $this.attr('href');
             if (href !== undefined) {
@@ -4004,7 +4003,7 @@ function googlemapsReady() {
     }
 }(jQuery));
 
-(function($) {
+(function ($) {
     'use strict';
     function yuml($link, opt, text) {
         var default_options = {
@@ -4013,9 +4012,9 @@ function googlemapsReady() {
             direction: 'LR',      /* LR, TB, RL */
             scale: '100'
         };
-        var options = $.extend ({}, default_options, opt);
+        var options = $.extend({}, default_options, opt);
 
-        return $link.each(function(i,e) {
+        return $link.each(function (i, e) {
 
             var $this = $(e);
             var url = 'http://yuml.me/diagram/';
@@ -4025,7 +4024,7 @@ function googlemapsReady() {
             title = (title ? title : '');
 
             /* `FOOBARยด => (FOOBAR) */
-            data = data.replace( new RegExp('`', 'g'), '(' ).replace( new RegExp('ยด', 'g'), ')' );
+            data = data.replace(new RegExp('`', 'g'), '(').replace(new RegExp('ยด', 'g'), ')');
 
             url += options.style + ';dir:' + options.direction + ';scale:' + options.scale + '/' + options.type + '/' + data;
 
@@ -4037,7 +4036,7 @@ function googlemapsReady() {
     var yumlGimmick = {
         name: 'yuml',
         version: $.md.version,
-        once: function() {
+        once: function () {
             $.md.linkGimmick(this, 'yuml', yuml);
             $.md.registerScript(this, '', {
                 license: 'LGPL',
