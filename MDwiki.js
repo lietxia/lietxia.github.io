@@ -1438,7 +1438,7 @@ if (typeof exports === 'object') {
             var href = $el.attr('href');
             var text = $el.toptext();
             $.ajax({
-                url: href+"?"+Math.random(),
+                url: href+"?v="+Math.random(),
                 dataType: 'text'
             })
             .done(function (data) {
