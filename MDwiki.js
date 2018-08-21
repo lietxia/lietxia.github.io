@@ -1364,7 +1364,8 @@ if (typeof exports === 'object') {
         $.md.stage('init').subscribe(function(done) {
             var ajaxReq = {
                 url: $.md.mainHref,
-                dataType: 'text'
+                dataType: 'text',
+                cache: false
             };
             $.ajax(ajaxReq).done(function(data) {
                 // TODO do this elsewhere
