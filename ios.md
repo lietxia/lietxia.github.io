@@ -8,16 +8,18 @@ iOS浏览器没法装插件，只剩下用书签或用VPN这样的代理来完�
 目前知道可以用的有（全是收费app，国区都没法下载）
 
     Surge(售价超贵)
-    ShadowRocket（已测试成功）
+    ShadowRocket（已测试成功，可以用爱思助手，PP助手免费装）
     Quantumult(应该可以成功)
 
-现在介绍ShadowRocket的用法
+
+现在介绍ShadowRocket的用法，（可以用爱思助手，PP助手免费装，具体方法自己尝试）
 
 1.打开ShadowRocket，点最下方切换到【配置】，再【远程文件】那，点【添加配置】输入
 `https://lietxia.github.io/res/rocket_direct.txt` 点【下载】
 
 这里添加的规则是：连什么都是直连，不启用代理。如果你想要用这个的同时启用代理，
 规则换成`https://lietxia.github.io/res/rocket_proxy.txt`
+如果想要自定义魔改，可以参考这个文本自己改（规则只能一行一行写，很麻烦，改完对配置文件长按->【编辑纯文本】）
 
 2.点击【远程文件】下新出现的规则，选【使用配置】
 
