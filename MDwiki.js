@@ -1769,7 +1769,7 @@ if (typeof exports === 'object') {
 
     function appendDefaultFilenameToHash () {
         var newHashString = '';
-        var currentHashString = window.location.hash ||ย�'';
+        var currentHashString = window.location.hash ||'';
         if (currentHashString === '' ||
             currentHashString === '#'||
             currentHashString === '#!')
@@ -3261,7 +3261,7 @@ if (typeof exports === 'object') {
     var language = window.navigator.userLanguage || window.navigator.language;
     var code = language + "_" + language.toUpperCase();
     var fbRootDiv = $('<div id="fb-root" />');
-    var fbScriptHref = $.md.prepareLink ('connect.facebook.net/' + code + '/all.js#xfbml=1', {ย�forceHTTP: true });
+    var fbScriptHref = $.md.prepareLink ('connect.facebook.net/' + code + '/all.js#xfbml=1', {forceHTTP: true });
     var fbscript ='(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "' + fbScriptHref + '"; fjs.parentNode.insertBefore(js, fjs);}(document, "script", "facebook-jssdk"));';
 
     var facebookLikeGimmick = {
