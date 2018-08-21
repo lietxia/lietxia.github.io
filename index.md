@@ -135,7 +135,7 @@ chrome的插件:Resource Override
 
 ##改牌桌
 
-`如果 http://jpg.dog 的图床没法显示，可以试试用 http://sm.ms 图床`
+> 如果 http://jpg.dog 的图床没法显示，可以试试用 http://sm.ms 图床
 
 这里提供一个我弄的photoshop的.PSD 源文件
 
