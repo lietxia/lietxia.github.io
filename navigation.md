@@ -8,6 +8,4 @@
 
 [gimmick:Disqus](lietxia)
 
-[gimmick:theme (inverse: false)](darkly)
-
 [gimmick:ThemeChooser](更改主题)
