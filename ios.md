@@ -35,7 +35,9 @@ iOS浏览器没法装插件，只剩下用书签或用VPN这样的代理来完�
 
 添加服务器方法：（添加免费公用节点）点右上角【+】，类型选【subscribe】，url写
 
-    https://raw.githubusercontent.com/ImLaoD/sub/master/ssrshare.com
+    http://ss-ssshare.7e14.starter-us-west-2.openshiftapps.com/subscribe
+
+以上来源：ss.pythonic.life 备用地址：ssr.pythonic.life
 
 然后点右上角【完成】
 
