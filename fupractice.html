@@ -8,8 +8,23 @@
 </head>
 <style>
     @font-face {
-        font-family: 'MJ';
-        src: url('/res/mj.woff') format('woff');
+        font-family: "MJ";
+        src: url("./res/mj.eot");
+        /* IE9 Compat Modes */
+        src: url("./res/mj.eot?#iefix") format("embedded-opentype"),
+        /* IE6-IE8 */
+        url("./res/mj.otf") format("opentype"),
+        /* Open Type Font */
+        url("./res/mj.svg") format("svg"),
+        /* Legacy iOS */
+        url("./res/mj.ttf") format("truetype"),
+        /* Safari, Android, iOS */
+        url("./res/mj.woff") format("woff"),
+        /* Modern Browsers */
+        url("./res/mj.woff2") format("woff2");
+        /* Modern Browsers */
+        font-weight: normal;
+        font-style: normal;
     }
 
     html,
