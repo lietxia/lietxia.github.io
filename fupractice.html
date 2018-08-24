@@ -1,668 +1,671 @@
-<!DOCTYPE html>
-<meta charset="utf-8" />
 <html>
 
 <head>
-	<title>日本麻將介紹網站-算符練習</title>
-	<style type="text/css">
-		@font-face {
-			font-family: 'MJ';
-			src: url('mj.woff') format('woff');
-		}
-
-		body {
-			font-size: 5vw;
-			height: 100%;
-			background-color: #eed;
-			font-family: consolas, 標楷體;
-		}
-
-		.fullDight {
-			font-family: 微軟正黑體, 新細明體;
-		}
-
-		* {
-			-webkit-box-sizing: border-box;
-			-moz-box-sizing: border-box;
-			box-sizing: border-box;
-		}
-
-		table {
-			border-collapse: collapse;
-			text-align: center;
-		}
-
-		td {
-			padding: 0 3px;
-		}
-
-		table tr {
-			border-bottom: 1px solid green;
-		}
-
-		table tr:last-child {
-			border-bottom: none;
-		}
-
-		table td {
-			border-right: 1px solid green;
-		}
-
-		table td:last-child {
-			border-right: none;
-		}
-
-		#hintDiv {
-			position: fixed;
-			top: 0;
-		}
-
-		#hintTable {
-			border: 1px dashed green;
-			color: gray;
-			font-size: 0.5em;
-		}
-
-		.hand {
-			font-family: "MJ";
-		}
-
-		.hidden {
-			visibility: hidden;
-		}
-
-		.nodraw {
-			display: none;
-		}
-
-		#problemSection {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			margin: 0 auto;
-			position: absolute;
-			top: 0;
-			left: 0;
-			bottom: 0;
-			right: 0;
-		}
-
-		.describe {
-			font-size: 0.5em;
-			color: #1a1;
-		}
-
-		#handInfo tr,
-		#handInfo td,
-		#fieldInfo tr,
-		#fieldInfo td {
-			border: 2px solid #eed;
-		}
-
-		.lastTile {
-			background-color: #f80;
-		}
-
-		.correct {
-			background-color: #2e2;
-		}
-
-		.incorrect {
-			background-color: #c44;
-		}
-
-		.button {
-			border: 3px solid red;
-			color: green;
-			cursor: pointer;
-		}
-
-		.button:hover {
-			background-color: #ada;
-		}
-
-		#nextQuestion {
-			position: fixed;
-			right: 0;
-			bottom: 0;
-		}
-
-		#fu {
-			width: 3em;
-			font-size: 1em;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>算符練習</title>
 </head>
+<style>
+    @font-face {
+        font-family: "MJ";
+        src: url("./res/mj.eot");
+        /* IE9 Compat Modes */
+        src: url("./res/mj.eot?#iefix") format("embedded-opentype"),
+        /* IE6-IE8 */
+        url("./res/mj.otf") format("opentype"),
+        /* Open Type Font */
+        url("./res/mj.svg") format("svg"),
+        /* Legacy iOS */
+        url("./res/mj.ttf") format("truetype"),
+        /* Safari, Android, iOS */
+        url("./res/mj.woff") format("woff"),
+        /* Modern Browsers */
+        url("./res/mj.woff2") format("woff2");
+        /* Modern Browsers */
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #eed;
+    }
+
+    #box {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    #left,
+    #right {
+        float: left;
+    }
+
+    #left {
+        width: 30%;
+        height: 100%;
+        overflow: auto;
+    }
+
+    #right {
+        width: 69%;
+        text-align: center;
+        font-size: 2em;
+        height: 100%;
+    }
+
+    .describe {
+        color: #1a1;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        text-align: center;
+    }
+
+    #handInfo tr,
+    #handInfo td,
+        {
+        border: none;
+    }
+
+    #fieldInfo tr,
+    #fieldInfo td {
+        font-size: 4vw;
+        border: none;
+        text-align: center;
+    }
+
+    .lastTile {
+        background-color: #f80;
+    }
+
+    .correct {
+        background-color: #2e2;
+    }
+
+    .incorrect {
+        background-color: #c44;
+    }
+
+    .button {
+        border: 3px solid red;
+        color: green;
+        cursor: pointer;
+    }
+
+    .button:hover {
+        background-color: #ada;
+    }
+
+    #nextQuestion {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+    }
+
+    #fu {
+        width: 2.5em;
+        font-size: 1em;
+    }
+
+    .hand {
+        font-family: "MJ";
+        border: none;
+        font-size: 5vw;
+    }
+
+    .hidden {
+        visibility: hidden;
+    }
+
+    .nodraw {
+        display: none;
+    }
+
+    table td {
+        padding: 0;
+        border: 1px solid #333;
+    }
+
+    table th {
+        background-color: #000;
+        border: 1px solid #333;
+        color: #fff;
+    }
+</style>
 
 <body>
-	<noscript>
-		Please enable Javascript on this page to render
-		<br> 畫畫面需要用到Javascript, 讓我用嘛OAO...
-	</noscript>
+    <noscript>
+        Please enable Javascript on this page to render
+        <br> 畫畫面需要用到Javascript, 讓我用嘛OAO...
+    </noscript>
+    <div id="box">
+        <div id="left">
+            <table id="hintTable">
+                <tr>
+                    <th colspan="2">和牌符</th>
+                </tr>
+                <tr>
+                    <td>副底（和牌就有）</td>
+                    <td>+20符</td>
+                </tr>
+                <tr>
+                    <td>门前清荣和</td>
+                    <td>+10符</td>
+                </tr>
+                <tr>
+                    <td>自摸和牌</td>
+                    <td>+2符</td>
+                </tr>
+                <tr>
+                    <th colspan="2">听牌符</th>
+                </tr>
+                <tr>
+                    <td>单骑\边张\嵌张听牌</td>
+                    <td>+2符</td>
+                </tr>
+                <tr>
+                    <th colspan="2">面子符（中张=2到8）</th>
+                </tr>
+                <tr>
+                    <td> 中张明刻</td>
+                    <td>+2符</td>
+                </tr>
+                <tr>
+                    <td>中张暗刻</td>
+                    <td>+4符</td>
+                </tr>
+                <tr>
+                    <td>中张明杠</td>
+                    <td>+8符</td>
+                </tr>
+                <tr>
+                    <td>中张暗杠</td>
+                    <td>+16符</td>
+                </tr>
+                <tr>
+                    <td>幺九明刻</td>
+                    <td>+4符</td>
+                </tr>
+                <tr>
+                    <td>幺九暗刻</td>
+                    <td>+8符</td>
+                </tr>
+                <tr>
+                    <td>幺九明杠</td>
+                    <td>+16符</td>
+                </tr>
+                <tr>
+                    <td>幺九暗杠</td>
+                    <td>+32符</td>
+                </tr>
+                <tr>
+                    <th colspan="2">雀头符（天凤连风雀头4符）</th>
+                </tr>
+                <tr>
+                    <td>役牌雀头</td>
+                    <td>+2符</td>
+                </tr>
+                <tr>
+                    <td>连风雀头</td>
+                    <td>+2或+4</td>
+                </tr>
+                <tr>
+                    <th colspan="2"> 其他规定（定为XX的无视其他规则）</th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        合计后,符个位不是0时：个位变0 十位+1</td>
+                </tr>
+                <tr>
+                    <td>七对子荣和＼自摸</td>
+                    <td>定为25符</td>
+                </tr>
+                <tr>
+                    <td>平和+自摸</td>
+                    <td>定为20符</td>
+                </tr>
+                <tr>
+                    <td>吃牌后，合计20符时</td>
+                    <td>定为30符 </td>
+                </tr>
+            </table>
+        </div>
+        <div id="right">
+            <div id="problemSection">
+                <div>
+                    <table id="fieldInfo">
+                        <tr>
+                            <td id="fieldWind"></td>
+                            <td id="selfWind"></td>
+                            <td id="winType"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="fu" type="number" value="30" max="170" min="20" step="10" onfocus="this.select()" />符</td>
+                            <td>
+                                <div id="chkAns" class="button" onclick="showAnswer()">作答</div>
+                                <div id="correct" class="correct nodraw">正確</div>
+                                <div id="incorrect" class="incorrect nodraw">錯誤</div>
+                            </td>
+                            <td id="infob" class="describe">1</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <table id="handInfo">
+                        <tr>
+                            <td id="hand0" class="hand"></td>
+                            <td id="hand1" class="hand"></td>
+                            <td id="hand2" class="hand"></td>
+                            <td id="hand3" class="hand"></td>
+                            <td id="hand4" class="hand"></td>
+                        </tr>
+                        <tr>
+                            <td id="info0" class="describe">1</td>
+                            <td id="info1" class="describe">2</td>
+                            <td id="info2" class="describe">3</td>
+                            <td id="info3" class="describe">4</td>
+                            <td id="info4" class="describe">5</td>
+                        </tr>
+                        <tr>
+                            <td id="extra" colspan="5" class="describe"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
 
-	<body>
-		<div id="hintDiv">
+            <div id="nextQuestion" class="button hidden" onclick="generateProblem()">下一題</div>
+        </div>
+    </div>
+    </div>
+</body>
+<script>
+    var $ = function (e) { return document.getElementById(e) };
+    var f = function (e) { return Math.floor(e) };
+    var rnd = function () { return Math.random() };
+    if (!String.prototype.includes) {
+        String.prototype.includes = function () {
+            'use strict';
+            return String.prototype.indexOf.apply(this, arguments) !== -1;
+        };
+    };
+    if (!String.prototype.replaceAt) {
+        String.prototype.replaceAt = function (index, character) {
+            return this.substr(0, index) + character + this.substr(index + character.length);
+        }
+    };
+    var setVisibility = function (t, stats) {
+        if (stats === "hide") {
+            if (!t.classList.contains("hidden")) {
+                t.classList.add("hidden");
+            }
+        }
+        else { //show
+            if (t.classList.contains("hidden")) {
+                t.classList.remove("hidden");
+            }
+        }
+    };
+    var showElement = function (e) {
+        setVisibility(e, "show");
+    };
 
+    var hideElement = function (e) {
+        setVisibility(e, "hide");
+    };
 
-			<table id="hintTable">
-				<tr>
-					<td colspan="2">和牌符（3项）</td>
-				</tr>
-				<tr>
-					<td>副底（只要和牌都要算上这个）</td>
-					<td>+20符</td>
-				</tr>
-				<tr>
-					<td>门前清荣和</td>
-					<td>+10符</td>
-				</tr>
-				<tr>
-					<td>自摸和牌</td>
-					<td>+2符</td>
-				</tr>
-				<tr>
-					<td colspan="2">听牌符（3项）</td>
-				</tr>
-				<tr>
-					<td>单骑听牌（例XXX XXX XXX XXX 3听3）</td>
-					<td>+2符</td>
-				</tr>
-				<tr>
-					<td>边张听牌（例XXX XXX XXX YY 12听3）</td>
-					<td>+2符</td>
-				</tr>
-				<tr>
-					<td>嵌张听牌（例XXX XXX XXX YY 35听4）</td>
-					<td>+2符</td>
-				</tr>
-				<tr>
-					<td colspan="2">面子符（8项）</td>
-				</tr>
-				<tr>
-					<td> 中张（数牌2~8）明刻</td>
-					<td>+2符</td>
-				</tr>
-				<tr>
-					<td>中张（数牌2~8）暗刻</td>
-					<td>+4符</td>
-				</tr>
-				<tr>
-					<td>中张（数牌2~8）明杠</td>
-					<td>+8符</td>
-				</tr>
-				<tr>
-					<td>中张（数牌2~8）暗杠</td>
-					<td>+16符</td>
-				</tr>
-				<tr>
-					<td>幺九（数牌1,9+字牌）明刻</td>
-					<td>+4符</td>
-				</tr>
-				<tr>
-					<td>幺九（数牌1,9+字牌）暗刻</td>
-					<td>+8符</td>
-				</tr>
-				<tr>
-					<td>幺九（数牌1,9+字牌）明杠</td>
-					<td>+16符</td>
-				</tr>
-				<tr>
-					<td>幺九（数牌1,9+字牌）暗杠</td>
-					<td>+32符</td>
-				</tr>
-				<tr>
-					<td colspan="2">雀头的符（2项）</td>
-				</tr>
-				<tr>
-					<td>役牌（三元牌＼自风牌＼场风牌）雀头</td>
-					<td>+2符</td>
-				</tr>
-				<tr>
-					<td>连风（W东＼W南）雀头</td>
-					<td>+2或+4（天凤+4）</td>
-				</tr>
-				<tr>
-					<td colspan="2"> 其他规定（4项）</td>
-				</tr>
-				<tr>
-					<td>
-						【重要】符合计后，个位不是0时</td>
-					<td>个位变0，十位+1</td>
-				</tr>
-				<tr>
-					<td>七对子荣和＼七对子自摸</td>
-					<td>无视其他项，定为25符</td>
-				</tr>
-				<tr>
-					<td>平和+自摸</td>
-					<td>无视其他项，定为20符</td>
-				</tr>
-				<tr>
-					<td>吃牌后，合计20符时</td>
-					<td>无视其他项，定为30符 </td>
-				</tr>
-			</table>
-		</div>
-		<div id="problemSection">
-			<div>
-				<table id="fieldInfo">
-					<tr>
-						<td id="fieldWind"></td>
-						<td id="selfWind"></td>
-						<td id="winType"></td>
-					</tr>
-					<tr>
-						<td>
-							<input id="fu" type="number" value="30" max="170" min="20" step="10" onfocus="this.select()" />符</td>
-						<td>
-							<div id="chkAns" class="button" onclick="showAnswer()">作答</div>
-							<div id="correct" class="correct nodraw">✔</div>
-							<div id="incorrect" class="incorrect nodraw">✖</div>
-						</td>
-						<td id="infob" class="describe">1</td>
-					</tr>
-				</table>
-			</div>
-			<hr>
-			<div>
-				<table id="handInfo">
-					<tr>
-						<td id="hand0" class="hand"></td>
-						<td id="hand1" class="hand"></td>
-						<td id="hand2" class="hand"></td>
-						<td id="hand3" class="hand"></td>
-						<td id="hand4" class="hand"></td>
-					</tr>
-					<tr>
-						<td id="info0" class="describe">1</td>
-						<td id="info1" class="describe">2</td>
-						<td id="info2" class="describe">3</td>
-						<td id="info3" class="describe">4</td>
-						<td id="info4" class="describe">5</td>
-					</tr>
-					<tr>
-						<td id="extra" colspan="5" class="describe"></td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		<div id="nextQuestion" class="button hidden" onclick="generateProblem()">下一題</div>
-	</body>
-	<script>
-		var $ = function (e) { return document.getElementById(e) };
-		var f = function (e) { return Math.floor(e) };
-		var rnd = function () { return Math.random() };
-		if (!String.prototype.includes) {
-			String.prototype.includes = function () {
-				'use strict';
-				return String.prototype.indexOf.apply(this, arguments) !== -1;
-			};
-		};
-		if (!String.prototype.replaceAt) {
-			String.prototype.replaceAt = function (index, character) {
-				return this.substr(0, index) + character + this.substr(index + character.length);
-			}
-		};
-		var setVisibility = function (t, stats) {
-			if (stats === "hide") {
-				if (!t.classList.contains("hidden")) {
-					t.classList.add("hidden");
-				}
-			}
-			else { //show
-				if (t.classList.contains("hidden")) {
-					t.classList.remove("hidden");
-				}
-			}
-		};
-		var showElement = function (e) {
-			setVisibility(e, "show");
-		};
+    var modifyElement = function (t, stats) {
+        if (stats === "remove") {
+            if (!t.classList.contains("nodraw")) {
+                t.classList.add("nodraw");
+            }
+        }
+        else { //show
+            if (t.classList.contains("nodraw")) {
+                t.classList.remove("nodraw");
+            }
+        }
+    }
+    var removeElement = function (e) {
+        modifyElement(e, "remove");
+    };
 
-		var hideElement = function (e) {
-			setVisibility(e, "hide");
-		};
+    var addElement = function (e) {
+        modifyElement(e, "add");
+    };
 
-		var modifyElement = function (t, stats) {
-			if (stats === "remove") {
-				if (!t.classList.contains("nodraw")) {
-					t.classList.add("nodraw");
-				}
-			}
-			else { //show
-				if (t.classList.contains("nodraw")) {
-					t.classList.remove("nodraw");
-				}
-			}
-		}
-		var removeElement = function (e) {
-			modifyElement(e, "remove");
-		};
+    //門清自摸平和固定20 七對固定25 其他進位至十位數 不滿30以30計
+    var callAmount = 0;
+    var lastTileFrom = 0;
+    var fieldWind = ["東風圈", "南風圈"];
+    var selfWind = ["東家", "南家", "西家", "北家"];
+    var winningStyle = ["自摸", "榮和"];
+    var fieldSeed = 0;
+    var selfSeed = 0;
+    var field = "";
+    var self = "";
+    var winBy = "";
+    var takenTiles = [];
+    var hand = [];
+    var t;
+    var shuntsuAmount = 0;
+    var answer = []; //副底 0 1 2 3 4 特殊
+    var answerInNumber = 20;
+    var yakuTile = [];
+    var winds = "zxcv";
+    var detailParts = [$("info0"), $("info1"), $("info2"), $("info3"), $("info4"), $("infob"), $("extra"), $("nextQuestion")];
+    var hideAnswer = function () {
+        addElement($("chkAns"));
+        for (var i = 0; i < detailParts.length; i++) {
+            hideElement(detailParts[i]);
+        }
+    };
+    var showAnswer = function () {
+        removeElement($("chkAns"));
+        if ($("fu").valueAsNumber === answerInNumber) addElement($("correct"));
+        else addElement($("incorrect"));
+        for (var i = 0; i < detailParts.length; i++) {
+            showElement(detailParts[i]);
+        }
+    };
 
-		var addElement = function (e) {
-			modifyElement(e, "add");
-		};
+    var tiles = "123456789qwertyuioasdfghjklzxcvbnm";
+    var rotatedTiles = "!@#$%^&*(QWERTYUIOASDFGHJKLZXCVBNM";
 
-		//門清自摸平和固定20 七對固定25 其他進位至十位數 不滿30以30計
-		var callAmount = 0;
-		var lastTileFrom = 0;
-		var fieldWind = ["東風圈", "南風圈"];
-		var selfWind = ["東家", "南家", "西家", "北家"];
-		var winningStyle = ["自摸", "榮和"];
-		var fieldSeed = 0;
-		var selfSeed = 0;
-		var field = "";
-		var self = "";
-		var winBy = "";
-		var takenTiles = [];
-		var hand = [];
-		var t;
-		var shuntsuAmount = 0;
-		var answer = []; //副底 0 1 2 3 4 特殊
-		var answerInNumber = 20;
-		var yakuTile = [];
-		var winds = "zxcv";
-		var detailParts = [$("info0"), $("info1"), $("info2"), $("info3"), $("info4"), $("infob"), $("extra"), $("nextQuestion")];
-		var hideAnswer = function () {
-			addElement($("chkAns"));
-			for (var i = 0; i < detailParts.length; i++) {
-				hideElement(detailParts[i]);
-			}
-		};
-		var showAnswer = function () {
-			removeElement($("chkAns"));
-			if ($("fu").valueAsNumber === answerInNumber) addElement($("correct"));
-			else addElement($("incorrect"));
-			for (var i = 0; i < detailParts.length; i++) {
-				showElement(detailParts[i]);
-			}
-		};
+    var generateProblem = function () {
+        hideAnswer();
+        removeElement($("correct"));
+        removeElement($("incorrect"));
+        $('fu').value = 30;
+        callAmount = f(rnd() * 5);
+        fieldSeed = f(rnd() * 2);
+        selfSeed = f(rnd() * 4);
+        field = fieldWind[fieldSeed];
+        self = selfWind[selfSeed];
+        shuntsuAmount = 0;
+        hand = [];
+        answer = [];
+        answerInNumber = 20;
+        yakuTile = "bnm" + winds[fieldSeed] + winds[selfSeed];
 
-		var tiles = "123456789qwertyuioasdfghjklzxcvbnm";
-		var rotatedTiles = "!@#$%^&*(QWERTYUIOASDFGHJKLZXCVBNM";
+        takenTiles = [];
+        for (var i = 0; i < 34; i++) takenTiles.push(0);
 
-		var generateProblem = function () {
-			hideAnswer();
-			removeElement($("correct"));
-			removeElement($("incorrect"));
-			$('fu').value = 30;
-			callAmount = f(rnd() * 5);
-			fieldSeed = f(rnd() * 2);
-			selfSeed = f(rnd() * 4);
-			field = fieldWind[fieldSeed];
-			self = selfWind[selfSeed];
-			shuntsuAmount = 0;
-			hand = [];
-			answer = [];
-			answerInNumber = 20;
-			yakuTile = "bnm" + winds[fieldSeed] + winds[selfSeed];
+        //pair
+        t = f(rnd() * 34);
+        takenTiles[t] = 2;
+        hand.push(tiles[t] + tiles[t]);
 
-			takenTiles = [];
-			for (var i = 0; i < 34; i++) takenTiles.push(0);
+        //hand
+        for (var i = 1; i <= 4; i++) {
 
-			//pair
-			t = f(rnd() * 34);
-			takenTiles[t] = 2;
-			hand.push(tiles[t] + tiles[t]);
+            var type = f(rnd() * 3);
+            if (type === 0) { //順
+                t = f(rnd() * 21);
+                t = f(t / 7) * 9 + t % 7;
+                while (takenTiles[t] > 3 || takenTiles[t + 1] > 3 || takenTiles[t + 2] > 3) {
+                    t = f(rnd() * 21);
+                    t = f(t / 7) * 9 + t % 7;
+                }
+                takenTiles[t]++;
+                takenTiles[t + 1]++;
+                takenTiles[t + 2]++;
+                hand.push(tiles[t] + tiles[t + 1] + tiles[t + 2]);
+                shuntsuAmount++;
+            }
+            else if (type === 1) { // 碰
+                t = f(rnd() * 34);
+                while (takenTiles[t] > 1) t = f(rnd() * 34);
+                takenTiles[t] += 3;
+                hand.push(tiles[t] + tiles[t] + tiles[t]);
+            }
+            else if (type === 2) { // 槓
+                t = f(rnd() * 34);
+                while (takenTiles[t] > 0) t = f(rnd() * 34);
+                takenTiles[t] += 4;
+                hand.push(tiles[t] + tiles[t] + tiles[t] + tiles[t]);
+            }
+            else (console.log("Error: type = " + type));
 
-			//hand
-			for (var i = 1; i <= 4; i++) {
-
-				var type = f(rnd() * 3);
-				if (type === 0) { //順
-					t = f(rnd() * 21);
-					t = f(t / 7) * 9 + t % 7;
-					while (takenTiles[t] > 3 || takenTiles[t + 1] > 3 || takenTiles[t + 2] > 3) {
-						t = f(rnd() * 21);
-						t = f(t / 7) * 9 + t % 7;
-					}
-					takenTiles[t]++;
-					takenTiles[t + 1]++;
-					takenTiles[t + 2]++;
-					hand.push(tiles[t] + tiles[t + 1] + tiles[t + 2]);
-					shuntsuAmount++;
-				}
-				else if (type === 1) { // 碰
-					t = f(rnd() * 34);
-					while (takenTiles[t] > 1) t = f(rnd() * 34);
-					takenTiles[t] += 3;
-					hand.push(tiles[t] + tiles[t] + tiles[t]);
-				}
-				else if (type === 2) { // 槓
-					t = f(rnd() * 34);
-					while (takenTiles[t] > 0) t = f(rnd() * 34);
-					takenTiles[t] += 4;
-					hand.push(tiles[t] + tiles[t] + tiles[t] + tiles[t]);
-				}
-				else (console.log("Error: type = " + type));
-
-				if (i === 4) {
-					//把槓全換到最後面去
-					var ptr = 4;
-					for (var j = 1; j < ptr; j++) {
-						if (hand[j].length === 4) {
-							var tmp = hand[j];
-							hand[j] = hand[ptr];
-							hand[ptr] = tmp;
-							j--;
-							ptr--;
-						}
-					}
-				}
-			}
+            if (i === 4) {
+                //把槓全換到最後面去
+                var ptr = 4;
+                for (var j = 1; j < ptr; j++) {
+                    if (hand[j].length === 4) {
+                        var tmp = hand[j];
+                        hand[j] = hand[ptr];
+                        hand[ptr] = tmp;
+                        j--;
+                        ptr--;
+                    }
+                }
+            }
+        }
 
 
 
-			lastTileFrom = f(rnd() * (5 - callAmount));
-			while (hand[lastTileFrom].length > 3) lastTileFrom = f(rnd() * (5 - callAmount));
-			lastTile = f(rnd() * hand[lastTileFrom].length);
-			winBy = winningStyle[f(rnd() * 2)];
+        lastTileFrom = f(rnd() * (5 - callAmount));
+        while (hand[lastTileFrom].length > 3) lastTileFrom = f(rnd() * (5 - callAmount));
+        lastTile = f(rnd() * hand[lastTileFrom].length);
+        winBy = winningStyle[f(rnd() * 2)];
 
-			if (callAmount === 0 && shuntsuAmount >= 4 && !yakuTile.includes(hand[0][0]) && lastTileFrom > 0 && lastTile != 1) {
-				//平和
-				answer = ["副底 +20", "-", "-", "-", "-", "-"];
-				if (winBy === "榮和") {
-					answer[0] += "<br>門清榮和 +10";
-					answer.push("<hr>平和榮和固定30符");
-					answerInNumber = 30;
-				}
-				else {
-					answer.push("<hr>平和自摸固定20符(不計自摸2符)");
-					answerInNumber = 20;
-				}
+        if (callAmount === 0 && shuntsuAmount >= 4 && !yakuTile.includes(hand[0][0]) && lastTileFrom > 0 && lastTile != 1) {
+            //平和
+            answer = ["副底 +20", "-", "-", "-", "-", "-"];
+            if (winBy === "榮和") {
+                answer[0] += "<br>門清榮和 +10";
+                answer.push("<hr>平和榮和固定30符");
+                answerInNumber = 30;
+            }
+            else {
+                answer.push("<hr>平和自摸固定20符(不計自摸2符)");
+                answerInNumber = 20;
+            }
 
-				var i = lastTileFrom;
-				if (!"19qoal".includes(hand[i][2])) {
-					hand[i] = "<span class='lastTile'>" + hand[i][0] + "</span>" + hand[i][1] + hand[i][2];
-				}
-				else {
-					hand[i] = hand[i][0] + hand[i][1] + "<span class='lastTile'>" + hand[i][2] + "</span>";
-				}
-			}
-			else {
-				answer = ["副底 +20", "", "", "", "", ""];
-				answerInNumber = 20;
+            var i = lastTileFrom;
+            if (!"19qoal".includes(hand[i][2])) {
+                hand[i] = "<span class='lastTile'>" + hand[i][0] + "</span>" + hand[i][1] + hand[i][2];
+            }
+            else {
+                hand[i] = hand[i][0] + hand[i][1] + "<span class='lastTile'>" + hand[i][2] + "</span>";
+            }
+        }
+        else {
+            answer = ["副底 +20", "", "", "", "", ""];
+            answerInNumber = 20;
 
-				if (winBy === "自摸") {
-					answer[0] += "<br>自摸 +2";
-					answerInNumber += 2;
-				}
+            if (winBy === "自摸") {
+                answer[0] += "<br>自摸 +2";
+                answerInNumber += 2;
+            }
 
-				if (winBy === "榮和" && callAmount === 0) {
-					answer[0] += "<br>門清榮和 +10";
-					answerInNumber += 10;
-				}
+            if (winBy === "榮和" && callAmount === 0) {
+                answer[0] += "<br>門清榮和 +10";
+                answerInNumber += 10;
+            }
 
-				if ("bnm".includes(hand[0][0])) {
-					if (answer[1] != "") answer[1] += "<br>";
-					answer[1] += "役牌雀頭 +2";
-					answerInNumber += 2;
-				}
-				if (winds[fieldSeed] === hand[0][0]) {
-					if (answer[1] != "") answer[1] += "<br>";
-					answer[1] += "場風雀頭 +2";
-					answerInNumber += 2;
-				}
-				if (winds[selfSeed] === hand[0][0]) {
-					if (answer[1] != "") answer[1] += "<br>";
-					answer[1] += "自風雀頭 +2";
-					answerInNumber += 2;
-				}
+            if ("bnm".includes(hand[0][0])) {
+                if (answer[1] != "") answer[1] += "<br>";
+                answer[1] += "役牌雀頭 +2";
+                answerInNumber += 2;
+            }
+            if (winds[fieldSeed] === hand[0][0]) {
+                if (answer[1] != "") answer[1] += "<br>";
+                answer[1] += "場風雀頭 +2";
+                answerInNumber += 2;
+            }
+            if (winds[selfSeed] === hand[0][0]) {
+                if (answer[1] != "") answer[1] += "<br>";
+                answer[1] += "自風雀頭 +2";
+                answerInNumber += 2;
+            }
 
-				if (answer[1] === "") answer[1] += "一般雀頭 +0";
-
-
-				for (var i = 1; i <= 4; i++) {
-					if (hand[i].length === 4) {
-						if (answer[i + 1] != "") answer[i + 1] += "<br>";
-						if ("1qa9olzxcvbnm".includes(hand[i][0])) { //么九
-							if (i > 4 - callAmount) {
-								answer[i + 1] += "么九明槓 +16";
-								var rndNum = f(rnd() * 3);
-								if (rndNum > 0) rndNum++;
-								hand[i] = hand[i].replaceAt(rndNum, rotatedTiles[tiles.indexOf(hand[i][rndNum])]);
-								answerInNumber += 16;
-							}
-							else {
-								answer[i + 1] += "么九暗槓 +32";
-								hand[i] = "`" + hand[i][1] + hand[i][2] + "`";
-								answerInNumber += 32;
-							}
-						}
-						else {
-							if (i > 4 - callAmount) {
-								answer[i + 1] += "中張明槓 +8";
-								var rndNum = f(rnd() * 3);
-								if (rndNum > 0) rndNum++;
-								hand[i] = hand[i].replaceAt(rndNum, rotatedTiles[tiles.indexOf(hand[i][rndNum])]);
-								answerInNumber += 8;
-							}
-							else {
-								answer[i + 1] += "中張暗槓 +16";
-								hand[i] = "`" + hand[i][1] + hand[i][2] + "`";
-								answerInNumber += 16;
-							}
-						}
-					}
-					else if (hand[i][0] === hand[i][1]) { //刻
-						if ("1qa9olzxcvbnm".includes(hand[i][0])) { //么九
-							if (i > 4 - callAmount) {
-								answer[i + 1] += "么九明刻 +4";
-								var rndNum = f(rnd() * 3);
-								hand[i] = hand[i].replaceAt(rndNum, rotatedTiles[tiles.indexOf(hand[i][rndNum])]);
-								answerInNumber += 4;
-							}
-							else {
-								answer[i + 1] += "么九暗刻 +8";
-								answerInNumber += 8;
-							}
-						}
-						else {
-							if (i > 4 - callAmount) {
-								answer[i + 1] += "中張明刻 +2";
-								var rndNum = f(rnd() * 3);
-								hand[i] = hand[i].replaceAt(rndNum, rotatedTiles[tiles.indexOf(hand[i][rndNum])]);
-								answerInNumber += 2;
-							}
-							else {
-								answer[i + 1] += "中張暗刻 +4";
-								answerInNumber += 4;
-							}
-						}
-					}
-					else {
-						answer[i + 1] += "順子 +0";
-						if (i > 4 - callAmount) {
-							hand[i] = hand[i].replaceAt(0, rotatedTiles[tiles.indexOf(hand[i][0])]);
-						}
-					}
-				}
-
-				if (lastTileFrom === 0) {
-					answer[1] += "<br>聽單騎 +2";
-					hand[0] = hand[0][0] + "<span class='lastTile'>" + hand[0][1] + "</span>";
-					answerInNumber += 2;
-				}
-				else {
-					var i = lastTileFrom;
-					if (hand[i][0] === hand[i][1]) {
-						if (winBy === "榮和") {
-							if ("19qoalzxcvbnm".includes(hand[i][0])) {
-								answerInNumber -= 4; //邊張暗刻->邊張明刻
-								answer[i + 1] = "么九明刻 +4";
-							}
-							else {
-								answerInNumber -= 2;
-								answer[i + 1] = "中張明刻 +2";
-							}
-						}
-						answer[i + 1] += "<br>聽雙碰 +0";
-						hand[i] = hand[i][0] + hand[i][1] + "<span class='lastTile'>" + hand[i][2] + "</span>";
-					}
-					else {
-						var rndNum = f(rnd() * 3);
-						if (rndNum === 1) {
-							answer[i + 1] += "<br>聽嵌張 +2";
-							answerInNumber += 2;
-							hand[i] = hand[i][0] + "<span class='lastTile'>" + hand[i][1] + "</span>" + hand[i][2];
-						}
-						else if (rndNum === 0) {
-							if ("19qoal".includes(hand[i][2])) {
-								answer[i + 1] += "<br>聽邊張 +2";
-								answerInNumber += 2;
-							}
-							else answer[i + 1] += "<br>聽兩面 +0";
-
-							hand[i] = "<span class='lastTile'>" + hand[i][0] + "</span>" + hand[i][1] + hand[i][2];
-						}
-						else { //2
-							if ("19qoal".includes(hand[i][0])) {
-								answer[i + 1] += "<br>聽邊張 +2";
-								answerInNumber += 2;
-							}
-							else answer[i + 1] += "<br>聽兩面 +0";
-
-							hand[i] = hand[i][0] + hand[i][1] + "<span class='lastTile'>" + hand[i][2] + "</span>";
-						}
-					}
-				}
-
-			}
+            if (answer[1] === "") answer[1] += "一般雀頭 +0";
 
 
-			if (answer[6] == undefined) {
-				answer[6] = "<hr>共" + answerInNumber + "符, 進位至十位數計";
+            for (var i = 1; i <= 4; i++) {
+                if (hand[i].length === 4) {
+                    if (answer[i + 1] != "") answer[i + 1] += "<br>";
+                    if ("1qa9olzxcvbnm".includes(hand[i][0])) { //么九
+                        if (i > 4 - callAmount) {
+                            answer[i + 1] += "么九明槓 +16";
+                            var rndNum = f(rnd() * 3);
+                            if (rndNum > 0) rndNum++;
+                            hand[i] = hand[i].replaceAt(rndNum, rotatedTiles[tiles.indexOf(hand[i][rndNum])]);
+                            answerInNumber += 16;
+                        }
+                        else {
+                            answer[i + 1] += "么九暗槓 +32";
+                            hand[i] = "`" + hand[i][1] + hand[i][2] + "`";
+                            answerInNumber += 32;
+                        }
+                    }
+                    else {
+                        if (i > 4 - callAmount) {
+                            answer[i + 1] += "中張明槓 +8";
+                            var rndNum = f(rnd() * 3);
+                            if (rndNum > 0) rndNum++;
+                            hand[i] = hand[i].replaceAt(rndNum, rotatedTiles[tiles.indexOf(hand[i][rndNum])]);
+                            answerInNumber += 8;
+                        }
+                        else {
+                            answer[i + 1] += "中張暗槓 +16";
+                            hand[i] = "`" + hand[i][1] + hand[i][2] + "`";
+                            answerInNumber += 16;
+                        }
+                    }
+                }
+                else if (hand[i][0] === hand[i][1]) { //刻
+                    if ("1qa9olzxcvbnm".includes(hand[i][0])) { //么九
+                        if (i > 4 - callAmount) {
+                            answer[i + 1] += "么九明刻 +4";
+                            var rndNum = f(rnd() * 3);
+                            hand[i] = hand[i].replaceAt(rndNum, rotatedTiles[tiles.indexOf(hand[i][rndNum])]);
+                            answerInNumber += 4;
+                        }
+                        else {
+                            answer[i + 1] += "么九暗刻 +8";
+                            answerInNumber += 8;
+                        }
+                    }
+                    else {
+                        if (i > 4 - callAmount) {
+                            answer[i + 1] += "中張明刻 +2";
+                            var rndNum = f(rnd() * 3);
+                            hand[i] = hand[i].replaceAt(rndNum, rotatedTiles[tiles.indexOf(hand[i][rndNum])]);
+                            answerInNumber += 2;
+                        }
+                        else {
+                            answer[i + 1] += "中張暗刻 +4";
+                            answerInNumber += 4;
+                        }
+                    }
+                }
+                else {
+                    answer[i + 1] += "順子 +0";
+                    if (i > 4 - callAmount) {
+                        hand[i] = hand[i].replaceAt(0, rotatedTiles[tiles.indexOf(hand[i][0])]);
+                    }
+                }
+            }
 
-				answerInNumber = answerInNumber % 10 === 0 ? answerInNumber : f(answerInNumber / 10) * 10 + 10;
-				answer[6] += answerInNumber + "符";
-			}
+            if (lastTileFrom === 0) {
+                answer[1] += "<br>聽單騎 +2";
+                hand[0] = hand[0][0] + "<span class='lastTile'>" + hand[0][1] + "</span>";
+                answerInNumber += 2;
+            }
+            else {
+                var i = lastTileFrom;
+                if (hand[i][0] === hand[i][1]) {
+                    if (winBy === "榮和") {
+                        if ("19qoalzxcvbnm".includes(hand[i][0])) {
+                            answerInNumber -= 4; //邊張暗刻->邊張明刻
+                            answer[i + 1] = "么九明刻 +4";
+                        }
+                        else {
+                            answerInNumber -= 2;
+                            answer[i + 1] = "中張明刻 +2";
+                        }
+                    }
+                    answer[i + 1] += "<br>聽雙碰 +0";
+                    hand[i] = hand[i][0] + hand[i][1] + "<span class='lastTile'>" + hand[i][2] + "</span>";
+                }
+                else {
+                    var rndNum = f(rnd() * 3);
+                    if (rndNum === 1) {
+                        answer[i + 1] += "<br>聽嵌張 +2";
+                        answerInNumber += 2;
+                        hand[i] = hand[i][0] + "<span class='lastTile'>" + hand[i][1] + "</span>" + hand[i][2];
+                    }
+                    else if (rndNum === 0) {
+                        if ("19qoal".includes(hand[i][2])) {
+                            answer[i + 1] += "<br>聽邊張 +2";
+                            answerInNumber += 2;
+                        }
+                        else answer[i + 1] += "<br>聽兩面 +0";
 
-			if (callAmount > 0 && shuntsuAmount >= 4 && answerInNumber < 30) {
-				answer[6] += "<br>非平和情況下, 若進位後仍不足30符, 以30符計算";
-				answerInNumber = 30;
-			}
+                        hand[i] = "<span class='lastTile'>" + hand[i][0] + "</span>" + hand[i][1] + hand[i][2];
+                    }
+                    else { //2
+                        if ("19qoal".includes(hand[i][0])) {
+                            answer[i + 1] += "<br>聽邊張 +2";
+                            answerInNumber += 2;
+                        }
+                        else answer[i + 1] += "<br>聽兩面 +0";
 
-			$("hand0").innerHTML = hand[0];
-			$("hand1").innerHTML = hand[1];
-			$("hand2").innerHTML = hand[2];
-			$("hand3").innerHTML = hand[3];
-			$("hand4").innerHTML = hand[4];
-			$("fieldWind").innerHTML = field;
-			$("selfWind").innerHTML = self;
-			$("winType").innerHTML = "　" + winBy + "　";
-			setAnswer();
-		};
+                        hand[i] = hand[i][0] + hand[i][1] + "<span class='lastTile'>" + hand[i][2] + "</span>";
+                    }
+                }
+            }
 
-		var setAnswer = function () {
-			$("infob").innerHTML = answer[0];
-			$("info0").innerHTML = answer[1];
-			$("info1").innerHTML = answer[2];
-			$("info2").innerHTML = answer[3];
-			$("info3").innerHTML = answer[4];
-			$("info4").innerHTML = answer[5];
-			$("extra").innerHTML = answer[6];
-		};
+        }
 
-		generateProblem();
-	</script>
+
+        if (answer[6] == undefined) {
+            answer[6] = "共" + answerInNumber + "符, 進位至十位數計";
+
+            answerInNumber = answerInNumber % 10 === 0 ? answerInNumber : f(answerInNumber / 10) * 10 + 10;
+            answer[6] += answerInNumber + "符";
+        }
+
+        if (callAmount > 0 && shuntsuAmount >= 4 && answerInNumber < 30) {
+            answer[6] += "<br>非平和情況下, 若進位後仍不足30符, 以30符計算";
+            answerInNumber = 30;
+        }
+
+        $("hand0").innerHTML = hand[0];
+        $("hand1").innerHTML = hand[1];
+        $("hand2").innerHTML = hand[2];
+        $("hand3").innerHTML = hand[3];
+        $("hand4").innerHTML = hand[4];
+        $("fieldWind").innerHTML = field;
+        $("selfWind").innerHTML = self;
+        $("winType").innerHTML = "　" + winBy + "　";
+        setAnswer();
+    };
+
+    var setAnswer = function () {
+        $("infob").innerHTML = answer[0];
+        $("info0").innerHTML = answer[1];
+        $("info1").innerHTML = answer[2];
+        $("info2").innerHTML = answer[3];
+        $("info3").innerHTML = answer[4];
+        $("info4").innerHTML = answer[5];
+        $("extra").innerHTML = answer[6];
+    };
+
+    generateProblem();
+</script>
+
+</html>
