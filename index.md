@@ -34,13 +34,15 @@
 
 所需:
 
-chrome浏览器（或可以装chrome插件的浏览器，如：360极速浏览器，360安全浏览器）
+chrome浏览器（或可以装chrome插件的浏览器，如：360极速浏览器，360安全浏览器，QQ浏览器）
 
 chrome的插件:Resource Override
 
 ----
 
 ##魔改准备
+
+如果你想要在firefox魔改，就去装requestly [http://www.requestly.in/](http://www.requestly.in/) ，再用requestly的Redirect Request Rule（详细方法自己研究……没空写）
 
 1.打开chrome(若没装，去 [https://www.google.cn/chrome/](https://www.google.cn/chrome/) 下载）
 
@@ -49,6 +51,10 @@ chrome的插件:Resource Override
 ※360安全浏览器 打开 `se://extensions/`
 
 ※360极速浏览器 打开 `chrome://myextensions/`
+
+※QQ浏览器 打开 `qqbrowser://extensions/manage`
+
+
 
 3.下载插件
 
