@@ -78,7 +78,9 @@ chrome的插件:Resource Override
 
 6.可以导入配置：导入配置方法【option】→【load Rules】→文件名栏直接写
 
-`https://lietxia.github.io/res/rule2.json`
+`https://lietxia.github.io/res/rule.json`
+
+![](img/022.png)
 
 ※如果不行，就下载上方的json文件到桌面，再选择桌面的这个文件
 
