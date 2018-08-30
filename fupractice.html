@@ -139,8 +139,16 @@
 
     table th {
         background-color: #000;
-        border: 1px solid #333;
+        border: 1px solid #f80;
         color: #fff;
+    }
+
+    #hintTableH {
+        white-space: nowrap;
+    }
+
+    #hintH {
+        overflow-x: scroll;
     }
 </style>
 
@@ -149,6 +157,69 @@
         Please enable Javascript on this page to render
         <br> 畫畫面需要用到Javascript, 讓我用嘛OAO...
     </noscript>
+    <div id="hintH">
+        <table id="hintTableH" cellspacing="0" cellpadding="0">
+            <tr>
+                <th colspan="2">和牌符</th>
+                <th colspan="2">听牌符</th>
+                <th colspan="4">面子符（中张=2到8）</th>
+                <th colspan="2">雀头符</th>
+                <th colspan="2">其他规定（定为XX的无视其他规则）</th>
+            </tr>
+            <tr>
+                <td>副底（和牌就有）</td>
+                <td>20符</td>
+                <td>单骑和牌</td>
+                <td>2符</td>
+                <td>中张明刻</td>
+                <td>2符</td>
+                <td>幺九明刻</td>
+                <td>4符</td>
+                <td>役牌雀头</td>
+                <td>2符</td>
+                <td colspan="2">合计后,符个位不是0时：个位变0 十位+1</td>
+            </tr>
+            <tr>
+                <td>门前清荣和</td>
+                <td>10符</td>
+                <td>边张和牌</td>
+                <td>2符</td>
+                <td>中张暗刻</td>
+                <td>4符</td>
+                <td>幺九暗刻</td>
+                <td>8符</td>
+                <td>连风雀头</td>
+                <td>2或4</td>
+                <td>七对子荣和＼自摸</td>
+                <td>定为25符</td>
+            </tr>
+            <tr>
+                <td>自摸和牌</td>
+                <td>2符</td>
+                <td>嵌张和牌</td>
+                <td>2符</td>
+                <td>中张明杠</td>
+                <td>8符</td>
+                <td>幺九明杠</td>
+                <td>16符</td>
+                <td colspan="2" rowspan="2">※天凤连风雀头4符</td>
+                <td>平和+自摸</td>
+                <td>定为20符</td>
+            </tr>
+            <tr>
+                <td>荣和（非门前清）</td>
+                <td>0符</td>
+                <td>两面/双碰</td>
+                <td>0符</td>
+                <td>中张暗杠</td>
+                <td>16符</td>
+                <td>幺九暗杠</td>
+                <td>32符</td>
+                <td>吃牌后，合计20符时</td>
+                <td>定为30符</td>
+            </tr>
+        </table>
+    </div>
     <div id="box">
         <div id="left">
             <table id="hintTable">
@@ -291,6 +362,15 @@
     </div>
 </body>
 <script>
+    //根据长宽隐藏
+    if (document.body.clientWidth < document.body.clientHeight) {
+        document.getElementById("left").style.display = "none";
+        document.getElementById("hintH").style.display = "";//显示
+    } else {
+        document.getElementById("hintH").style.display = "none";
+        document.getElementById("left").style.display = "";//显示
+    }
+
     var $ = function (e) { return document.getElementById(e) };
     var f = function (e) { return Math.floor(e) };
     var rnd = function () { return Math.random() };
