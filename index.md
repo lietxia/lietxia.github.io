@@ -136,6 +136,7 @@ chrome的插件:Resource Override
     红色→red
     黄色→yellow
     玫瑰牌背红色->rose
+    樱花牌背少女色(mumu制作)->sakura
     saki2.0麻将牌（無聲鈴鹿制作）->saki2
 
 
