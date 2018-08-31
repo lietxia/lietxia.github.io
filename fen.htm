@@ -1,0 +1,29 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>算分</title>
+</head>
+
+<body>
+    <label>符：<input type="text" id="fu" /></label><br />
+    <label>翻：<input type="text" id="fan" /></label><br />
+    <input type="button" onclick="RUN()" value="計算" />
+    <div id="display"></div>
+</body>
+<script>
+    function RUN() {
+        var fan = Number(document.getElementById("fan").value);//获取翻
+        var fu = Number(document.getElementById("fu").value);//获取符
+        var out = "";
+        out += "親榮和：" + Math.ceil(6 * fu * Math.pow(2, (fan + 2)) / 100) * 100 + "\n";
+        out += "子榮和：" + Math.ceil(4 * fu * Math.pow(2, (fan + 2)) / 100) * 100 + "\n";
+        out += "親自摸，每人出：" + Math.ceil(2 * fu * Math.pow(2, (fan + 2)) / 100) * 100 + "\n";
+        out += "子自摸，親出：" + Math.ceil(2 * fu * Math.pow(2, (fan + 2)) / 100) * 100
+            + "，子出" + Math.ceil(4 * fu * Math.pow(2, (fan + 2)) / 100) * 100 + "\n";
+        document.getElementById("display").innerText = out;//获取符
+    }
+</script>
+
+</html>
