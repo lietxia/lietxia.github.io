@@ -126,6 +126,7 @@ chrome的插件:Resource Override
 右侧规则中，第1~3行的`purple`改成其他字段可以变成其他颜色，目前支持的颜色：
 
     玫瑰牌背双面黑→black
+    双面纯黑→black2
     蓝色→blue
     青色→cyan
     黑色→dark
