@@ -88,6 +88,9 @@ firefox打开
 
 # （插件说明）更加自由的DIY
 
+> 魔改教程到上面就结束了，不过如果你想更自由的DIY，就从这里看下去（会有些复杂）
+> 我DIY所有的素材，牌背啥的psd，牌矢量图等等全在 [这个github](https://github.com/lietxia/lietxia.github.io) 
+
 ![](img/054.png)
 
 一个简单的修改。
