@@ -14,7 +14,7 @@
 
 本页介绍的是PC端魔改的方法，移动设备见↓
 
-[安卓魔改方法（旧）](android_old.md)
+[安卓魔改方法（旧）](android.md)
 
 [iOS魔改方法](ios.md)
 
@@ -39,10 +39,35 @@ chrome直接下载插件地址
 
 chrome插件安装方法移步 [旧方法](old.md)  这里不再累述chrome。
 
-##1.Firefox装插件方法
+##一、Firefox装插件方法
 firefox打开  
 [https://addons.mozilla.org/zh-CN/firefox/addon/header-editor/](https://addons.mozilla.org/zh-CN/firefox/addon/header-editor/)
 
 点击【添加到 Firefox】，再点【添加】即可
 
-##1.Firefox装插件方法
+##二、插件导入规则
+
+![导入规则](img/051.png)
+
+1.打开插件
+2.选【导入和导出】
+3.在【下载规则】填 `https://lietxia.github.io/res/header_editor_rules.json`
+4.点【↓】导入规则
+5.页面翻到最下方，点【保存】
+
+##三、规则使用
+![规则使用](img/052.png)
+
+1.【规则列表】点击【↓】展开列表
+2.选择要用的规则
+
+> 【注意】同一类别的魔改规则只能开1项，不要多开。
+
+
+##补充
+如果你要改背景，则编辑第5个规则【雀魂-修改背景】
+
+把【重定向至】改成你要改的网址。
+
+![魔改效果](img/050.png)
+
