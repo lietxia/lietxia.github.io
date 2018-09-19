@@ -38,52 +38,26 @@
         background-color: #eed;
     }
 
-    #box {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    #left,
-    #right {
-        float: left;
-    }
-
-    #left {
-        width: 30%;
-        height: 100%;
-        overflow: auto;
-    }
-
-    #right {
-        width: 69%;
-        text-align: center;
-        font-size: 2em;
-        height: 100%;
-    }
-
     .describe {
         color: #1a1;
+        font-size: 2.5vw;
     }
 
     table {
         border-collapse: collapse;
-        width: 100%;
-        text-align: center;
+        text-align: right;
+        margin: 10px auto;
     }
-
     #handInfo tr,
     #handInfo td,
-        {
-        border: none;
-    }
-
-    #fieldInfo tr,
+        {  border: none;
+            padding: 5px 10px;}
     #fieldInfo td {
-        font-size: 4vw;
-        border: none;
+        font-size: 7vw;
+     
         text-align: center;
     }
+
 
     .lastTile {
         background-color: #f80;
@@ -107,11 +81,6 @@
         background-color: #ada;
     }
 
-    #nextQuestion {
-        position: fixed;
-        right: 0;
-        bottom: 0;
-    }
 
     #fu {
         width: 2.5em;
@@ -121,7 +90,7 @@
     .hand {
         font-family: "MJ";
         border: none;
-        font-size: 5vw;
+        font-size: 7vw;
     }
 
     .hidden {
@@ -150,6 +119,7 @@
     #hintH {
         overflow-x: scroll;
     }
+    
 </style>
 
 <body>
@@ -221,155 +191,65 @@
         </table>
     </div>
     <div id="box">
-        <div id="left">
-            <table id="hintTable">
-                <tr>
-                    <th colspan="2">和牌符</th>
-                </tr>
-                <tr>
-                    <td>副底（和牌就有）</td>
-                    <td>+20符</td>
-                </tr>
-                <tr>
-                    <td>门前清荣和</td>
-                    <td>+10符</td>
-                </tr>
-                <tr>
-                    <td>自摸和牌</td>
-                    <td>+2符</td>
-                </tr>
-                <tr>
-                    <th colspan="2">听牌符</th>
-                </tr>
-                <tr>
-                    <td>单骑\边张\嵌张听牌</td>
-                    <td>+2符</td>
-                </tr>
-                <tr>
-                    <th colspan="2">面子符（中张=2到8）</th>
-                </tr>
-                <tr>
-                    <td> 中张明刻</td>
-                    <td>+2符</td>
-                </tr>
-                <tr>
-                    <td>中张暗刻</td>
-                    <td>+4符</td>
-                </tr>
-                <tr>
-                    <td>中张明杠</td>
-                    <td>+8符</td>
-                </tr>
-                <tr>
-                    <td>中张暗杠</td>
-                    <td>+16符</td>
-                </tr>
-                <tr>
-                    <td>幺九明刻</td>
-                    <td>+4符</td>
-                </tr>
-                <tr>
-                    <td>幺九暗刻</td>
-                    <td>+8符</td>
-                </tr>
-                <tr>
-                    <td>幺九明杠</td>
-                    <td>+16符</td>
-                </tr>
-                <tr>
-                    <td>幺九暗杠</td>
-                    <td>+32符</td>
-                </tr>
-                <tr>
-                    <th colspan="2">雀头符（天凤连风雀头4符）</th>
-                </tr>
-                <tr>
-                    <td>役牌雀头</td>
-                    <td>+2符</td>
-                </tr>
-                <tr>
-                    <td>连风雀头</td>
-                    <td>+2或+4</td>
-                </tr>
-                <tr>
-                    <th colspan="2"> 其他规定（定为XX的无视其他规则）</th>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        合计后,符个位不是0时：个位变0 十位+1</td>
-                </tr>
-                <tr>
-                    <td>七对子荣和＼自摸</td>
-                    <td>定为25符</td>
-                </tr>
-                <tr>
-                    <td>平和+自摸</td>
-                    <td>定为20符</td>
-                </tr>
-                <tr>
-                    <td>吃牌后，合计20符时</td>
-                    <td>定为30符 </td>
-                </tr>
-            </table>
-        </div>
-        <div id="right">
-            <div id="problemSection">
-                <div>
-                    <table id="fieldInfo">
-                        <tr>
-                            <td id="fieldWind"></td>
-                            <td id="selfWind"></td>
-                            <td id="winType"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input id="fu" type="number" value="30" max="170" min="20" step="10" onfocus="this.select()" />符</td>
-                            <td>
-                                <div id="chkAns" class="button" onclick="showAnswer()">作答</div>
-                                <div id="correct" class="correct nodraw">正確</div>
-                                <div id="incorrect" class="incorrect nodraw">錯誤</div>
-                            </td>
-                            <td id="infob" class="describe">1</td>
-                        </tr>
-                    </table>
-                </div>
-                <div>
-                    <table id="handInfo">
-                        <tr>
-                            <td id="hand0" class="hand"></td>
-                            <td id="hand1" class="hand"></td>
-                            <td id="hand2" class="hand"></td>
-                            <td id="hand3" class="hand"></td>
-                            <td id="hand4" class="hand"></td>
-                        </tr>
-                        <tr>
-                            <td id="info0" class="describe">1</td>
-                            <td id="info1" class="describe">2</td>
-                            <td id="info2" class="describe">3</td>
-                            <td id="info3" class="describe">4</td>
-                            <td id="info4" class="describe">5</td>
-                        </tr>
-                        <tr>
-                            <td id="extra" colspan="5" class="describe"></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
 
-            <div id="nextQuestion" class="button hidden" onclick="generateProblem()">下一題</div>
+        <div id="problemSection">
+            <div>
+                <table id="fieldInfo">
+                    <tr>
+                        <td id="fieldWind"></td>
+                        <td id="selfWind"></td>
+                        <td id="winType"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input id="fu" type="number" value="30" max="170" min="20" step="10" onfocus="this.select()" />符</td>
+                        <td>
+                            <div id="chkAns" class="button" onclick="showAnswer()">作答</div>
+                            <div id="correct" class="correct nodraw">正確</div>
+                            <div id="incorrect" class="incorrect nodraw">錯誤</div>
+                        </td>
+                        <td>
+                            <div id="nextQuestion" class="button hidden" onclick="generateProblem()">下一題</div>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table id="handInfo">
+                    <tr>
+                        <td id="hand0" class="hand"></td>
+                        <td id="hand1" class="hand"></td>
+                        <td id="hand2" class="hand"></td>
+                        <td id="hand3" class="hand"></td>
+                        <td id="hand4" class="hand"></td>
+                    </tr>
+                    <tr>
+                        <td id="info0" class="describe">1</td>
+                        <td id="info1" class="describe">2</td>
+                        <td id="info2" class="describe">3</td>
+                        <td id="info3" class="describe">4</td>
+                        <td id="info4" class="describe">5</td>
+                    </tr>
+                    <tr>
+                        <td id="infob" colspan="5" class="describe">1</td>
+                    </tr>
+                    <tr>
+                        <td id="extra" colspan="5" class="describe"></td>
+                    </tr>
+                </table>
+            </div>
         </div>
+
+
+
     </div>
     </div>
 </body>
+
+
 <script>
-    //根据长宽隐藏
-    if (document.body.clientWidth < document.body.clientHeight) {
-        document.getElementById("left").style.display = "none";
-        document.getElementById("hintH").style.display = "";//显示
-    } else {
-        document.getElementById("hintH").style.display = "none";
-        document.getElementById("left").style.display = "";//显示
-    }
+
 
     var $ = function (e) { return document.getElementById(e) };
     var f = function (e) { return Math.floor(e) };
