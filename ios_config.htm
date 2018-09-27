@@ -1,0 +1,233 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>雀魂iOS魔改</title>
+</head>
+
+<body>
+    <h2>雀魂iOS魔改-配置生成器</h2>
+
+
+
+    <label><input type="radio" name="type" id="_rocket" value="rocket" checked>ShadowRocket配置</label>
+    <label><input type="radio" name="type" value="quantumult">Quantumult配置</label>
+    <hr />
+    <label><input type="radio" name="proxy" id="_direct" value="2" checked>只魔改 不代理</label>
+    <label><input type="radio" name="proxy" value="3">魔改且代理</label>
+    <hr />
+    <label>麻将桌背景：
+        <input type="text" id="bg" value="https://lietxia.github.io/res/005.png" /></label><br />
+    如果想自己制作，可以下载<a href="res/bg.psd">这个photoshop源文件</a><br />
+    再上传至<a href="https://sm.ms/">https://sm.ms</a> 取得URL填入这里
+    <hr />
+    <label>麻将牌样式：<select id="_pai">
+            <option value="rose">红色+背面玫瑰花纹</option>
+            <option value="0">【不修改】</option>
+            <option value="black">玫瑰牌背双面黑</option>
+            <option value="black2">双面纯黑</option>
+            <option value="blue">蓝色</option>
+            <option value="cyan">青色</option>
+            <option value="dark">黑色</option>
+            <option value="green">绿色</option>
+            <option value="orange">橙色</option>
+            <option value="pink">粉红</option>
+            <option value="purple">紫色</option>
+            <option value="red">红色</option>
+            <option value="yellow">黄色</option>
+            <option value="sakura">樱花牌背少女色(mumu制作)</option>
+            <option value="saki2">saki2.0麻将牌（無聲鈴鹿制作）</option>
+        </select></label>
+    <hr />
+
+    <label>改一姬语音：<select id="_yiji">
+            <option value="tianjiangyi">天江衣</option>
+            <option value="0">【不修改】</option>
+            <option value="qingshuigulonghua">清水谷龙华</option>
+            <option value="songshixuan">松实玄</option>
+            <option value="songshiyou">松实宥</option>
+            <option value="fulumeisuizi">福路美穗子</option>
+            <option value="gongyongxiao">宫永咲</option>
+            <option value="longmenyuantouhua">龙门渕透华</option>
+            <option value="mengnaizhenfan">梦乃真帆</option>
+            <option value="yuancunhe">原村和</option>
+            <option value="zhujingjiu">竹井久</option>
+            <option value="xuhejingtailang">须贺京太郎</option>
+            <option value="gongyongzhao">宫永照</option>
+            <option value="tengtianjingzi">藤田靖子</option>
+            <option value="lusenzhuo">鹭森灼</option>
+            <option value="xiaozoubachong">小走八重</option>
+            <option value="jiangkouxi">江口夕</option>
+            <option value="gaoyawennai">高鸭稳乃</option>
+            <option value="xinzichong">新子憧</option>
+            <option value="hongshijin">弘世堇</option>
+            <option value="jiangqirenmei">江崎仁美（政治羊）</option>
+            <option value="anheneimeizi">安河内美子</option>
+            <option value="seguyaoshen">涩谷尧深（茶杯）</option>
+            <option value="chituqinghui">赤土晴绘</option>
+            <option value="yiyechengzi">亦野诚子</option>
+            <option value="chuanjiubaohaozi">船久保浩子</option>
+            <option value="daxingdan">大星淡</option>
+            <option value="ertiaoquan">二条泉</option>
+            <option value="huatianhuang">花田煌（好棒姐）</option>
+            <option value="huangchuanqi">荒川憩</option>
+        </select></label>
+    <br />
+
+    <label>二阶堂语音：<select id="_erjietang">
+            <option value="longmenyuantouhua">龙门渕透华</option>
+            <option value="0">【不修改】</option>
+            <option value="qingshuigulonghua">清水谷龙华</option>
+            <option value="songshixuan">松实玄</option>
+            <option value="songshiyou">松实宥</option>
+            <option value="fulumeisuizi">福路美穗子</option>
+            <option value="gongyongxiao">宫永咲</option>
+            <option value="mengnaizhenfan">梦乃真帆</option>
+            <option value="tianjiangyi">天江衣</option>
+            <option value="yuancunhe">原村和</option>
+            <option value="zhujingjiu">竹井久</option>
+            <option value="xuhejingtailang">须贺京太郎</option>
+            <option value="gongyongzhao">宫永照</option>
+            <option value="tengtianjingzi">藤田靖子</option>
+            <option value="lusenzhuo">鹭森灼</option>
+            <option value="xiaozoubachong">小走八重</option>
+            <option value="jiangkouxi">江口夕</option>
+            <option value="gaoyawennai">高鸭稳乃</option>
+            <option value="xinzichong">新子憧</option>
+            <option value="hongshijin">弘世堇</option>
+            <option value="jiangqirenmei">江崎仁美（政治羊）</option>
+            <option value="anheneimeizi">安河内美子</option>
+            <option value="seguyaoshen">涩谷尧深（茶杯）</option>
+            <option value="chituqinghui">赤土晴绘</option>
+            <option value="yiyechengzi">亦野诚子</option>
+            <option value="chuanjiubaohaozi">船久保浩子</option>
+            <option value="daxingdan">大星淡</option>
+            <option value="ertiaoquan">二条泉</option>
+            <option value="huatianhuang">花田煌（好棒姐）</option>
+            <option value="huangchuanqi">荒川憩</option>
+        </select></label>
+    <hr />
+
+    <label>点数显示版：<select id="_point">
+            <option value="white-black">透明黑+透明白</option>
+            <option value="white">透明白</option>
+            <option value="0">【不修改】</option>
+        </select></label>
+    <hr />
+    <label>修改立直棒：<select id="_riichi">
+            <option value="black">黑</option>
+            <option value="0">【不修改】</option>
+        </select></label>
+    <hr />
+
+    <input type="button" onclick="RUN()" value="生成配置" />
+    配置文本↓<br /><textarea id="out"></textarea>
+    <hr />
+    <h2>【必看】魔改说明↓</h2>
+    iOS浏览器无法装插件，魔改通过VPN来【绑架网络】来实现<br />
+    用到的工具为ShadowRocket（国区能下载的是假的）<br />
+    可以用爱思助手，PP助手免费装，具体方法自己尝试<br />
+    这个软件本身是一个VPN<br />
+    <strong>如果你只想魔改，就用【只魔改 不代理】<br />
+        如果你还想用这个飜蘠，就选【魔改且代理】<br /></strong>
+    （代理需要自己有可以连的SS或SSR服务器，不会的请无视此项）<br />
+    <img src="img/sr.jpg" width="30%">
+    <h3>使用软件必须添加服务器</h3>
+    <strong>如果你是【只魔改 不代理】那么【首页】点右上角的【+】，乱写一通然后点右上角保存<br />
+        如果你是【魔改且代理】那么认真添加服务器之后保存<br /></strong>
+    1.ShadowRocket点击下方的【配置】<br />
+    2.长按default.conf选【编辑纯文本】，全选删除<br />
+    3.再将上方文本框的配置放进去，点右上角【保存】<br />
+    4.再点击【default.conf】使用配置<br />
+    5.下方切回【首页】<br />
+    <strong>如果你是【只魔改 不代理】那么【全局路由】选【直连】<br />
+        如果你是【魔改且代理】那么【全局路由】选【配置】<br /></strong>
+    6.点击【未连接】右侧的按钮，启用VPN<br />
+    <h3>魔改需要清理缓存</h3>
+    7.进入系统的【设置】→【safari浏览器】→【高级】→【网站数据】→【移除所有网站数据】
+    8.进入杠魂，随便看自己一个【牌谱】，测试魔改是否成功。
+
+
+</body>
+<script>
+    function RUN() {
+        var outstr = "";
+
+        if (document.getElementById("_rocket").checked) {
+            if (document.getElementById("_direct").checked) {
+                outstr = "# direct\n[General]\n\nbypass-system = true\n\nskip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local, e.crashlytics.com, captive.apple.com\n\nbypass-tun = 10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.0.0.0/24,192.0.2.0/24,192.88.99.0/24,192.168.0.0/16,198.18.0.0/15,198.51.100.0/24,203.0.113.0/24,224.0.0.0/4,255.255.255.255/32\n\ndns-server = \n\n[Rule]\n\nFINAL,DIRECT\n\n[Host]\n\nlocalhost = 127.0.0.1\n\n[URL Rewrite]";
+            } else {
+                outstr = "# proxy\n[General]\nbypass-system = true\nskip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local, e.crashlytics.com, captive.apple.com\nbypass-tun = 10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.0.0.0/24,192.0.2.0/24,192.88.99.0/24,192.168.0.0/16,198.18.0.0/15,198.51.100.0/24,203.0.113.0/24,224.0.0.0/4,255.255.255.255/32\ndns-server = \n\n\n[Rule]\nIP-CIDR,192.168.0.0/16,DIRECT\nIP-CIDR,10.0.0.0/8,DIRECT\nIP-CIDR,172.16.0.0/12,DIRECT\nIP-CIDR,127.0.0.0/8,DIRECT\nGEOIP,CN,DIRECT\nFINAL,PROXY\n\n[Host]\nlocalhost = 127.0.0.1\n\n[URL Rewrite]";
+            }
+        } else {
+            if (document.getElementById("_direct").checked) {
+                outstr = "[SERVER]\n\n[SOURCE]\n\n[BACKUP-SERVER]\n\n[SUSPEND-SSID]\n\n[POLICY]\n\n[DNS]\n\n[URL-REJECTION]\n\n[TCP]\nFINAL,DIRECT\n\n[GLOBAL]\n\n[HOST]\n\n[STATE]\nSTATE,AUTO\n\n[MITM]\n\n\n[REWRITE]";
+            }
+            else {
+                outstr = "[SERVER]\n\n[SOURCE]\n\n[BACKUP-SERVER]\n\n[SUSPEND-SSID]\n\n[POLICY]\n\n[DNS]\n\n[URL-REJECTION]\n\n[TCP]\nHOST-SUFFIX,googleapis.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,instagram.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,cdninstagram.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,fbcdn.net,PROXY,resolve-on-proxy\nHOST-SUFFIX,facebook.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,fb.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,gstatic.com,PROXY\nHOST-KEYWORD,google,PROXY,resolve-on-proxy\nIP-CIDR,10.0.0.0/8,DIRECT,no-resolve\nIP-CIDR,127.0.0.0/8,DIRECT,no-resolve\nIP-CIDR,172.16.0.0/12,DIRECT,no-resolve\nIP-CIDR,192.168.0.0/16,DIRECT,no-resolve\nGEOIP,CN,DIRECT\nFINAL,DIRECT\n\n[GLOBAL]\n\n[HOST]\n\n[STATE]\nSTATE,AUTO\n\n[MITM]\n\n\n[REWRITE]";
+            }
+        }
+        var pai_arr = ["1z", "2z", "3z", "4z", "5z", "6z", "7z",
+            "0m", "1m", "2m", "3m", "4m", "5m", "6m", "7m", "8m", "9m",
+            "0p", "1p", "2p", "3p", "4p", "5p", "6p", "7p", "8p", "9p",
+            "0s", "1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s"];
+
+        var s_pai = document.getElementById("_pai").options[document.getElementById("_pai").selectedIndex].value;
+        var s_yiji = document.getElementById("_yiji").options[document.getElementById("_yiji").selectedIndex].value;
+        var s_erjietang = document.getElementById("_erjietang").options[document.getElementById("_erjietang").selectedIndex].value;
+        var s_point = document.getElementById("_point").options[document.getElementById("_point").selectedIndex].value;
+        var s_riichi = document.getElementById("_riichi").options[document.getElementById("_riichi").selectedIndex].value;
+        var bg = document.getElementById("bg").value.replace(/\s+/g, "");
+
+        if (document.getElementById("_rocket").checked) {
+
+            if (bg != "" && bg != null) { outstr += "\n^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/scene/Assets/Resource/table/Table_Dif.png " + bg + " 302"; }
+            if (s_yiji != "0") { outstr += "\n"; }
+            if (s_erjietang != "0") { outstr += "\n"; }
+            if (s_point != "0") { outstr += "\n"; }
+            if (s_riichi != "0") { outstr += "\n^http(s?)://(www.)?majsoul.com/0/[^\/]+/scene/Assets/Resource/table/box_color.png https://lietxia.github.io/riichi/" + s_riichi + "/box_color.png 302"; }
+            if (s_pai != "0") {
+                outstr += "\n^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/res/atlas/myres3.png https://lietxia.github.io/dir/"
+                    + s_pai + "/res/atlas/myres3.png 302";
+                outstr += "\n^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/scene/Assets/Resource/effect/res_g1/mjui.png https://lietxia.github.io/dir/"
+                    + s_pai + "/scene/Assets/Resource/effect/res_g1/mjui.png 302";
+
+                for (var i = 0; i < pai_arr.length; i++) {
+                    outstr += "\n^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/scene/Assets/Resource/mjpai/3d/"
+                        + pai_arr[i] + ".png https://lietxia.github.io/dir/"
+                        + s_pai + "/scene/Assets/Resource/mjpai/3d/"
+                        + pai_arr[i] + ".png 302";
+                }
+            }
+        } else {
+            if (s_yiji != "0") { outstr += "\n"; }
+            if (s_erjietang != "0") { outstr += "\n"; }
+            if (s_point != "0") { outstr += "\n"; }
+            if (s_riichi != "0") { outstr += "\n"; }
+            if (s_pai != "0") { outstr += "\n"; }
+        }
+
+        /*
+        console.log(s_pai);
+        console.log(s_yiji);
+        console.log(s_erjietang);
+        console.log(s_point);
+        console.log(s_riichi);
+         火箭格式
+        ^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/res/atlas/myres3.png https://lietxia.github.io/mj/rose/myres3.png 302
+
+        ^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/scene/Assets/Resource/effect/res_g1/mjui.png https://lietxia.github.io/mj/rose/mjui.png 302
+
+        ^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/scene/Assets/Resource/table/Table_Dif.png https://lietxia.github.io/res/005.png 302
+
+        ^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/scene/Assets/Resource/mjpai/3d/0s.png https://lietxia.github.io/mj/rose/small/0s.png 302
+        */
+
+        /* quan格式
+        gggg url 302 fggg
+        */
+    }
+</script>
+
+</html>
