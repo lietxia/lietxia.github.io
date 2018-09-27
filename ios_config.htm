@@ -12,7 +12,9 @@
 
 
     <label><input type="radio" name="type" id="_rocket" value="rocket" checked>ShadowRocket配置</label>
-    <label><input type="radio" name="type" value="quantumult">Quantumult配置</label>
+    <!--
+        <label><input type="radio" name="type" value="quantumult">Quantumult配置</label>
+     -->
     <hr />
     <label><input type="radio" name="proxy" id="_direct" value="2" checked>只魔改 不代理</label>
     <label><input type="radio" name="proxy" value="3">魔改且代理</label>
@@ -156,16 +158,16 @@
 
         if (document.getElementById("_rocket").checked) {
             if (document.getElementById("_direct").checked) {
-                outstr = "# direct\n[General]\n\nbypass-system = true\n\nskip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local, e.crashlytics.com, captive.apple.com\n\nbypass-tun = 10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.0.0.0/24,192.0.2.0/24,192.88.99.0/24,192.168.0.0/16,198.18.0.0/15,198.51.100.0/24,203.0.113.0/24,224.0.0.0/4,255.255.255.255/32\n\ndns-server = \n\n[Rule]\n\nFINAL,DIRECT\n\n[Host]\n\nlocalhost = 127.0.0.1\n\n[URL Rewrite]";
+                outstr = "# direct\n[General]\n\nbypass-system = true\n\nskip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local, e.crashlytics.com, captive.apple.com\n\nbypass-tun = 10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.0.0.0/24,192.0.2.0/24,192.88.99.0/24,192.168.0.0/16,198.18.0.0/15,198.51.100.0/24,203.0.113.0/24,224.0.0.0/4,255.255.255.255/32\n\ndns-server = \n\n[Rule]\n\nFINAL,DIRECT\n\n[Host]\n\nlocalhost = 127.0.0.1\n\n[URL Rewrite]\n";
             } else {
-                outstr = "# proxy\n[General]\nbypass-system = true\nskip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local, e.crashlytics.com, captive.apple.com\nbypass-tun = 10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.0.0.0/24,192.0.2.0/24,192.88.99.0/24,192.168.0.0/16,198.18.0.0/15,198.51.100.0/24,203.0.113.0/24,224.0.0.0/4,255.255.255.255/32\ndns-server = \n\n\n[Rule]\nIP-CIDR,192.168.0.0/16,DIRECT\nIP-CIDR,10.0.0.0/8,DIRECT\nIP-CIDR,172.16.0.0/12,DIRECT\nIP-CIDR,127.0.0.0/8,DIRECT\nGEOIP,CN,DIRECT\nFINAL,PROXY\n\n[Host]\nlocalhost = 127.0.0.1\n\n[URL Rewrite]";
+                outstr = "# proxy\n[General]\nbypass-system = true\nskip-proxy = 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local, e.crashlytics.com, captive.apple.com\nbypass-tun = 10.0.0.0/8,100.64.0.0/10,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.0.0.0/24,192.0.2.0/24,192.88.99.0/24,192.168.0.0/16,198.18.0.0/15,198.51.100.0/24,203.0.113.0/24,224.0.0.0/4,255.255.255.255/32\ndns-server = \n\n\n[Rule]\nIP-CIDR,192.168.0.0/16,DIRECT\nIP-CIDR,10.0.0.0/8,DIRECT\nIP-CIDR,172.16.0.0/12,DIRECT\nIP-CIDR,127.0.0.0/8,DIRECT\nGEOIP,CN,DIRECT\nFINAL,PROXY\n\n[Host]\nlocalhost = 127.0.0.1\n\n[URL Rewrite]\n";
             }
         } else {
             if (document.getElementById("_direct").checked) {
-                outstr = "[SERVER]\n\n[SOURCE]\n\n[BACKUP-SERVER]\n\n[SUSPEND-SSID]\n\n[POLICY]\n\n[DNS]\n\n[URL-REJECTION]\n\n[TCP]\nFINAL,DIRECT\n\n[GLOBAL]\n\n[HOST]\n\n[STATE]\nSTATE,AUTO\n\n[MITM]\n\n\n[REWRITE]";
+                outstr = "[SERVER]\n\n[SOURCE]\n\n[BACKUP-SERVER]\n\n[SUSPEND-SSID]\n\n[POLICY]\n\n[DNS]\n\n[URL-REJECTION]\n\n[TCP]\nFINAL,DIRECT\n\n[GLOBAL]\n\n[HOST]\n\n[STATE]\nSTATE,AUTO\n\n[MITM]\n\n\n[REWRITE]\n";
             }
             else {
-                outstr = "[SERVER]\n\n[SOURCE]\n\n[BACKUP-SERVER]\n\n[SUSPEND-SSID]\n\n[POLICY]\n\n[DNS]\n\n[URL-REJECTION]\n\n[TCP]\nHOST-SUFFIX,googleapis.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,instagram.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,cdninstagram.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,fbcdn.net,PROXY,resolve-on-proxy\nHOST-SUFFIX,facebook.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,fb.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,gstatic.com,PROXY\nHOST-KEYWORD,google,PROXY,resolve-on-proxy\nIP-CIDR,10.0.0.0/8,DIRECT,no-resolve\nIP-CIDR,127.0.0.0/8,DIRECT,no-resolve\nIP-CIDR,172.16.0.0/12,DIRECT,no-resolve\nIP-CIDR,192.168.0.0/16,DIRECT,no-resolve\nGEOIP,CN,DIRECT\nFINAL,DIRECT\n\n[GLOBAL]\n\n[HOST]\n\n[STATE]\nSTATE,AUTO\n\n[MITM]\n\n\n[REWRITE]";
+                outstr = "[SERVER]\n\n[SOURCE]\n\n[BACKUP-SERVER]\n\n[SUSPEND-SSID]\n\n[POLICY]\n\n[DNS]\n\n[URL-REJECTION]\n\n[TCP]\nHOST-SUFFIX,googleapis.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,instagram.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,cdninstagram.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,fbcdn.net,PROXY,resolve-on-proxy\nHOST-SUFFIX,facebook.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,fb.com,PROXY,resolve-on-proxy\nHOST-SUFFIX,gstatic.com,PROXY\nHOST-KEYWORD,google,PROXY,resolve-on-proxy\nIP-CIDR,10.0.0.0/8,DIRECT,no-resolve\nIP-CIDR,127.0.0.0/8,DIRECT,no-resolve\nIP-CIDR,172.16.0.0/12,DIRECT,no-resolve\nIP-CIDR,192.168.0.0/16,DIRECT,no-resolve\nGEOIP,CN,DIRECT\nFINAL,DIRECT\n\n[GLOBAL]\n\n[HOST]\n\n[STATE]\nSTATE,AUTO\n\n[MITM]\n\n\n[REWRITE]\n";
             }
         }
         var pai_arr = ["1z", "2z", "3z", "4z", "5z", "6z", "7z",
@@ -182,32 +184,35 @@
 
         if (document.getElementById("_rocket").checked) {
 
-            if (bg != "" && bg != null) { outstr += "\n^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/scene/Assets/Resource/table/Table_Dif.png " + bg + " 302"; }
-            if (s_yiji != "0") { outstr += "\n"; }
-            if (s_erjietang != "0") { outstr += "\n"; }
-            if (s_point != "0") { outstr += "\n"; }
-            if (s_riichi != "0") { outstr += "\n^http(s?)://(www.)?majsoul.com/0/[^\/]+/scene/Assets/Resource/table/box_color.png https://lietxia.github.io/riichi/" + s_riichi + "/box_color.png 302"; }
-            if (s_pai != "0") {
-                outstr += "\n^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/res/atlas/myres3.png https://lietxia.github.io/dir/"
-                    + s_pai + "/res/atlas/myres3.png 302";
-                outstr += "\n^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/scene/Assets/Resource/effect/res_g1/mjui.png https://lietxia.github.io/dir/"
-                    + s_pai + "/scene/Assets/Resource/effect/res_g1/mjui.png 302";
-
-                for (var i = 0; i < pai_arr.length; i++) {
-                    outstr += "\n^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/scene/Assets/Resource/mjpai/3d/"
-                        + pai_arr[i] + ".png https://lietxia.github.io/dir/"
-                        + s_pai + "/scene/Assets/Resource/mjpai/3d/"
-                        + pai_arr[i] + ".png 302";
-                }
+            if (bg != "" && bg != null) {
+                outstr += "^<http(s?)://(www\\.)?majsoul.com/0/v[^\\/]+/scene/Assets/Resource/table/Table_Dif\\.png " + bg + " 302\n";
             }
+
+            if (s_yiji != "0") {
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^/]+/audio/sound/girl/act_(chi|pon|kan|ron|tumo|rich)\\.mp3 https://lietxia.github.io/sound/" + s_yiji + "/act_$3.mp3 302\n";
+            }
+
+            if (s_erjietang != "0") {
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^/]+/audio/sound/yujie/act_(chi|pon|kan|ron|tumo|rich)\\.mp3 https://lietxia.github.io/sound/" + s_erjietang + "/act_$3.mp3 302\n";
+            }
+
+            if (s_point != "0") {
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\/]+/scene/Assets/Resource/table/tablemid/(.*\\.png) https://lietxia.github.io/board/" + s_point + "/$3 302\n";
+            }
+
+            if (s_riichi != "0") {
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\/]+/scene/Assets/Resource/table/box_color\\.png https://lietxia.github.io/riichi/" + s_riichi + "/box_color.png 302\n";
+            }
+
+            if (s_pai != "0") {
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^/]+/(scene/Assets/Resource/effect/res_g1/mjui.png|res/atlas/myres3.png|scene/Assets/Resource/mjpai/3d/.*\\.png) https://lietxia.github.io/dir/" + s_pai + "/$3 302\n";
+            }
+
         } else {
-            if (s_yiji != "0") { outstr += "\n"; }
-            if (s_erjietang != "0") { outstr += "\n"; }
-            if (s_point != "0") { outstr += "\n"; }
-            if (s_riichi != "0") { outstr += "\n"; }
-            if (s_pai != "0") { outstr += "\n"; }
+            //
         }
 
+        document.getElementById("out").value = outstr;
         /*
         console.log(s_pai);
         console.log(s_yiji);
@@ -215,6 +220,9 @@
         console.log(s_point);
         console.log(s_riichi);
          火箭格式
+
+         "^http(s?)://(www\\.)?majsoul\\.com/0/[^/]+/scene/Assets/Resource/table/tablemid/(.*\\.png)"
+         
         ^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/res/atlas/myres3.png https://lietxia.github.io/mj/rose/myres3.png 302
 
         ^<http(s?)://(www.)?majsoul.com/0/v[^\/]+/scene/Assets/Resource/effect/res_g1/mjui.png https://lietxia.github.io/mj/rose/mjui.png 302
