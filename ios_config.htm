@@ -8,11 +8,12 @@
 
 <body>
     <label><input type="radio" name="type" id="_rocket" value="rocket" checked>ShadowRocket配置</label>
-
+    <br />
     <label><input type="radio" name="type" value="quantumult">Quantumult配置</label>
 
     <hr />
     <label><input type="radio" name="proxy" id="_direct" value="2" checked>只魔改 不代理</label>
+    <br />
     <label><input type="radio" name="proxy" value="3">魔改且代理</label>
     <hr />
     <label>麻将桌背景：
@@ -121,8 +122,6 @@
 
     <input type="button" onclick="RUN()" value="生成配置" />
     配置↓<br /><textarea id="out"></textarea>
-    <hr />
-
 </body>
 <script>
     function RUN() {
