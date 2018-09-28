@@ -3,7 +3,7 @@ ios魔改方法
 
 ##iOS魔改方法
 
-[见这里](ios_config.htm)
+[gimmick: iframe](ios_config.htm)
 ---
 
 ##解决iPad分屏时旋转
