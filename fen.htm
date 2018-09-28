@@ -1,26 +1,65 @@
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>算分</title>
 </head>
+
 <body>
+    <h2>符翻算分器</h2>
+    <label><input type="radio" name="type" id="_type" checked>青天井</label>
+    <br />
+    <label><input type="radio" name="type">普通</label>
+    <br />
     <label>符：<input type="text" id="fu" /></label><br />
     <label>翻：<input type="text" id="fan" /></label><br />
     <input type="button" onclick="RUN()" value="計算" />
     <div id="display"></div>
+
+    <script src="big.min.js"></script>
+    <script>
+        function RUN() {
+            var fan = Number(document.getElementById("fan").value);//获取翻
+            var fu = Number(document.getElementById("fu").value);//获取符
+            var out = "";
+            if (document.getElementById("_type").checked) {
+                //青天井
+                var x = new Big(2);
+                x = x.pow(fan + 2);
+                var _6x = x.times(6 * fu / 100).round(0, 3).toFixed();
+                var _4x = x.times(4 * fu / 100).round(0, 3).toFixed();
+                var _2x = x.times(2 * fu / 100).round(0, 3).toFixed();
+                var _1x = x.times(fu / 100).round(0, 3).toFixed();
+
+                out += "親榮和：" + _6x + "00\n";
+                out += "子榮和：" + _4x + "00\n";
+                out += "親自摸，每人出：" + _2x + "00\n";
+                out += "子自摸，子家出：" + _1x + "00\n";
+                out += "子自摸，親家出：" + _2x + "00\n";
+
+            }
+            else {//普通模式
+                if (fan < 5) {//小于5翻
+                    var base = fu * Math.pow(2, (fan + 2));
+                    if (base > 2000) { base = 2000 }
+                } else {//大于4翻
+                    var base = 2000;
+                    if (fan === 6 || fan === 7) { base = 3000; }
+                    if (fan >= 6 && fan <= 10) { base = 4000; }
+                    if (fan === 11 || fan === 12) { base = 6000; }
+                    if (fan >= 13) { base = 8000; }
+                }
+                out += "親榮和：" + Math.ceil(base * 6 / 100) + "00\n";
+                out += "子榮和：" + Math.ceil(base * 4 / 100) + "00\n";
+                out += "親自摸，每人出：" + Math.ceil(base * 2 / 100) + "00\n";
+                out += "子自摸，子家出：" + Math.ceil(base / 100) + "00\n";
+                out += "子自摸，親家出：" + Math.ceil(base * 2 / 100) + "00\n";
+
+            }
+            document.getElementById("display").innerText = out;
+        }
+    </script>
 </body>
-<script>
-    function RUN() {
-        var fan = Number(document.getElementById("fan").value);//获取翻
-        var fu = Number(document.getElementById("fu").value);//获取符
-        var out = "";
-        out += "親榮和：" + Math.ceil(6 * fu * Math.pow(2, (fan + 2)) / 100) * 100 + "\n";
-        out += "子榮和：" + Math.ceil(4 * fu * Math.pow(2, (fan + 2)) / 100) * 100 + "\n";
-        out += "親自摸，每人出：" + Math.ceil(2 * fu * Math.pow(2, (fan + 2)) / 100) * 100 + "\n";
-        out += "子自摸，親出：" + Math.ceil(2 * fu * Math.pow(2, (fan + 2)) / 100) * 100
-            + "，子出" + Math.ceil(fu * Math.pow(2, (fan + 2)) / 100) * 100 + "\n";
-        document.getElementById("display").innerText = out;//获取符
-    }
-</script>
+
 </html>
