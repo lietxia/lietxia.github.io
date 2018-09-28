@@ -7,8 +7,6 @@
 </head>
 
 <body>
-    <h2>雀魂iOS魔改-配置生成器</h2>
-
     <label><input type="radio" name="type" id="_rocket" value="rocket" checked>ShadowRocket配置</label>
 
     <label><input type="radio" name="type" value="quantumult">Quantumult配置</label>
@@ -42,7 +40,6 @@
     <hr />
 
     <label>改一姬语音：<select id="_yiji">
-            <option value="tianjiangyi">天江衣</option>
             <option value="0">【不修改】</option>
             <option value="qingshuigulonghua">清水谷龙华</option>
             <option value="songshixuan">松实玄</option>
@@ -51,6 +48,7 @@
             <option value="gongyongxiao">宫永咲</option>
             <option value="longmenyuantouhua">龙门渕透华</option>
             <option value="mengnaizhenfan">梦乃真帆</option>
+            <option value="tianjiangyi">天江衣</option>
             <option value="yuancunhe">原村和</option>
             <option value="zhujingjiu">竹井久</option>
             <option value="xuhejingtailang">须贺京太郎</option>
@@ -76,13 +74,13 @@
     <br />
 
     <label>二阶堂语音：<select id="_erjietang">
-            <option value="longmenyuantouhua">龙门渕透华</option>
             <option value="0">【不修改】</option>
             <option value="qingshuigulonghua">清水谷龙华</option>
             <option value="songshixuan">松实玄</option>
             <option value="songshiyou">松实宥</option>
             <option value="fulumeisuizi">福路美穗子</option>
             <option value="gongyongxiao">宫永咲</option>
+            <option value="longmenyuantouhua">龙门渕透华</option>
             <option value="mengnaizhenfan">梦乃真帆</option>
             <option value="tianjiangyi">天江衣</option>
             <option value="yuancunhe">原村和</option>
@@ -122,36 +120,8 @@
     <hr />
 
     <input type="button" onclick="RUN()" value="生成配置" />
-    配置文本↓<br /><textarea id="out"></textarea>
+    配置↓<br /><textarea id="out"></textarea>
     <hr />
-    <h2>【必看】魔改说明↓</h2>
-    iOS浏览器无法装插件，魔改通过VPN来【绑架网络】来实现<br />
-    用到的工具为ShadowRocket（国区能下载的是假的）<br />
-    可以用爱思助手，PP助手免费装，具体方法自己尝试<br />
-    这个软件本身是一个VPN<br />
-    <strong>如果你只想魔改，就用【只魔改 不代理】<br />
-        如果你还想用这个飜蘠，就选【魔改且代理】<br /></strong>
-    （代理需要自己有可以连的SS或SSR服务器，不会的请无视此项）<br />
-    <img src="img/sr.jpg" width="30%">
-    <h3>使用软件必须添加服务器</h3>
-    <strong>如果你是【只魔改 不代理】那么【首页】点右上角的【+】，乱写一通然后点右上角保存<br />
-        如果你是【魔改且代理】那么认真添加服务器之后保存<br /></strong>
-    1.ShadowRocket点击下方的【配置】<br />
-    2.长按default.conf选【编辑纯文本】，全选删除<br />
-    3.再将上方文本框的配置放进去，点右上角【保存】<br />
-    4.再点击【default.conf】使用配置<br />
-    5.下方切回【首页】<br />
-    <strong>如果你是【只魔改 不代理】那么【全局路由】选【直连】<br />
-        如果你是【魔改且代理】那么【全局路由】选【配置】<br /></strong>
-    6.点击【未连接】右侧的按钮，启用VPN<br />
-    <h3>魔改需要清理缓存</h3>
-    你有2个方法：<br />
-    【推荐】一个是用safari的隐私模式先测试<br />
-    【safari清理缓存】进入系统的【设置】→【safari浏览器】→【高级】→【网站数据】→【移除所有网站数据】<br />
-    7.进入杠魂，随便看自己一个【牌谱】，测试魔改是否成功。
-    <hr />
-    如果VPN用quantumult，运行模式要选【自动分流】
-
 
 </body>
 <script>
