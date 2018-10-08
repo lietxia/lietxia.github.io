@@ -114,12 +114,13 @@
             <option value="0">【不修改】</option>
         </select></label>
     <hr />
+    <!--
     <label>修改立直棒：<select id="_riichi">
             <option value="black">黑</option>
             <option value="0">【不修改】</option>
         </select></label>
     <hr />
-
+    -->
     <input type="button" onclick="RUN()" value="生成配置" />
     配置↓<br /><textarea id="out"></textarea>
 </body>
@@ -152,52 +153,54 @@
         if (document.getElementById("_rocket").checked) {
 
             if (bg != "" && bg != null) {
-                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/v[^\\/]+/scene/Assets/Resource/table/Table_Dif\\.png " + bg + " 302\n";
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^/]+/scene/Assets/Resource/tablecloth/[^/]+/Table_Dif\\.jpg " + bg + " 302\n";
             }
 
             if (s_yiji != "0") {
-                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/audio/sound/girl/act_(chi|pon|kan|ron|tumo|rich)\\.mp3 https://lietxia.github.io/sound/" + s_yiji + "/act_$3.mp3 302\n";
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3 https://lietxia.github.io/sound/" + s_yiji + "/act_$3.mp3 302\n";
             }
 
             if (s_erjietang != "0") {
-                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/audio/sound/yujie/act_(chi|pon|kan|ron|tumo|rich)\\.mp3 https://lietxia.github.io/sound/" + s_erjietang + "/act_$3.mp3 302\n";
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3 https://lietxia.github.io/sound/" + s_erjietang + "/act_$3.mp3 302\n";
             }
 
             if (s_point != "0") {
                 outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/scene/Assets/Resource/table/tablemid/(.*\\.png) https://lietxia.github.io/board/" + s_point + "/$3 302\n";
             }
-
+            /*
             if (s_riichi != "0") {
                 outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/scene/Assets/Resource/table/box_color\\.png https://lietxia.github.io/riichi/" + s_riichi + "/box_color.png 302\n";
             }
+            */
 
             if (s_pai != "0") {
-                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/(scene/Assets/Resource/effect/res_g1/mjui.png|res/atlas/myres3.png|scene/Assets/Resource/mjpai/3d/.*\\.png) https://lietxia.github.io/dir/" + s_pai + "/$3 302\n";
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^/]+/(res/atlas/myres2/mjp|scene/Assets/Resource/mjpai)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png) https://lietxia.github.io/dir/" + s_pai + "/$3/$4 302\n";
             }
 
         } else {
             if (bg != "" && bg != null) {
-                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/v[^\\/]+/scene/Assets/Resource/table/Table_Dif\\.png url 302 " + bg + "\n";
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^/]+/scene/Assets/Resource/tablecloth/[^/]+/Table_Dif\\.jpg url 302 " + bg + "\n";
             }
 
             if (s_yiji != "0") {
-                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/audio/sound/girl/act_(chi|pon|kan|ron|tumo|rich)\\.mp3 url 302 https://lietxia.github.io/sound/" + s_yiji + "/act_$3.mp3\n";
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3 url 302 https://lietxia.github.io/sound/" + s_yiji + "/act_$3.mp3\n";
             }
 
             if (s_erjietang != "0") {
-                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/audio/sound/yujie/act_(chi|pon|kan|ron|tumo|rich)\\.mp3 url 302 https://lietxia.github.io/sound/" + s_erjietang + "/act_$3.mp3\n";
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3 url 302 https://lietxia.github.io/sound/" + s_erjietang + "/act_$3.mp3\n";
             }
 
             if (s_point != "0") {
                 outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/scene/Assets/Resource/table/tablemid/(.*\\.png) url 302 https://lietxia.github.io/board/" + s_point + "/$3\n";
             }
-
+            /*
             if (s_riichi != "0") {
                 outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/scene/Assets/Resource/table/box_color\\.png url 302 https://lietxia.github.io/riichi/" + s_riichi + "/box_color.png\n";
             }
+            */
 
             if (s_pai != "0") {
-                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^\\/]+/(scene/Assets/Resource/effect/res_g1/mjui.png|res/atlas/myres3.png|scene/Assets/Resource/mjpai/3d/.*\\.png) url 302 https://lietxia.github.io/dir/" + s_pai + "/$3\n";
+                outstr += "^http(s?)://(www\\.)?majsoul\\.com/0/[^/]+/(res/atlas/myres2/mjp|scene/Assets/Resource/mjpai)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png) url 302 https://lietxia.github.io/dir/" + s_pai + "/$3/$4\n";
             }
 
         }
