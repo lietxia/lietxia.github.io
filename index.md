@@ -23,21 +23,12 @@
 ![](img/050.png)
 
 
-# 关于Chrome
+# Chrome系浏览器装插件
 > 这个插件有Chrome版，可以在360极速浏览器、360安全浏览器、QQ浏览器等基于chromium的浏览器上安装
 > 但由于chrome插件商店被墙，安装插件比较麻烦
 > 所以推荐使用firefox，Firefox的安卓版一样可以装插件进行魔改，步骤相同
 
-chrome从商店安装插件地址  
-[https://chrome.google.com/webstore/detail/header-editor/eningockdidmgiojffjmkdblpjocbhgh](https://chrome.google.com/webstore/detail/header-editor/eningockdidmgiojffjmkdblpjocbhgh)
-
-chrome直接下载插件地址  
-[https://lietxia.github.io/res/HeaderEditor-3.0.8.crx](https://lietxia.github.io/res/HeaderEditor-3.0.8.crx)
-
-chrome及360极速浏览器、360安全浏览器、QQ浏览器等基于chromium的浏览器的插件安装方法  
-见移步 [旧方法](old.md)  的【魔改准备】条目，这里不再累述  
-插件使用方法各浏览器完全相同，安卓也相同。
-
+移步-> [Chrome系浏览器装插件](chrome.md)
 
 ## 一、Firefox装插件方法
 firefox打开  
