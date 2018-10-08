@@ -27,8 +27,7 @@
 > 这个插件有Chrome版，可以在360极速浏览器、360安全浏览器、QQ浏览器等基于chromium的浏览器上安装
 > 但由于chrome插件商店被墙，安装插件比较麻烦
 > 所以推荐使用firefox，Firefox的安卓版一样可以装插件进行魔改，步骤相同
-
-移步-> [Chrome系浏览器装插件](chrome.md)
+> 移步-> [Chrome系浏览器装插件](chrome.md)
 
 ## 一、Firefox装插件方法
 firefox打开  
