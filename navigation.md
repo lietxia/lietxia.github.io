@@ -1,10 +1,6 @@
 # MajhongWiki
 
-[首页](index.md)
-
-[PC旧魔改方法](old.md)
-
-[安卓旧魔改方法](android.md)
+[首页|PC和安卓魔改](index.md)
 
 [iOS魔改方法](ios.md)
 
