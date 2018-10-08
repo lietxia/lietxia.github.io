@@ -4,6 +4,8 @@ ios魔改方法
 ## iOS魔改方法
 
 ### 雀魂iOS魔改-配置生成器  
+
+[新窗口打开配置生成器](ios_config.htm)
 [gimmick: iframe](ios_config.htm)
 
 ### 【必看】魔改说明↓
