@@ -8,4 +8,4 @@
 
 [gimmick:Disqus](lietxia)
 
-[gimmick:ThemeChooser](更改主题)
+[gimmick:ThemeChooser](THEME)
