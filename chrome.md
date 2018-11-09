@@ -1,7 +1,7 @@
 chrome系浏览器装插件方法
 =============
 # 能翻墙的情况
-进入商店直接安卓 [https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii](https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii)
+进入商店直接安卓 [https://chrome.google.com/webstore/detail/header-editor/eningockdidmgiojffjmkdblpjocbhgh](https://chrome.google.com/webstore/detail/header-editor/eningockdidmgiojffjmkdblpjocbhgh)
 
 
 # 不能翻墙的情况
