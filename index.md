@@ -67,7 +67,7 @@ firefox打开
 如果想要边框，可以下载我的photoshop文档：  
 [https://lietxia.github.io/res/bg.psd](https://lietxia.github.io/res/bg.psd)
 
-然后传到一个【可以外链的图床】推荐图床[https://sm.ms](https://sm.m])
+然后传到一个【可以外链的图床】推荐图床[https://sm.ms](https://sm.ms)
 
 把网址换成你所需的即可
 
