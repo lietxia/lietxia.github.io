@@ -7,7 +7,7 @@ document.body.appendChild(new_script);
 
 //原来的百度脚本
 var new_script = document.createElement("script");
-new_script.setAttribute("src", "http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=399644784&x=1");
+new_script.setAttribute("src", "http://push.zhanzhang.baidu.com/push.js?123");
 document.body.appendChild(new_script);
 
 var new_script = document.createElement("script");
