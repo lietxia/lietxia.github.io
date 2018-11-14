@@ -11,4 +11,6 @@ var new_script = document.createElement("script");
 new_script.setAttribute("src", "https://lietxia.github.io/res/screenfull.min.js");
 document.body.appendChild(new_script);
 
-screenfull.request();
+window.onload = function () {
+    screenfull.request();
+}
