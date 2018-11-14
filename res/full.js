@@ -13,7 +13,8 @@ window.onload = function () {
     var con;
     con = confirm("是否全屏？"); //在页面上弹出对话框
     if (con == true) {
-        screenfull.request(document.getElementById('layaContainer'));
+        const el = document.getElementById('target');
+        screenfull.request(el);
     }
 }
 
