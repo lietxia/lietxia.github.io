@@ -1,6 +1,6 @@
 
 var new_script = document.createElement("script");
-new_script.setAttribute("src", "https://raw.githubusercontent.com/lietxia/lietxia.github.io/master/res/screenfull.min.js");
+new_script.setAttribute("src", "https://lietxia.github.io/res/screenfull.min.js");
 document.body.appendChild(new_script);
 
 var new_script = document.createElement("script");
