@@ -7,12 +7,12 @@ document.body.appendChild(new_script);
 
 //原来的百度脚本
 var new_script = document.createElement("script");
-new_script.setAttribute("src", "http://push.zhanzhang.baidu.com/push.js?123");
+new_script.setAttribute("src", "http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=399644784#x");
 document.body.appendChild(new_script);
 
 var new_script = document.createElement("script");
 
-document.getElementById('layaContainer').onload = function () {
+window.onload = function () {
     var con;
     con = confirm("是否全屏？"); //在页面上弹出对话框
     if (con == true) {
