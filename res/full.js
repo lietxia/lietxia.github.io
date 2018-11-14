@@ -12,15 +12,13 @@ document.body.appendChild(new_script);
 
 var new_script = document.createElement("script");
 
-window.onload = function () {
-    var con;
-    con = confirm("是否全屏？"); //在页面上弹出对话框
+
+$(function(){
+    con = confirm("是否全屏？"); 
     if (con == true) {
-        //const el = document.getElementById('layaContainer');
         screenfull.request();
     }
-}
-
+  });
 
 
 
