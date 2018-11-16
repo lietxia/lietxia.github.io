@@ -4,7 +4,8 @@
 
 > 目前魔改可以在PC+安卓+iOS运行。有疑问可以联系我 QQ252373009
 > 【更新方法】在【导入导出】再次下载规则覆盖即可
-> 【注意！】4.0版的插件导入规则默认启用所有规则，请批量关闭
+> 【注意！】4.0版的插件导入规则默认启用所有规则，请批量关闭  
+> 【更新！！】添加了[在线合成背景图的小程序](makebg.htm)
 
 > 魔改完有时一些元素没有显示->刷新
 > 魔改完清理一下浏览器缓存
@@ -63,13 +64,14 @@ firefox打开
 如果你要改背景，打开插件，编辑第5个规则【雀魂-修改背景】
 把【重定向至】改成你要改的网址
 
-牌桌原图是正方形，他会自动拉伸，直接换图片不带边框  
-如果想要边框，可以下载我的photoshop文档：  
-[https://lietxia.github.io/res/bg.psd](https://lietxia.github.io/res/bg.psd)
+以下方法已过时，新方法:[在线合成背景图的小程序](makebg.htm)
+~~牌桌原图是正方形，他会自动拉伸，直接换图片不带边框~~  
+~~如果想要边框，可以下载我的photoshop文档：~~  
+~~[https://lietxia.github.io/res/bg.psd](https://lietxia.github.io/res/bg.psd)~~
 
-然后传到一个【可以外链的图床】推荐图床[https://sm.ms](https://sm.ms)
+~~然后传到一个【可以外链的图床】推荐图床[https://sm.ms](https://sm.ms)~~
 
-把网址换成你所需的即可
+~~把网址换成你所需的即可~~
 
 ![](img/053.png)
 
@@ -78,7 +80,7 @@ firefox打开
 ## （插件说明）更加自由的DIY
 
 > 魔改教程到上面就结束了，不过如果你想更自由的DIY，就从这里看下去（会有些复杂）
-> 我DIY所有的素材，牌背啥的psd，牌矢量图等等全在 [这个github](https://github.com/lietxia/lietxia.github.io) 
+> 我DIY所有的素材，牌背啥的psd，牌矢量图等等全在 [这个github](https://github.com/lietxia/lietxia.github.io)  
 
 ![](img/054.png)
 
