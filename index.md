@@ -66,13 +66,13 @@ firefox打开
 
 以下方法已过时，新方法:[在线合成背景图的小程序](makebg.htm)
 
-~~牌桌原图是正方形，他会自动拉伸，直接换图片不带边框~~  
-~~如果想要边框，可以下载我的photoshop文档：~~  
-~~[https://lietxia.github.io/res/bg.psd](https://lietxia.github.io/res/bg.psd)~~
+~~牌桌原图是正方形，他会自动拉伸，直接换图片不带边框  
+如果想要边框，可以下载我的photoshop文档：  
+[https://lietxia.github.io/res/bg.psd](https://lietxia.github.io/res/bg.psd)
 
-~~然后传到一个【可以外链的图床】推荐图床[https://sm.ms](https://sm.ms)~~
+然后传到一个【可以外链的图床】推荐图床[https://sm.ms](https://sm.ms)
 
-~~把网址换成你所需的即可~~
+把网址换成你所需的即可~~
 
 ![](img/053.png)
 
