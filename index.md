@@ -65,6 +65,7 @@ firefox打开
 把【重定向至】改成你要改的网址
 
 以下方法已过时，新方法:[在线合成背景图的小程序](makebg.htm)
+
 ~~牌桌原图是正方形，他会自动拉伸，直接换图片不带边框~~  
 ~~如果想要边框，可以下载我的photoshop文档：~~  
 ~~[https://lietxia.github.io/res/bg.psd](https://lietxia.github.io/res/bg.psd)~~
