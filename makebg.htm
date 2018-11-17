@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <title>雀魂桌布制作工具</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
@@ -37,7 +38,7 @@
     这个URL填到【重定向至：xxxx】
     <hr />
     <canvas id="myCanvas" width="1000" height="1000" style="border:1px solid #d3d3d3;">
-        Your browser does not support the HTML5 canvas tag.
+        请不要用那么老的浏览器！Your browser does not support the HTML5 canvas tag.
     </canvas>
     <img src="res/border.png" id="bg" />
 
@@ -99,8 +100,6 @@
                     cxt.fillStyle = 'rgba(0, 0, 0, ' + alpha + ')';
                     cxt.fillRect(0, 0, 1000, 1000);
                     cxt.drawImage(bg, 0, 0, 1000, 1000);
-                    window.makeimg = Canvas.toDataURL('image/jpeg');
-                    window.maked = 1;
                 }
             }
         };
