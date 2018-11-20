@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>天凤桌布制作工具</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <style>
+        .hid{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>浏览器不能太旧，最低IE9</h3>
+    <label>图片长(像素)<input type="text" id="img_w" value="1024" /></label><br />
+    <label>图片高(像素)<input type="text" id="img_h" value="768" /></label><br />
+    <label>距左侧(像素)<input type="text" id="img_x" value="0" /></label><br />
+    <label>距上侧(像素)<input type="text" id="img_y" value="0" /></label><br />
+
+    <h3>边框</h3>
+    <label><input type="radio" value="border1" name="border" checked="checked" />AMOS ULTIMA</label><br />
+    <label><input type="radio" value="border2" name="border" />イーガーMJ</label><br />
+    <label><input type="radio" value="border3" name="border" />木框</label><br />
+    <label><input type="radio" value="border4" name="border" />蓝色边框</label>
+    <hr />
+
+    <h3>得点板</h3>
+    <label><input type="radio" value="box1" name="box" id="rbox1" checked="checked" />AMOS ULTIMAサイコロBOX</label><br />
+    <label><input type="radio" value="box2" name="box" />MJサイコロBOX</label><br />
+    <hr />
+
+    <h3>缝</h3>
+    <label><input type="radio" value="line1" name="line" id="rline1" checked="checked" />AMOS ULTIMA溝</label><br />
+    <label><input type="radio" value="line2" name="line" />一般</label><br />
+    <hr />
+
+    <label>选择图片上传：
+        <input type="file" accept="image/*" id="imgup">
+    </label><br />
+    <input type="button" onclick="run()" value="图片合成"><br />
+    合成完，右键->保存[底部的图片]<br />
+    <img src="tenhou/border1.png" id="border1" class="hid" />
+    <img src="tenhou/border2.png" id="border2" class="hid" />
+    <img src="tenhou/border3.png" id="border3" class="hid" />
+    <img src="tenhou/border4.png" id="border4" class="hid" />
+    <img src="tenhou/line1.png" id="line1" class="hid" />
+    <img src="tenhou/line2.png" id="line2" class="hid" />
+    <img src="tenhou/box1.png" id="box1" class="hid" />
+    <img src="tenhou/box2.png" id="box2" class="hid" />
+    <hr>
+    <canvas id="myCanvas" width="1024" height="768" style="border:1px solid #d3d3d3;">
+        请不要用那么老的浏览器！Your browser does not support the HTML5 canvas tag.
+    </canvas>
+    <script>
+
+        function run() {
+            let file = document.getElementById('imgup').files[0]  // 获取选择的文件，这里是图片类型
+            if (typeof (file) == "undefined" || file.size <= 0) {
+                alert("请选择图片");
+                return;
+            }
+            let reader = new FileReader()
+            reader.readAsDataURL(file) //读取文件并将文件以URL的形式保存在resulr属性中 base64格式
+            reader.onload = function (e) { // 文件读取完成时触发 
+                let result = e.target.result // base64格式图片地址 
+                var image = new Image();
+                image.src = result // 设置image的地址为base64的地址 
+                image.setAttribute('crossOrigin', 'anonymous');
+                image.onload = function () {
+                    var Canvas = document.getElementById("myCanvas");
+                    var cxt = Canvas.getContext("2d");
+                    Canvas.height = 500;
+                    Canvas.height = 768;
+                    var radio = document.getElementsByName("border");
+                    var selectvalue = null;   //  selectvalue为radio中选中的值
+                    for (var i = 0; i < radio.length; i++) {
+                        if (radio[i].checked == true) {
+                            bd_select = document.getElementById(radio[i].value);
+                            break;
+                        }
+                    }
+
+                    var radio = document.getElementById("rline1");
+                    if (radio.checked == true) {
+                        line_select = document.getElementById("line1");
+                    } else {
+                        line_select = document.getElementById("line2");
+                    }
+
+                    var radio = document.getElementById("rbox1");
+                    if (radio.checked == true) {
+                        box_select = document.getElementById("box1");
+                    } else {
+                        box_select = document.getElementById("box2");
+                    }
+
+                    var x = document.getElementById("img_x").value;
+                    var y = document.getElementById("img_y").value;
+                    var w = document.getElementById("img_w").value;
+                    var h = document.getElementById("img_h").value;
+                    cxt.drawImage(image, x, y, w, h)
+                    cxt.drawImage(line_select, 0, 0);
+                    cxt.drawImage(box_select, 0, 0);
+                    cxt.drawImage(bd_select, 0, 0);
+                }
+            }
+        };
+
+    </script>
+
+</body>
+
+</html>

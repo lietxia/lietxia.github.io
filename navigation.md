@@ -6,6 +6,8 @@
 
 [算符練習](fupractice.html)
 
+[天凤牌桌生成](makeimg.htm)
+
 [gimmick:Disqus](lietxia)
 
 [gimmick:ThemeChooser](THEME)

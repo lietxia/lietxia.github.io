@@ -1,12 +1,12 @@
 chrome系浏览器装插件方法
 =============
 # 能翻墙的情况
-进入商店直接安卓 [https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii](https://chrome.google.com/webstore/detail/resource-override/pkoacgokdfckfpndoffpifphamojphii)
+进入商店直接安卓 [https://chrome.google.com/webstore/detail/header-editor/eningockdidmgiojffjmkdblpjocbhgh](https://chrome.google.com/webstore/detail/header-editor/eningockdidmgiojffjmkdblpjocbhgh)
 
 
 # 不能翻墙的情况
 
-1.下载插件 [https://lietxia.github.io/res/HeaderEditor-4.0.1.crx](https://lietxia.github.io/res/HeaderEditor-3.0.8.crx)
+1.下载插件 [https://lietxia.github.io/res/HeaderEditor-4.0.1.crx](https://lietxia.github.io/res/HeaderEditor-4.0.1.crx)
 
 谷歌浏览器，右键->属性，在弹出的框中找到"目标" ，在双引号后加一个空格，然后增加以下内容：
 `--enable-easy-off-store-extension-install`
