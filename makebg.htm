@@ -5,7 +5,6 @@
     <title>雀魂桌布制作工具</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <style>
         #bg {
             display: none;
@@ -26,15 +25,8 @@
     </label><br />
     <input type="button" onclick="run()" value="图片合成"><br />
     合成完，右键->保存[底部的图片]<br />
-    可以直接去 <a href="http://sm.ms">http://sm.ms</a> 也可以利用下方的小工具
-    <hr />
-    <h3>往SM.MS传图片的简单程序↓</h3>
-    <h3>请传带边框的图↓</h3>
-    <label>请选择带边框的图：
-        <input type="file" name="smfile" id="smfile">
-    </label><br />
-    <input type="button" onclick="imgup()" value="上传到SM.MS" /><br />
-    <label>上传后图片URL：<input type="text" id="img_url" value="请先【合成图片】" /></label><br />
+    可以直接去 <a href="http://sm.ms">http://sm.ms</a>
+
     这个URL填到【重定向至：xxxx】
     <hr />
     <canvas id="myCanvas" width="1000" height="1000" style="border:1px solid #d3d3d3;">
@@ -43,31 +35,15 @@
     <img src="res/border.png" id="bg" />
 
     <script>
-        function imgup() {
-            var fileObj = document.getElementById("smfile").files[0]; // js 获取文件对象
-            if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
-                alert("请选择图片");
-                return;
-            }
-            var formFile = new FormData();
-            formFile.append("smfile", fileObj); //加入文件对象
-
-            $.ajax({
-                url: "https://sm.ms/api/upload",
-                data: formFile,
-                type: "Post",
-                dataType: "json",
-                cache: false,//上传文件无需缓存
-                processData: false,//用于对data参数进行序列化处理 这里必须false
-                contentType: false, //必须
-                success: function (data) {
-                    if (data.code == "success") {
-                        alert("上傳成功");
-                        document.getElementById("img_url").value = data.data.url;
-                    }
-                    else { alert('上傳錯誤，請從新上傳'); }
-                },
-            })
+        window.maked = 0;
+        function save() {
+            if (window.maked === 0) { alert('请先合成图片'); return }
+            var Canvas = document.getElementById('myCanvas');
+            Canvas.crossOrigin = "Anonymous";
+            var link = document.getElementById('link');
+            link.setAttribute('download', 'tenhou.png');
+            link.setAttribute('href', Canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+            link.click();
         }
 
         function run() {
@@ -100,6 +76,7 @@
                     cxt.fillStyle = 'rgba(0, 0, 0, ' + alpha + ')';
                     cxt.fillRect(0, 0, 1000, 1000);
                     cxt.drawImage(bg, 0, 0, 1000, 1000);
+                    window.maked = 1;
                 }
             }
         };

@@ -58,9 +58,9 @@
 
 
     <script>
-        window.maked=0;
+        window.maked = 0;
         function save() {
-            if(window.maked===0){alert('请先合成图片'); return}
+            if (window.maked === 0) { alert('请先合成图片'); return }
             var Canvas = document.getElementById('myCanvas');
             Canvas.crossOrigin = "Anonymous";
             var link = document.getElementById('link');
@@ -122,7 +122,7 @@
                     cxt.drawImage(line_select, 0, 0);
                     cxt.drawImage(box_select, 0, 0);
                     cxt.drawImage(bd_select, 0, 0);
-                    window.maked=1;
+                    window.maked = 1;
                 }
             }
         };
