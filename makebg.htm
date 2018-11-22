@@ -25,8 +25,8 @@
     </label><br />
     <input type="button" onclick="run()" value="图片合成"><br />
     合成完，右键->保存[底部的图片]<br />
-    <input type="button" onclick="save()" value="或点此保存图片">
-    <a id="link"></a><br />
+    <input type="button" onclick="save()" value="或点此保存图片"><br />
+    <a id="link"></a>
 
     再往 <a href="http://sm.ms">http://sm.ms</a> 传图片得到URL即可
 
@@ -61,14 +61,15 @@
                 let result = e.target.result // base64格式图片地址 
                 var image = new Image();
                 image.src = result // 设置image的地址为base64的地址 
-                image.setAttribute('crossOrigin', 'anonymous');
+                image.crossOrigin = "Anonymous";
                 image.onload = function () {
                     var Canvas = document.getElementById("myCanvas");
+                    Canvas.crossOrigin = "Anonymous";
                     var cxt = Canvas.getContext("2d");
                     Canvas.height = 1001;
                     Canvas.height = 1000;
                     var bg = document.getElementById("bg");
-                    bg.setAttribute('crossOrigin', 'anonymous');
+                    bg.crossOrigin = "Anonymous";
                     var x = document.getElementById("img_x").value;
                     var y = document.getElementById("img_y").value;
                     var w = document.getElementById("img_w").value;
