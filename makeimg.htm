@@ -42,7 +42,7 @@
     <input type="button" onclick="run()" value="图片合成"><br />
     合成完，右键->保存[底部的图片]<br />
     <input type="button" onclick="save()" value="或点此保存图片">
-    <a id="link"></a>
+    <a id="link" download="tenhou.png"></a>
     <img src="tenhou/border1.png" id="border1" class="hid" />
     <img src="tenhou/border2.png" id="border2" class="hid" />
     <img src="tenhou/border3.png" id="border3" class="hid" />
@@ -64,7 +64,6 @@
             var Canvas = document.getElementById('myCanvas');
             Canvas.crossOrigin = "Anonymous";
             var link = document.getElementById('link');
-            link.setAttribute('download', 'tenhou.png');
             link.setAttribute('href', Canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
             link.click();
         }
