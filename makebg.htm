@@ -26,7 +26,7 @@
     <input type="button" onclick="run()" value="图片合成"><br />
     合成完，右键->保存[底部的图片]<br />
     <input type="button" onclick="save()" value="或点此保存图片"><br />
-    <a id="link"></a>
+    <a id="link1"></a>
 
     再往 <a href="http://sm.ms">http://sm.ms</a> 传图片得到URL即可
 
@@ -43,7 +43,7 @@
             if (window.maked === 0) { alert('请先合成图片'); return }
             var Canvas = document.getElementById('myCanvas');
             Canvas.crossOrigin = "Anonymous";
-            var link = document.getElementById('link');
+            var link = document.getElementById('link1');
             link.setAttribute('download', 'ganghun.png');
             link.setAttribute('href', Canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
             link.click();
