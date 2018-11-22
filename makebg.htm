@@ -44,7 +44,7 @@
             var Canvas = document.getElementById('myCanvas');
             Canvas.crossOrigin = "Anonymous";
             var link = document.getElementById('link1');
-            link.setAttribute('download', 'ganghun.png');
+            link.setAttribute('download', 'bg.png');
             link.setAttribute('href', Canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
             link.click();
         }
