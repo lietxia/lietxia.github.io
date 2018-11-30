@@ -41,6 +41,8 @@
     </label><br />
     <input type="button" onclick="run()" value="图片合成"><br />
     合成完，右键->保存[底部的图片]<br />
+    <input type="button" onclick="save()" value="或点此保存图片">
+    <a id="link" download="tenhou.png"></a>
     <img src="tenhou/border1.png" id="border1" class="hid" />
     <img src="tenhou/border2.png" id="border2" class="hid" />
     <img src="tenhou/border3.png" id="border3" class="hid" />
@@ -53,7 +55,18 @@
     <canvas id="myCanvas" width="1024" height="768" style="border:1px solid #d3d3d3;">
         请不要用那么老的浏览器！Your browser does not support the HTML5 canvas tag.
     </canvas>
+
+
     <script>
+        window.maked = 0;
+        function save() {
+            if (window.maked === 0) { alert('请先合成图片'); return }
+            var Canvas = document.getElementById('myCanvas');
+            Canvas.crossOrigin = "Anonymous";
+            var link = document.getElementById('link');
+            link.setAttribute('href', Canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+            link.click();
+        }
 
         function run() {
             let file = document.getElementById('imgup').files[0]  // 获取选择的文件，这里是图片类型
@@ -67,9 +80,10 @@
                 let result = e.target.result // base64格式图片地址 
                 var image = new Image();
                 image.src = result // 设置image的地址为base64的地址 
-                image.setAttribute('crossOrigin', 'anonymous');
+                image.crossOrigin = "Anonymous";
                 image.onload = function () {
                     var Canvas = document.getElementById("myCanvas");
+                    Canvas.crossOrigin = "Anonymous";
                     var cxt = Canvas.getContext("2d");
                     Canvas.height = 500;
                     Canvas.height = 768;
@@ -81,6 +95,7 @@
                             break;
                         }
                     }
+                    bd_select.crossOrigin = "Anonymous";
 
                     var radio = document.getElementById("rline1");
                     if (radio.checked == true) {
@@ -88,6 +103,7 @@
                     } else {
                         line_select = document.getElementById("line2");
                     }
+                    line_select.crossOrigin = "Anonymous";
 
                     var radio = document.getElementById("rbox1");
                     if (radio.checked == true) {
@@ -95,6 +111,7 @@
                     } else {
                         box_select = document.getElementById("box2");
                     }
+                    box_select.crossOrigin = "Anonymous";
 
                     var x = document.getElementById("img_x").value;
                     var y = document.getElementById("img_y").value;
@@ -104,6 +121,7 @@
                     cxt.drawImage(line_select, 0, 0);
                     cxt.drawImage(box_select, 0, 0);
                     cxt.drawImage(bd_select, 0, 0);
+                    window.maked = 1;
                 }
             }
         };
