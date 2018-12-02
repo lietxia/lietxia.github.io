@@ -18,6 +18,7 @@ function loop_stop() {
 
 function check_list() {
     //检查
+    window.loopcnt++;
     var pcnt = 0;
     var _span_ = document.getElementsByTagName('span');
     for (var i = 0; i < _span_.length; i++) {
