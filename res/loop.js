@@ -1,18 +1,19 @@
+window.loopcnt=0;
 var newdiv = document.createElement('div');
 newdiv.setAttribute('class', 'footer');
 newdiv.setAttribute('id', 'div_b');
 newdiv.style.cssText = 'height:60px;background:green;width:100%;position:fixed;bottom:0;left:0;';
-newdiv.innerHTML = '<input type="button" value="(循环)满4人即开" onclick="loop_start()" >';
+newdiv.innerHTML = '<input type="button" value="(循环)满4人即开" onclick="loop_start()" > 检查次数:'+window.loopcnt;
 document.body.appendChild(newdiv);
 
 function loop_start() {
     window.loop = setInterval(check_list, 10000);
-    document.getElementById('div_b').innerHTML = '<input type="button" value="停止循环" onclick="loop_stop()" >';
+    document.getElementById('div_b').innerHTML = '<input type="button" value="停止循环" onclick="loop_stop()" >检查次数:'+window.loopcnt;
 }
 
 function loop_stop() {
     clearInterval(window.loop);
-    document.getElementById('div_b').innerHTML = '<input type="button" value="(循环)满4人即开" onclick="loop_start()" >';
+    document.getElementById('div_b').innerHTML = '<input type="button" value="(循环)满4人即开" onclick="loop_start()" >检查次数:'+window.loopcnt;
 }
 
 function check_list() {
