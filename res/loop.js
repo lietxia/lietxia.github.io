@@ -36,17 +36,12 @@ function check_list() {
     }
     console.log("检查，人数=" + pcnt);
     if (pcnt >= 4) {
-        document.getElementById('sbt_1').click();
-        setTimeout('pcnt', 1000);
-        document.getElementById('sbt_2').click();
-        setTimeout('pcnt', 1000);
-        document.getElementById('sbt_3').click();
-        setTimeout('pcnt', 1000);
-        document.getElementById('sbt_4').click();
-        setTimeout('pcnt', 1000);
-        document.getElementById('btn_rand').click();
-        setTimeout('pcnt', 1000);
-        document.getElementById('btn_st').click();
+        document.getElementById('sbt_1').click()
+        setTimeout("document.getElementById('sbt_2').click()",1000);
+        setTimeout("document.getElementById('sbt_3').click()",2000);
+        setTimeout("document.getElementById('sbt_4').click()",3000);
+        setTimeout("document.getElementById('btn_rand').click()",4000);
+        setTimeout("document.getElementById('btn_st').click()",5000);
     }
     document.getElementById('lcnt').innerText = window.loopcnt;
 
