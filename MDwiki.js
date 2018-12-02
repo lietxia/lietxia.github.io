@@ -387,13 +387,13 @@
             }
             var href = link.attr(hrefAttribute);
 
-            if (href && href.lastIndexOf('#!') >= 0)
+            if (href && href.lastIndexOf('#') >= 0)
                 return;
 
             if (isSpecialLink(href))
                 return;
 
-            if (!isImage && href.startsWith('#') && !href.startsWith('#!')) {
+            if (!isImage && href.startsWith('#') && !href.startsWith('#')) {
                 // in-page link
                 link.click(function (ev) {
                     ev.preventDefault();
@@ -412,7 +412,7 @@
 
             function build_link(url) {
                 if ($.md.util.hasMarkdownFileExtension(url))
-                    return '#!' + url;
+                    return '#' + url;
                 else
                     return url;
             }
@@ -652,11 +652,10 @@
         var newHashString = '';
         var currentHashString = window.location.hash || '';
         if (currentHashString === '' ||
-            currentHashString === '#' ||
-            currentHashString === '#!') {
-            newHashString = '#!index.md';
+            currentHashString === '#') {
+            newHashString = '#index.md';
         }
-        else if (currentHashString.startsWith('#!') &&
+        else if (currentHashString.startsWith('#') &&
             currentHashString.endsWith('/')
         ) {
             newHashString = currentHashString + 'index.md';
@@ -762,7 +761,7 @@
     $.md.util.getInpageAnchorHref = function (text, href) {
         href = href || $.md.mainHref;
         var subhash = $.md.util.getInpageAnchorText(text);
-        return '#!' + href + '#' + subhash;
+        return '#' + href + '#' + subhash;
     };
 
     $.md.util.repeatUntil = function (interval, predicate, maxRepeats) {
@@ -1751,7 +1750,7 @@
         var filename = window.location.hash;
 
         if (filename.length === 0) {
-            filename = '#!index.md';
+            filename = '#index.md';
         }
         var selector = 'li:has(a[href="' + filename + '"])';
         $('#md-menu').find(selector).addClass('active');
