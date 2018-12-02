@@ -8,8 +8,22 @@ newdiv.innerHTML = '<input type="button" value="(循环)满4人即开" onclick="
 document.body.appendChild(newdiv);
 
 function loop_start() {
+    var _span_ = document.getElementsByTagName('span');
+    for (var i = 0; i < _span_.length; i++) {
+        if (_span_[i].innerText === '对局管理') {
+            _span_[i].setAttribute('id', 'sp_st');
+        }
+        if (_span_[i].innerText === '赛事设定') {
+            _span_[i].setAttribute('id', 'sp_set');
+        }
+    }
+    document.getElementById('sp_set').click();
+    setTimeout("document.getElementById('sp_st').click()",1000);
+    window.loopcnt = 0;
+
     window.loop = setInterval(check_list, 10000);
     document.getElementById('div_b').innerHTML = '<input type="button" value="停止循环" onclick="loop_stop()" >检查次数:<span id="lcnt">' + window.loopcnt + '</span>';
+    
 }
 
 function loop_stop() {
@@ -33,6 +47,8 @@ function check_list() {
         if (_span_[i].innerText === '随机坐席（后台）') {
             _span_[i].parentNode.setAttribute('id', 'btn_rand');
         }
+        
+
     }
     console.log("检查，人数=" + pcnt);
     if (pcnt >= 4) {
@@ -42,6 +58,8 @@ function check_list() {
         setTimeout("document.getElementById('sbt_4').click()",3000);
         setTimeout("document.getElementById('btn_rand').click()",4000);
         setTimeout("document.getElementById('btn_st').click()",5000);
+        setTimeout("document.getElementById('sp_set').click()",6000);
+        setTimeout("document.getElementById('sp_st').click()",7000);
     }
     document.getElementById('lcnt').innerText = window.loopcnt;
 
