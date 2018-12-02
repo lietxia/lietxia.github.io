@@ -3,6 +3,7 @@ newdiv.setAttribute('class', 'footer');
 newdiv.setAttribute('id', 'div_b');
 newdiv.style.cssText = 'height:60px;background:green;width:100%;position:fixed;bottom:0;left:0;';
 newdiv.innerHTML = '<input type="button" value="(循环)满4人即开" onclick="loop_start()" >';
+document.body.appendChild(newdiv);
 
 function loop_start() {
     window.loop = setInterval(check_list, 10000);
