@@ -37,12 +37,17 @@ function check_list() {
     console.log("检查，人数=" + pcnt);
     if (pcnt >= 4) {
         document.getElementById('sbt_1').click();
+        setTimeout('pcnt', 1000);
         document.getElementById('sbt_2').click();
+        setTimeout('pcnt', 1000);
         document.getElementById('sbt_3').click();
+        setTimeout('pcnt', 1000);
         document.getElementById('sbt_4').click();
+        setTimeout('pcnt', 1000);
         document.getElementById('btn_rand').click();
+        setTimeout('pcnt', 1000);
         document.getElementById('btn_st').click();
     }
-    document.getElementById('lcnt').innerText=window.loopcnt;
+    document.getElementById('lcnt').innerText = window.loopcnt;
 
 }
