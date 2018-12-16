@@ -9,46 +9,52 @@ window.removeEventListener('hashchange', window.getEventListeners(window).hashch
 
 */
 
+if (typeof getEventListeners == "function") {
+  for (var eventType in getEventListeners(document)) {
+    getEventListeners(document)[eventType].forEach(
+      function (o) {
+        document.removeEventListener(eventType, o.listener)
+      }
+    )
+  }
 
-for (var eventType in getEventListeners(document)) {
-  getEventListeners(document)[eventType].forEach(
-    function (o) {
-      document.removeEventListener(eventType, o.listener)
-    }
-  )
-}
-
-for (var eventType in getEventListeners(window)) {
-  getEventListeners(window)[eventType].forEach(
-    function (o) {
-      window.removeEventListener(eventType, o.listener)
-    }
-  )
+  for (var eventType in getEventListeners(window)) {
+    getEventListeners(window)[eventType].forEach(
+      function (o) {
+        window.removeEventListener(eventType, o.listener)
+      }
+    )
+  }
 }
 document.body.innerHTML = '';
 window.webpackJsonp = null;
 var new_script = document.createElement('div');
-new_script.id = 'root';
+new_script.setAttribute('id', "root")
 document.body.appendChild(new_script);
 
 var new_script = document.createElement('script');
-new_script.src = '/dhs/manifest.ed14eec5.js';
+new_script.setAttribute('src', '/dhs/manifest.ed14eec5.js')
+new_script.setAttribute('charset', "utf-8");
 document.body.appendChild(new_script);
 
 var new_script = document.createElement('script');
-new_script.src = 'https://lietxia.github.io/maj/vendors~app~vendor.19ac4945.js';
+new_script.setAttribute('src', 'https://lietxia.github.io/maj/vendors~app~vendor.19ac4945.js')
+new_script.setAttribute('charset', "utf-8");
 document.body.appendChild(new_script);
 
 var new_script = document.createElement('script');
-new_script.src = '/dhs/vendors~app.cedcf233.js';
+new_script.setAttribute('src', 'https://lietxia.github.io/maj/vendors~app.cedcf233.js');
+new_script.setAttribute('charset', "utf-8");
 document.body.appendChild(new_script);
 
 var new_script = document.createElement('script');
-new_script.src = '/dhs/app.b4a1bfac.js';
+new_script.setAttribute('src', '/dhs/app.b4a1bfac.js');
+new_script.setAttribute('charset', "utf-8");
 document.body.appendChild(new_script);
 
 var new_script = document.createElement('script');
-new_script.src = '/dhs/vendor.3098fd65.js';
+new_script.setAttribute('src', '/dhs/vendor.3098fd65.js');
+new_script.setAttribute('charset', "utf-8");
 document.body.appendChild(new_script);
 
 
