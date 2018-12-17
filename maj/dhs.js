@@ -1,3 +1,7 @@
+if (window.location.pathname != '/') {
+  alert('执行脚本的页面不正确，接下来会自动跳转，请再执行一次脚本');
+  window.location.href = '/';
+}
 history.pushState(null, null, '/dhs/');
 document.head.innerHTML='';
 document.body.innerHTML = '';
@@ -54,7 +58,6 @@ function set_value(type, txt) {
 set_point('123','123','123','123');
 set_value('contest_name','xx');
 set_value('query',"asdfsda\ndsaf");
-
 set_value('prepareSlot',[{type:2,initPoint:'2500'},{type:2,initPoint:'2500'},{},{}]);
 
 */

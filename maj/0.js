@@ -1,6 +1,10 @@
+if (window.location.pathname != '/') {
+    alert('执行脚本的页面不正确，接下来会自动跳转，请再执行一次脚本');
+    window.location.href = '/';
+}
 history.pushState(null, null, '/0/');
 document.body.innerHTML = '';
-document.head.innerHTML='';
+document.head.innerHTML = '';
 //-------
 var http = new XMLHttpRequest();
 var state_change = function () {
