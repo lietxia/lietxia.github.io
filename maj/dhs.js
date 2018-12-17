@@ -59,7 +59,7 @@ function get_table() {
   window.tb = [];
   var x = document.getElementsByTagName('tr');
   for (var i = 1; i < x.length; i++) {
-    window.tb.push(x[i].innerText));
+    window.tb.push(x[i].innerText);
   }
 }
 /*
