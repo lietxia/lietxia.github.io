@@ -1,33 +1,8 @@
-/*
-var new_script=document.createElement('script');
-new_script.src="https://code.jquery.com/jquery-3.3.1.min.js"
-document.body.appendChild(new_script);
-$('html').remove();
-$('!doctype html').remove();
-
-window.removeEventListener('hashchange', window.getEventListeners(window).hashchange[0].listener, false)
-
-*/
-
-if (typeof getEventListeners == "function") {
-  for (var eventType in getEventListeners(document)) {
-    getEventListeners(document)[eventType].forEach(
-      function (o) {
-        document.removeEventListener(eventType, o.listener)
-      }
-    )
-  }
-
-  for (var eventType in getEventListeners(window)) {
-    getEventListeners(window)[eventType].forEach(
-      function (o) {
-        window.removeEventListener(eventType, o.listener)
-      }
-    )
-  }
-}
+history.pushState(null, null, '/dhs/');
+document.head.innerHTML='';
 document.body.innerHTML = '';
-window.webpackJsonp = null;
+//-------
+
 var new_script = document.createElement('div');
 new_script.setAttribute('id', "root")
 document.body.appendChild(new_script);
@@ -43,7 +18,7 @@ new_script.setAttribute('charset', "utf-8");
 document.body.appendChild(new_script);
 
 var new_script = document.createElement('script');
-new_script.setAttribute('src', 'https://lietxia.github.io/maj/vendors~app.cedcf233.js');
+new_script.setAttribute('src', '/dhs/vendors~app.cedcf233.js');
 new_script.setAttribute('charset', "utf-8");
 document.body.appendChild(new_script);
 
@@ -57,6 +32,7 @@ new_script.setAttribute('src', '/dhs/vendor.3098fd65.js');
 new_script.setAttribute('charset', "utf-8");
 document.body.appendChild(new_script);
 
+//-------
 
 function set_point(a, b, c, d) {
   var last = window.ee.length - 1;
