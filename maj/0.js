@@ -1,5 +1,6 @@
 history.pushState(null, null, '/0/');
 document.body.innerHTML = '';
+document.head.innerHTML='';
 //-------
 var http = new XMLHttpRequest();
 var state_change = function () {
