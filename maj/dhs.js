@@ -50,12 +50,20 @@ function set_value(type, txt) { //设置值
 
 async function add_player(str) {
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(1)').click();
-  await sleep(5000);
+  await sleep(2000);
   window.ee = []; //重设缓存
   window.pp = []; //重设缓存
-  document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(1)').click();
-  await sleep(5000);
-  document.querySelector('#root>div>div>main>div:nth-child(2)>div>div>button:nth-child(2)').click();
+  document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(2)').click();
+  await sleep(3000);
+  document.querySelector('#root>div>div>main>div:nth-child(2)>div>div>button:nth-child(3)').click();
+  await sleep(1000);
+  var eelast = window.ee.length - 1;
+  window.ee[eelast].query = str;
+  window.pp[eelast].updater.enqueueSetState(window.pp[eelast], window.ee[eelast], null, "setState");
+  await sleep(1000);
+  document.querySelector('body>div>div:nth-child(2)>div>div:nth-child(3)>button').click();
+  await sleep(1000);
+  document.querySelector('body>div>div:nth-child(2)>div>div:nth-child(3)').lastChild.click();
 }
 
 async function players_start(narr, parr) {
