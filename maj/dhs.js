@@ -3,7 +3,8 @@ if (window.location.pathname != '/') {
   window.location.href = '/';
 } else {
   history.pushState(null, null, '/dhs/');
-  document.head.innerHTML = '';
+  document.getElementsByTagName('style')[0].remove();
+  document.getElementsByTagName('style')[0].remove();
   document.body.innerHTML = '';
   //-------
 
@@ -35,6 +36,34 @@ if (window.location.pathname != '/') {
   new_script.setAttribute('src', '/dhs/vendor.3098fd65.js');
   new_script.setAttribute('charset', "utf-8");
   document.body.appendChild(new_script);
+
+
+  //创建工具栏
+  //样式表
+  var style = document.createElement('style');
+  style.type = 'text/css';
+  style.innerHTML = 'body{overflow-x:hidden;} ' +
+    '#tool_div{height:60px;background:#bbbcce;width:100%;position:fixed;bottom:0;left:0;} ' +
+    '#root{margin-bottom:60px;}';
+  document.head.appendChild(style);
+
+
+  document.body.style.cssText = 'overflow-x:hidden;';
+  var tool_div = document.createElement('div');
+  tool_div.setAttribute('id', 'tool_div');
+
+  var new_textarea = document.createElement('textarea');
+  new_textarea.setAttribute('id', 'add_player_text');
+  tool_div.appendChild(new_textarea);
+
+  var new_btn = document.createElement('input');
+  new_btn.setAttribute('type', 'button');
+  new_btn.setAttribute('id', 'add_player_btn');
+  new_btn.setAttribute('onclick', 'add_player(document.getElementById("add_player_text").value)');
+  new_btn.setAttribute('value', '添加成员到系统');
+  tool_div.appendChild(new_btn);
+  document.body.appendChild(tool_div);
+
 }
 
 //-------
@@ -87,7 +116,7 @@ async function players_start(narr, parr) {
     } else {
       for (var i = 0; i < list.length; i++) {
         if (list[i].childNodes[0].childNodes[0].innerText == narr[ii]) {
-            list[i].childNodes[1].childNodes[0].click();
+          list[i].childNodes[1].childNodes[0].click();
           set[ii] = parr[ii];
           cnt++;
           await sleep(2000);
@@ -143,9 +172,7 @@ async function get_table(nowstr) {
 } //func
 
 /*
-players_start(['光靈聖鬼','星星消消看','25000','25000'],[25000,25000,25000,25000])
-set_point('123','123','123','123');
-set_value('contest_name','xx');
-set_value('query',"asdfsda\ndsaf");
-set_value('prepareSlot',[{type:2,initPoint:'2500'},{type:2,initPoint:'2500'},{},{}]);
+players_start(['光靈聖鬼','星星消消看','',''],[25000,25000,25000,25000])
+add_player('xxx\ndasdfasd');
+get_table('2018-12-15');
 */
