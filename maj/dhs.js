@@ -40,31 +40,89 @@ if (window.location.pathname != '/') {
 
   //创建工具栏
   //样式表
-  var style = document.createElement('style');
-  style.type = 'text/css';
-  style.innerHTML = 'body{overflow-x:hidden;} ' +
-    '#tool_div{height:60px;background:#bbbcce;width:100%;position:fixed;bottom:0;left:0;} ' +
-    '#root{margin-bottom:60px;}';
-  document.head.appendChild(style);
+  function create_toolbox() {
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = 'body{overflow-x:hidden;} ' +
+      '#tool_div{height:100px;background:#bbbcce;width:100%;position:fixed;bottom:0;left:0;} ' +
+      '#root{padding-bottom:100px;}' +
+      '#tool_div div{width:30%;display:inline-block;vertical-align:middle;}' +
+      '#tool_div input{width:45%;}' +
+      '#tool_div textarea{width:100%;height:50px;}';
+    document.head.appendChild(style);
 
+    var tool_div = document.createElement('div');
+    tool_div.setAttribute('id', 'tool_div');
 
-  document.body.style.cssText = 'overflow-x:hidden;';
-  var tool_div = document.createElement('div');
-  tool_div.setAttribute('id', 'tool_div');
+    //<--div
+    var new_div = document.createElement('div');
 
-  var new_textarea = document.createElement('textarea');
-  new_textarea.setAttribute('id', 'add_player_text');
-  tool_div.appendChild(new_textarea);
+    var new_lable = document.createElement('lable');
+    new_lable.setAttribute('for', 'cid');
+    new_lable.innerText = '赛事ID:';
+    new_div.appendChild(new_lable);
+    var new_ipt = document.createElement('input');
+    new_ipt.setAttribute('type', 'number');
+    new_ipt.setAttribute('value', '12');
+    new_ipt.setAttribute('id', 'cid');
+    new_div.appendChild(new_ipt);
 
-  var new_btn = document.createElement('input');
-  new_btn.setAttribute('type', 'button');
-  new_btn.setAttribute('id', 'add_player_btn');
-  new_btn.setAttribute('onclick', 'add_player(document.getElementById("add_player_text").value)');
-  new_btn.setAttribute('value', '添加成员到系统');
-  tool_div.appendChild(new_btn);
-  document.body.appendChild(tool_div);
+    new_div.appendChild(document.createElement('br'));
 
-}
+    var new_lable = document.createElement('lable');
+    new_lable.setAttribute('for', 'c_round');
+    new_lable.innerText = '回合:';
+    new_div.appendChild(new_lable);
+    var new_ipt = document.createElement('input');
+    new_ipt.setAttribute('type', 'number');
+    new_ipt.setAttribute('value', '1');
+    new_ipt.setAttribute('id', 'c_round');
+    new_div.appendChild(new_ipt);
+
+    new_div.appendChild(document.createElement('br'));
+
+    var new_lable = document.createElement('lable');
+    new_lable.setAttribute('for', 'c_date');
+    new_lable.innerText = '日期';
+    new_div.appendChild(new_lable);
+    var new_ipt = document.createElement('input');
+    new_ipt.setAttribute('type', 'text');
+    new_ipt.setAttribute('id', 'c_date');
+    var d = new Date();
+    var nowstr = d.getFullYear();
+    nowstr += (d.getMonth() < 10 ? "-0" : '-') + (d.getMonth() + 1);
+    nowstr += (d.getDate() < 10 ? "-0" : '-') + d.getDate();
+    new_ipt.setAttribute('value', nowstr);
+    new_div.appendChild(new_ipt);
+
+    tool_div.appendChild(new_div);
+    //div-->
+
+    //<--div
+    var new_div1 = document.createElement('div');
+    var new_textarea = document.createElement('textarea');
+    new_textarea.setAttribute('id', 'add_player_text');
+    new_div1.appendChild(new_textarea);
+
+    var new_btn = document.createElement('input');
+    new_btn.setAttribute('type', 'button');
+    new_btn.setAttribute('onclick', 'add_player(document.getElementById("add_player_text").value)');
+    new_btn.setAttribute('value', '获取成员');
+    new_div1.appendChild(new_btn);
+
+    var new_btn = document.createElement('input');
+    new_btn.setAttribute('type', 'button');
+    new_btn.setAttribute('onclick', 'add_player(document.getElementById("add_player_text").value)');
+    new_btn.setAttribute('value', '添加成员');
+    new_div1.appendChild(new_btn);
+    tool_div.appendChild(new_div1);
+    //div-->
+
+    document.body.appendChild(tool_div);
+  } //func-->
+  create_toolbox();
+} //else-->
+
 
 //-------
 function sleep(ms) { //暂停
@@ -140,7 +198,7 @@ async function players_start(narr, parr) {
 }
 
 
-async function get_table(nowstr) {
+async function get_table() {
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(1)').click();
   await sleep(5000);
   window.ee = []; //重设缓存
@@ -148,12 +206,7 @@ async function get_table(nowstr) {
   window.tb = []; //重设缓存
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(4)').click();
   await sleep(5000);
-  if (typeof nowstr === 'undefined') {
-    var d = new Date();
-    nowstr = d.getFullYear();
-    nowstr += (d.getMonth() < 10 ? "-0" : '-') + (d.getMonth() + 1);
-    nowstr += (d.getDate() < 10 ? "-0" : '-') + d.getDate();
-  }
+  var nowstr=document.getElementById('c_date').value;
   var x = document.getElementsByTagName('tr');
   for (var i = 1; i < x.length; i++) {
     if (x[i].childNodes[1].innerText.indexOf(nowstr) === 0) {
@@ -163,8 +216,9 @@ async function get_table(nowstr) {
       tmparr[2] = x[i].childNodes[3].innerText;
       tmparr[3] = x[i].childNodes[4].innerText;
       tmparr[4] = x[i].childNodes[5].innerText;
+      tmparr[5] = x[i].childNodes[6].innerText;
       x[i].childNodes[6].childNodes[0].children[1].click();
-      tmparr[5] = window.ee[(window.ee.length - 1)].uuidEdit;
+      tmparr[6] = window.ee[(window.ee.length - 1)].uuidEdit;
       window.tb.push(tmparr);
     }
   }
