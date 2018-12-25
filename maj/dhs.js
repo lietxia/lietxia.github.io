@@ -28,7 +28,7 @@ if (window.location.pathname != '/') {
   document.body.appendChild(new_script);
 
   var new_script = document.createElement('script');
-  new_script.setAttribute('src', '/dhs/app.b4a1bfac.js');
+  new_script.setAttribute('src', '/dhs/app.ca9d912f.js');
   new_script.setAttribute('charset', "utf-8");
   document.body.appendChild(new_script);
 
@@ -47,7 +47,6 @@ if (window.location.pathname != '/') {
       '#tool_div{height:100px;background:#bbbcce;width:100%;position:fixed;bottom:0;left:0;} ' +
       '#root{padding-bottom:100px;}' +
       '#tool_div div{width:30%;display:inline-block;vertical-align:middle;}' +
-      '#tool_div input{width:45%;}' +
       '#tool_div textarea{width:100%;height:50px;}';
     document.head.appendChild(style);
 
@@ -63,7 +62,7 @@ if (window.location.pathname != '/') {
     new_div.appendChild(new_lable);
     var new_ipt = document.createElement('input');
     new_ipt.setAttribute('type', 'number');
-    new_ipt.setAttribute('value', '12');
+    new_ipt.setAttribute('value', '14');
     new_ipt.setAttribute('id', 'cid');
     new_div.appendChild(new_ipt);
 
@@ -98,31 +97,122 @@ if (window.location.pathname != '/') {
     tool_div.appendChild(new_div);
     //div-->
 
-    //<--div
-    var new_div1 = document.createElement('div');
-    var new_textarea = document.createElement('textarea');
-    new_textarea.setAttribute('id', 'add_player_text');
-    new_div1.appendChild(new_textarea);
+    //<--div-tools
+    var div_tools = document.createElement('div');
+    div_tools.setAttribute('id', 'div-tools');
 
     var new_btn = document.createElement('input');
     new_btn.setAttribute('type', 'button');
-    new_btn.setAttribute('onclick', 'add_player(document.getElementById("add_player_text").value)');
-    new_btn.setAttribute('value', '获取成员');
-    new_div1.appendChild(new_btn);
+    new_btn.setAttribute('onclick', 'init_all()');
+    new_btn.setAttribute('value', '刷新');
+    div_tools.appendChild(new_btn);
+
 
     var new_btn = document.createElement('input');
     new_btn.setAttribute('type', 'button');
-    new_btn.setAttribute('onclick', 'add_player(document.getElementById("add_player_text").value)');
-    new_btn.setAttribute('value', '添加成员');
-    new_div1.appendChild(new_btn);
-    tool_div.appendChild(new_div1);
-    //div-->
+    new_btn.setAttribute('onclick', 'init_list()');
+    new_btn.setAttribute('value', '获取成员列表');
+    div_tools.appendChild(new_btn);
+
+    div_tools.appendChild(document.createElement('br'));
+
+    var new_btn = document.createElement('input');
+    new_btn.setAttribute('type', 'button');
+    new_btn.setAttribute('onclick', 'init_start()');
+    new_btn.setAttribute('value', '开始某个组');
+    div_tools.appendChild(new_btn);
+
+    div_tools.appendChild(document.createElement('br'));
+
+    tool_div.appendChild(div_tools);
+
+    //div-tools->
+
+    //<--div2
+    var new_div2 = document.createElement('div');
+    new_div2.setAttribute('id', 'box');
+    tool_div.appendChild(new_div2);
+    //div2-->
 
     document.body.appendChild(tool_div);
   } //func-->
   create_toolbox();
 } //else-->
 
+
+//----init类---
+function init_all() {
+  delete window.team;
+  delete window.cls;
+}
+
+function init_list() { //添加一些成员
+
+  var cid = document.getElementById('cid').value;
+
+  if (!(typeof window.team === "object")) {
+    window.team = get_json('https://cors.io/?https://mahjong.pub/api/data.php?t=team&cid=' + cid);
+  }
+  var arr = ['', 'null'];
+  var tmp = '';
+  for (row in window.team) {
+    tmp = window.team[row]['t_player'] + "\n" + window.team[row]['t_sub'];
+    arr = arr.concat(tmp.split(/\s+/));
+  }
+  var res = [];
+  for (var i = 0, len = arr.length; i < len; i++) {
+    var obj = arr[i];
+    for (var j = 0, jlen = res.length; j < jlen; j++) {
+      if (res[j] === obj) break;
+    }
+    if (jlen === j) res.push(obj);
+  }
+  res.shift();
+  res.shift();
+
+  var box = document.getElementById('box');
+  box.innerHTML = '';
+  var new_textarea = document.createElement('textarea');
+  new_textarea.setAttribute('id', 'add_player_text');
+  new_textarea.value = res.join("\n");
+  box.appendChild(new_textarea);
+
+  var new_btn = document.createElement('input');
+  new_btn.setAttribute('type', 'button');
+  new_btn.setAttribute('onclick', 'add_player()');
+  new_btn.setAttribute('value', '加入参赛名单');
+  box.appendChild(new_btn);
+
+  return res;
+} //func-->
+
+
+function init_start() {
+  var cid = document.getElementById('cid').value;
+  var c_round = document.getElementById('c_round').value;
+  if (!(typeof window.team === "object")) {
+    window.team = get_json('https://cors.io/?https://mahjong.pub/api/data.php?t=team&cid=' + cid);
+  }
+  if (!(typeof window.cls === "object")) {
+    window.cls = get_json('https://cors.io/?https://mahjong.pub/api/data.php?t=class&cid=' + cid);
+  }
+  var cls_count = 0;
+  for (var i = 0; i < window.cls.length; i++) {
+    if (window.cls[i]['round'] == c_round && window.cls[i]['t_class'] > cls_count) {
+      cls_count = window.cls[i]['t_class'];
+    }
+  }
+  var box = document.getElementById('box');
+  box.innerHTML = '';
+  for (var i = 1; i <= cls_count; i++) {
+    var new_btn = document.createElement('input');
+    new_btn.setAttribute('type', 'button');
+    new_btn.setAttribute('onclick', 'start_class(' + i + ')');
+    new_btn.setAttribute('value', i + '组');
+    box.appendChild(new_btn);
+  }
+
+}
 
 //-------
 function get_json(url) {
@@ -147,6 +237,9 @@ function set_value(type, txt) { //设置值
 }
 
 async function add_player(str) {
+  if (typeof str === 'undefined') {
+    str = document.getElementById("add_player_text").value;
+  }
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(1)').click();
   await sleep(2000);
   window.ee = []; //重设缓存
@@ -164,7 +257,9 @@ async function add_player(str) {
   document.querySelector('body>div>div:nth-child(2)>div>div:nth-child(3)').lastChild.click();
 }
 
-async function players_start(narr, parr) {
+async function start_class(cls) {
+  var narr = arr[0];
+  var parr = arr[1];
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(1)').click();
   await sleep(3000);
   window.ee = []; //重设缓存
@@ -208,7 +303,6 @@ async function players_start(narr, parr) {
   }
 }
 
-
 async function get_table() {
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(1)').click();
   await sleep(5000);
@@ -240,4 +334,34 @@ async function get_table() {
 players_start(['光靈聖鬼','星星消消看','',''],[25000,25000,25000,25000])
 add_player('xxx\ndasdfasd');
 get_table('2018-12-15');
+
+function unique(arr){
+    var res=[];
+    for(var i=0,len=arr.length;i<len;i++){
+        var obj = arr[i];
+        for(var j=0,jlen = res.length;j<jlen;j++){
+            if(res[j]===obj) break;            
+        }
+        if(jlen===j)res.push(obj);
+    }
+    return res;
+}
+
+(function () {
+    var results, currentWindow,
+    // create an iframe and append to body to load a clean window object
+    iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    // get the current list of properties on window
+    currentWindow = Object.getOwnPropertyNames(window);
+    // filter the list against the properties that exist in the clean window
+    results = currentWindow.filter(function(prop) {
+        return !iframe.contentWindow.hasOwnProperty(prop);
+    });
+    // log an array of properties that are different
+    console.log(results);
+    document.body.removeChild(iframe);
+}());
+
 */
