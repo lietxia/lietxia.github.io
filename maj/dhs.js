@@ -44,10 +44,11 @@ if (window.location.pathname != '/') {
     var style = document.createElement('style');
     style.type = 'text/css';
     style.innerHTML = 'body{overflow-x:hidden;} ' +
-      '#tool_div{height:100px;background:#bbbcce;width:100%;position:fixed;bottom:0;left:0;} ' +
-      '#root{padding-bottom:100px;}' +
+      '#tool_div{background:#bbbcce;width:100%;position:fixed;bottom:0;left:0;} ' +
+      '#root{padding-bottom:200px;}' +
+      '#ifr{height:40px;width:50%;}' +
       '#tool_div div{width:30%;display:inline-block;vertical-align:middle;}' +
-      '#tool_div textarea{width:100%;height:50px;}';
+      '#tool_div textarea{width:100%;height:30px;}';
     document.head.appendChild(style);
 
     var tool_div = document.createElement('div');
@@ -61,7 +62,8 @@ if (window.location.pathname != '/') {
     new_lable.innerText = '赛事ID:';
     new_div.appendChild(new_lable);
     var new_ipt = document.createElement('input');
-    new_ipt.setAttribute('type', 'number');
+    new_ipt.setAttribute('size', '2');
+    new_ipt.setAttribute('type', 'text');
     new_ipt.setAttribute('value', '14');
     new_ipt.setAttribute('id', 'cid');
     new_div.appendChild(new_ipt);
@@ -73,7 +75,8 @@ if (window.location.pathname != '/') {
     new_lable.innerText = '回合:';
     new_div.appendChild(new_lable);
     var new_ipt = document.createElement('input');
-    new_ipt.setAttribute('type', 'number');
+    new_ipt.setAttribute('type', 'text');
+    new_ipt.setAttribute('size', '2');
     new_ipt.setAttribute('value', '1');
     new_ipt.setAttribute('id', 'c_round');
     new_div.appendChild(new_ipt);
@@ -86,6 +89,7 @@ if (window.location.pathname != '/') {
     new_div.appendChild(new_lable);
     var new_ipt = document.createElement('input');
     new_ipt.setAttribute('type', 'text');
+    new_ipt.setAttribute('size', '10');
     new_ipt.setAttribute('id', 'c_date');
     var d = new Date();
     var nowstr = d.getFullYear();
@@ -103,18 +107,9 @@ if (window.location.pathname != '/') {
 
     var new_btn = document.createElement('input');
     new_btn.setAttribute('type', 'button');
-    new_btn.setAttribute('onclick', 'init_all()');
-    new_btn.setAttribute('value', '刷新');
-    div_tools.appendChild(new_btn);
-
-
-    var new_btn = document.createElement('input');
-    new_btn.setAttribute('type', 'button');
     new_btn.setAttribute('onclick', 'init_list()');
     new_btn.setAttribute('value', '获取成员列表');
     div_tools.appendChild(new_btn);
-
-    div_tools.appendChild(document.createElement('br'));
 
     var new_btn = document.createElement('input');
     new_btn.setAttribute('type', 'button');
@@ -122,7 +117,17 @@ if (window.location.pathname != '/') {
     new_btn.setAttribute('value', '开始某个组');
     div_tools.appendChild(new_btn);
 
-    div_tools.appendChild(document.createElement('br'));
+    var new_btn = document.createElement('input');
+    new_btn.setAttribute('type', 'button');
+    new_btn.setAttribute('onclick', 'send_data()');
+    new_btn.setAttribute('value', '读取牌谱');
+    div_tools.appendChild(new_btn);
+
+    var new_btn = document.createElement('input');
+    new_btn.setAttribute('type', 'button');
+    new_btn.setAttribute('onclick', 'init_all()');
+    new_btn.setAttribute('value', '重载数据');
+    div_tools.appendChild(new_btn);
 
     tool_div.appendChild(div_tools);
 
@@ -142,11 +147,13 @@ if (window.location.pathname != '/') {
 
 //----init类---
 function init_all() {
-  delete window.team;
-  delete window.cls;
+  window.team = 1;
+  window.cls = 1;
 }
 
 function init_list() { //添加一些成员
+  var box = document.getElementById('box');
+  box.innerHTML = '';
 
   var cid = document.getElementById('cid').value;
 
@@ -170,8 +177,7 @@ function init_list() { //添加一些成员
   res.shift();
   res.shift();
 
-  var box = document.getElementById('box');
-  box.innerHTML = '';
+
   var new_textarea = document.createElement('textarea');
   new_textarea.setAttribute('id', 'add_player_text');
   new_textarea.value = res.join("\n");
@@ -188,6 +194,8 @@ function init_list() { //添加一些成员
 
 
 function init_start() {
+  var box = document.getElementById('box');
+  box.innerHTML = '';
   var cid = document.getElementById('cid').value;
   var c_round = document.getElementById('c_round').value;
   if (!(typeof window.team === "object")) {
@@ -196,14 +204,15 @@ function init_start() {
   if (!(typeof window.cls === "object")) {
     window.cls = get_json('https://cors.io/?https://mahjong.pub/api/data.php?t=class&cid=' + cid);
   }
+  if (window.cls === null) {
+    return alert('此赛事还没分组，或读取分组失败，请按【重载数据】')
+  }
   var cls_count = 0;
   for (var i = 0; i < window.cls.length; i++) {
     if (window.cls[i]['round'] == c_round && window.cls[i]['t_class'] > cls_count) {
       cls_count = window.cls[i]['t_class'];
     }
   }
-  var box = document.getElementById('box');
-  box.innerHTML = '';
   for (var i = 1; i <= cls_count; i++) {
     var new_btn = document.createElement('input');
     new_btn.setAttribute('type', 'button');
@@ -258,6 +267,13 @@ async function add_player(str) {
 }
 
 async function start_class(cls) {
+  var cid = document.getElementById('cid').value;
+  var c_round = document.getElementById('c_round').value;
+
+  arr = get_json('https://cors.io/?https://mahjong.pub/api/majsoul.php?cid=' + cid + '&r=' + c_round + '&c=' + cls);
+
+  if (arr === null) { return alert('获取第' + cls + '组开赛名单失败') }
+
   var narr = arr[0];
   var parr = arr[1];
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(1)').click();
@@ -303,9 +319,11 @@ async function start_class(cls) {
   }
 }
 
-async function get_table() {
+async function send_data() {
+  var box = document.getElementById('box');
+  box.innerHTML = '';
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(1)').click();
-  await sleep(5000);
+  await sleep(3000);
   window.ee = []; //重设缓存
   window.pp = []; //重设缓存
   window.tb = []; //重设缓存
@@ -328,6 +346,28 @@ async function get_table() {
     }
   }
 
+  var new_form = document.createElement('form');
+  new_form.setAttribute('method', "post");
+  new_form.setAttribute('target', "ifr");
+  new_form.setAttribute('action', "https://mahjong.pub/api/majsoul.php");
+
+  var new_ifr = document.createElement('iframe');
+  new_ifr.setAttribute('name', 'ifr');
+  new_ifr.setAttribute('id', 'ifr');
+  new_form.appendChild(new_ifr);
+
+  var new_btn = document.createElement('input');
+  new_btn.setAttribute('type', 'submit');
+  new_btn.setAttribute('value', '发送');
+  new_form.appendChild(new_btn);
+
+  var new_textarea = document.createElement('textarea');
+  new_textarea.setAttribute('name', 'json');
+  new_textarea.value = JSON.stringify(window.tb);
+  new_form.appendChild(new_textarea);
+
+  box.appendChild(new_form);
+
 } //func
 
 /*
@@ -340,7 +380,7 @@ function unique(arr){
     for(var i=0,len=arr.length;i<len;i++){
         var obj = arr[i];
         for(var j=0,jlen = res.length;j<jlen;j++){
-            if(res[j]===obj) break;            
+            if(res[j]===obj) break;
         }
         if(jlen===j)res.push(obj);
     }
