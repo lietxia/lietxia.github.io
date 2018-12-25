@@ -46,9 +46,10 @@ if (window.location.pathname != '/') {
     style.innerHTML = 'body{overflow-x:hidden;} ' +
       '#tool_div{background:#bbbcce;width:100%;position:fixed;bottom:0;left:0;} ' +
       '#root{padding-bottom:200px;}' +
-      '#ifr{height:40px;width:50%;}' +
+      '#ifr{height:40px;width:60%;}' +
       '#tool_div div{width:30%;display:inline-block;vertical-align:middle;}' +
-      '#tool_div textarea{width:100%;height:30px;}';
+      '#add_player_text{width:100%;height:40px;}' +
+      '#start_ta{width:60%;height:35px;}';
     document.head.appendChild(style);
 
     var tool_div = document.createElement('div');
@@ -198,6 +199,19 @@ function init_start() {
   box.innerHTML = '';
   var cid = document.getElementById('cid').value;
   var c_round = document.getElementById('c_round').value;
+
+  var new_ta = document.createElement('textarea');
+  new_ta.setAttribute('id', 'start_ta');
+  box.appendChild(new_ta);
+
+  var new_btn = document.createElement('input');
+  new_btn.setAttribute('type', 'button');
+  new_btn.setAttribute('onclick', 'start_class()');
+  new_btn.setAttribute('value', '开始');
+  box.appendChild(new_btn);
+
+  box.appendChild(document.createElement('br'));
+
   if (!(typeof window.team === "object")) {
     window.team = get_json('https://cors.io/?https://mahjong.pub/api/data.php?t=team&cid=' + cid);
   }
@@ -216,7 +230,7 @@ function init_start() {
   for (var i = 1; i <= cls_count; i++) {
     var new_btn = document.createElement('input');
     new_btn.setAttribute('type', 'button');
-    new_btn.setAttribute('onclick', 'start_class(' + i + ')');
+    new_btn.setAttribute('onclick', 'get_cls(' + i + ')');
     new_btn.setAttribute('value', i + '组');
     box.appendChild(new_btn);
   }
@@ -245,6 +259,15 @@ function set_value(type, txt) { //设置值
   window.pp[last].updater.enqueueSetState(window.pp[last], window.ee[last], null, "setState");
 }
 
+function get_cls(cls) {
+  var cid = document.getElementById('cid').value;
+  var c_round = document.getElementById('c_round').value;
+
+  arr = get_json('https://cors.io/?https://mahjong.pub/api/majsoul.php?cid=' + cid + '&r=' + c_round + '&c=' + cls);
+  if (arr === null) { return alert('获取第' + cls + '组开赛名单失败') }
+  document.getElementById('start_ta').value = arr;
+}
+
 async function add_player(str) {
   if (typeof str === 'undefined') {
     str = document.getElementById("add_player_text").value;
@@ -266,16 +289,23 @@ async function add_player(str) {
   document.querySelector('body>div>div:nth-child(2)>div>div:nth-child(3)').lastChild.click();
 }
 
-async function start_class(cls) {
-  var cid = document.getElementById('cid').value;
-  var c_round = document.getElementById('c_round').value;
+async function start_class() {
+  var narr = [];
+  var parr = [];
+  var tmp = [];
+  var ta = document.getElementById('start_ta').value.split(/[\r\n]+/);
+  console.log(ta);
+  for (var i = 0; i < ta.length; i++) {
+    tmp = ta[i].replace(/^\s+|\s+$/g, '').split(/[\s]+/);
+    if (tmp.length === 1) {
+      narr[i] = '';
+      parr[i] = tmp[0];
+    } else {
+      narr[i] = tmp[0];
+      parr[i] = tmp[1];
+    }
+  }
 
-  arr = get_json('https://cors.io/?https://mahjong.pub/api/majsoul.php?cid=' + cid + '&r=' + c_round + '&c=' + cls);
-
-  if (arr === null) { return alert('获取第' + cls + '组开赛名单失败') }
-
-  var narr = arr[0];
-  var parr = arr[1];
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(1)').click();
   await sleep(3000);
   window.ee = []; //重设缓存
