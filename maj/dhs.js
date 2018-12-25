@@ -125,6 +125,17 @@ if (window.location.pathname != '/') {
 
 
 //-------
+function get_json(url) {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("GET", url, false);
+  xmlhttp.send();
+  if (xmlhttp.status === 200) {
+    return JSON.parse(xmlhttp.responseText);
+  } else {
+    return null;
+  }
+}
+
 function sleep(ms) { //暂停
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -206,7 +217,7 @@ async function get_table() {
   window.tb = []; //重设缓存
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(4)').click();
   await sleep(5000);
-  var nowstr=document.getElementById('c_date').value;
+  var nowstr = document.getElementById('c_date').value;
   var x = document.getElementsByTagName('tr');
   for (var i = 1; i < x.length; i++) {
     if (x[i].childNodes[1].innerText.indexOf(nowstr) === 0) {
