@@ -150,6 +150,7 @@ if (window.location.pathname != '/') {
 function init_all() {
   window.team = 1;
   window.cls = 1;
+  window.c_admin = 1;
 }
 
 function init_list() { //添加一些成员
@@ -212,6 +213,9 @@ function init_start() {
 
   box.appendChild(document.createElement('br'));
 
+  if (!(typeof window.c_admin === "object")) {
+    window.c_admin = get_json('https://mahjong.pub/api/data.php?t=admin&cid=' + cid)
+  }
   if (!(typeof window.team === "object")) {
     window.team = get_json('https://mahjong.pub/api/data.php?t=team&cid=' + cid);
   }
@@ -226,7 +230,7 @@ function init_start() {
   for (var i = 0; i < window.cls.length; i++) {
     if (window.cls[i]['round'] == c_round && window.cls[i]['t_class'] > cls_count) {
       cls_count = window.cls[i]['t_class'];
-      window.this_round[window.cls[i]['t_class']] = [window.cls[i]['tid1'], window.cls[i]['tid2'], window.cls[i]['tid3'], window.cls[i]['tid4']];
+      window.this_round[window.cls[i]['t_class']] = [window.cls[i]['rid'], window.cls[i]['tid1'], window.cls[i]['tid2'], window.cls[i]['tid3'], window.cls[i]['tid4']];
     }
   }
   for (var i = 1; i <= cls_count; i++) {
@@ -234,6 +238,7 @@ function init_start() {
     new_btn.setAttribute('type', 'button');
     new_btn.setAttribute('onclick', 'get_cls(' + i + ')');
     new_btn.setAttribute('value', i + '组');
+    new_btn.setAttribute('id', 'btn_start_' + i)
     box.appendChild(new_btn);
   }
 
@@ -262,10 +267,16 @@ function set_value(type, txt) { //设置值
 }
 
 function get_cls(cls) {
-  var cid = document.getElementById('cid').value;
-  arr = get_json('https://mahjong.pub/api/maj_get.php?cid=' + cid + '&tid=' + window.this_round[cls].join('_'));
-  if (arr === null) { return alert('获取第' + cls + '组开赛名单失败') }
-  document.getElementById('start_ta').value = arr;
+
+  arr = get_json('https://mahjong.pub/api/maj_get.php?p=' +
+    window.c_admin.c_s_po +
+    '&data=' + window.this_round[cls].join('_') +
+    '&t=' + encodeURI(window.c_admin.t_type));
+  if (arr === null || arr === '') {
+    return alert('获取第' + cls + '组开赛名单失败');
+  }
+  if (arr[0] == "2") { return alert(arr[1]) }
+  document.getElementById('start_ta').value = arr[1];
 }
 
 async function add_player(str) {
