@@ -437,7 +437,7 @@ async function send_data() {
   var nowstr = document.getElementById('c_date').value;
   var x = document.getElementsByTagName('tr');
   for (var i = 1; i < x.length; i++) {
-    if (x[i].childNodes[1].innerText.indexOf(nowstr) === 0) {
+    if (x[i].childNodes[1].innerText.indexOf(nowstr) === 0 && x[i].childNodes[6].innerText.replace(/^\s+|\s+$/g, '') != 'pass') {
       var tmparr = [];
       tmparr[0] = x[i].childNodes[1].innerText;
       tmparr[1] = x[i].childNodes[2].innerText;
