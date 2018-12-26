@@ -159,7 +159,7 @@ function init_list() { //添加一些成员
   var cid = document.getElementById('cid').value;
 
   if (!(typeof window.team === "object")) {
-    window.team = get_json('https://cors.io/?https://mahjong.pub/api/data.php?t=team&cid=' + cid);
+    window.team = get_json('https://mahjong.pub/api/data.php?t=team&cid=' + cid);
   }
   var arr = ['', 'null'];
   var tmp = '';
@@ -213,18 +213,20 @@ function init_start() {
   box.appendChild(document.createElement('br'));
 
   if (!(typeof window.team === "object")) {
-    window.team = get_json('https://cors.io/?https://mahjong.pub/api/data.php?t=team&cid=' + cid);
+    window.team = get_json('https://mahjong.pub/api/data.php?t=team&cid=' + cid);
   }
   if (!(typeof window.cls === "object")) {
-    window.cls = get_json('https://cors.io/?https://mahjong.pub/api/data.php?t=class&cid=' + cid);
+    window.cls = get_json('https://mahjong.pub/api/data.php?t=class&cid=' + cid);
   }
   if (window.cls === null) {
     return alert('此赛事还没分组，或读取分组失败，请按【重载数据】')
   }
   var cls_count = 0;
+  window.this_round = [];
   for (var i = 0; i < window.cls.length; i++) {
     if (window.cls[i]['round'] == c_round && window.cls[i]['t_class'] > cls_count) {
       cls_count = window.cls[i]['t_class'];
+      window.this_round[window.cls[i]['t_class']] = [window.cls[i]['tid1'], window.cls[i]['tid2'], window.cls[i]['tid3'], window.cls[i]['tid4']];
     }
   }
   for (var i = 1; i <= cls_count; i++) {
@@ -261,9 +263,7 @@ function set_value(type, txt) { //设置值
 
 function get_cls(cls) {
   var cid = document.getElementById('cid').value;
-  var c_round = document.getElementById('c_round').value;
-
-  arr = get_json('https://cors.io/?https://mahjong.pub/api/maj_get.php?cid=' + cid + '&r=' + c_round + '&c=' + cls);
+  arr = get_json('https://mahjong.pub/api/maj_get.php?cid=' + cid + '&tid=' + window.this_round[cls].join('_'));
   if (arr === null) { return alert('获取第' + cls + '组开赛名单失败') }
   document.getElementById('start_ta').value = arr;
 }
@@ -294,7 +294,6 @@ async function start_class() {
   var parr = [];
   var tmp = [];
   var ta = document.getElementById('start_ta').value.split(/[\r\n]+/);
-  console.log(ta);
   for (var i = 0; i < ta.length; i++) {
     tmp = ta[i].replace(/^\s+|\s+$/g, '').split(/[\s]+/);
     if (tmp.length === 1) {
