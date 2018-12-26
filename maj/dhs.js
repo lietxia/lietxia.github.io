@@ -49,7 +49,7 @@ if (window.location.pathname != '/') {
       '#ifr{height:40px;width:60%;}' +
       '#tool_div div{width:30%;display:inline-block;vertical-align:middle;}' +
       '#add_player_text{width:100%;height:40px;}' +
-      '#start_ta{width:60%;height:35px;}';
+      '#start_ta{width:60%;}';
     document.head.appendChild(style);
 
     var tool_div = document.createElement('div');
@@ -65,7 +65,7 @@ if (window.location.pathname != '/') {
     var new_ipt = document.createElement('input');
     new_ipt.setAttribute('size', '2');
     new_ipt.setAttribute('type', 'text');
-    new_ipt.setAttribute('value', '14');
+    new_ipt.setAttribute('value', '13');
     new_ipt.setAttribute('id', 'cid');
     new_div.appendChild(new_ipt);
 
@@ -126,6 +126,12 @@ if (window.location.pathname != '/') {
 
     var new_btn = document.createElement('input');
     new_btn.setAttribute('type', 'button');
+    new_btn.setAttribute('onclick', 'init_miss()');
+    new_btn.setAttribute('value', '未到名單');
+    div_tools.appendChild(new_btn);
+
+    var new_btn = document.createElement('input');
+    new_btn.setAttribute('type', 'button');
     new_btn.setAttribute('onclick', 'init_all()');
     new_btn.setAttribute('value', '重载数据');
     div_tools.appendChild(new_btn);
@@ -151,6 +157,32 @@ function init_all() {
   window.team = 1;
   window.cls = 1;
   window.c_admin = 1;
+}
+
+function init_miss() {
+  var box = document.getElementById('box');
+  box.innerHTML = '';
+
+  if (typeof window.miss == "undefined") {
+    window.miss = [];
+  }
+
+  var new_textarea = document.createElement('textarea');
+  new_textarea.value = window.miss.join("\n");
+  new_textarea.setAttribute('id', 'miss_ta');
+  box.appendChild(new_textarea);
+
+  var new_btn = document.createElement('input');
+  new_btn.setAttribute('type', 'button');
+  new_btn.setAttribute('onclick', 'clean_miss()');
+  new_btn.setAttribute('value', '清空列表');
+  box.appendChild(new_btn);
+
+  var new_btn = document.createElement('input');
+  new_btn.setAttribute('type', 'button');
+  new_btn.setAttribute('onclick', 'copy_miss()');
+  new_btn.setAttribute('value', '複製列表');
+  box.appendChild(new_btn);
 }
 
 function init_list() { //添加一些成员
@@ -196,6 +228,7 @@ function init_list() { //添加一些成员
 
 
 function init_start() {
+
   var box = document.getElementById('box');
   box.innerHTML = '';
   var cid = document.getElementById('cid').value;
@@ -203,6 +236,7 @@ function init_start() {
 
   var new_ta = document.createElement('textarea');
   new_ta.setAttribute('id', 'start_ta');
+  new_ta.setAttribute('rows', '4')
   box.appendChild(new_ta);
 
   var new_btn = document.createElement('input');
@@ -213,6 +247,9 @@ function init_start() {
 
   box.appendChild(document.createElement('br'));
 
+  if (!(typeof window.miss === "object")) {
+    window.miss = [];
+  }
   if (!(typeof window.c_admin === "object")) {
     window.c_admin = get_json('https://mahjong.pub/api/data.php?t=admin&cid=' + cid)
   }
@@ -245,6 +282,16 @@ function init_start() {
 }
 
 //-------
+
+function copy_miss(){
+  document.getElementById('miss_ta').select();
+  document.execCommand("Copy");
+}
+function clean_miss() {
+  window.miss = [];
+  document.getElementById('miss_ta').value = '';
+}
+
 function get_json(url) {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("GET", url, false);
@@ -326,7 +373,7 @@ async function start_class() {
   await sleep(5000);
 
   var list = document.querySelector('#root>div>div>main>div:nth-child(2)>div>div>div>div:nth-child(2)>ul').childNodes;
-  var set = [0, 0, 0, 0];
+  var set = ['x', 'x', 'x', 'x'];
   var cnt = 0;
 
   for (var ii = 0; ii < 4; ii++) {
@@ -346,6 +393,17 @@ async function start_class() {
       }
     }
   }
+  var missarr = "以下選手未到\n";
+  if (cnt < 4) {
+    for (var i = 0; i < 4; i++) {
+      if (set[i] == 'x') {
+        window.miss.push(narr[i]);
+        missarr += narr[i] + "\n";
+      }
+    }
+    return (alert(missarr))
+  }
+
 
   var eelast = window.ee.length - 1;
   window.ee[eelast].prepareSlot[0].initPoint = set[0];
@@ -358,6 +416,7 @@ async function start_class() {
     //----點擊隨機按鈕---
     document.querySelector('#root>div>div>main>div:nth-child(2)>div>div>div:nth-child(2)>div:nth-child(2)>label:nth-child(2)>span>span>input').click();
     document.querySelector('#root>div>div>main>div:nth-child(2)>div>div>div:nth-child(2)>div:nth-child(3)').lastChild.click();
+    alert('開始成功');
   }
 }
 
