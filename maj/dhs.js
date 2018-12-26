@@ -275,7 +275,9 @@ function get_cls(cls) {
   if (arr === null || arr === '') {
     return alert('获取第' + cls + '组开赛名单失败');
   }
-  if (arr[0] == "2") { return alert(arr[1]) }
+  if (arr[0] == "2") {
+    return alert(arr[1])
+  }
   document.getElementById('start_ta').value = arr[1];
 }
 
@@ -399,6 +401,18 @@ async function send_data() {
   var new_btn = document.createElement('input');
   new_btn.setAttribute('type', 'submit');
   new_btn.setAttribute('value', '发送');
+  new_form.appendChild(new_btn);
+
+  var new_btn = document.createElement('input');
+  new_btn.setAttribute('type', 'hidden');
+  new_btn.setAttribute('name', 'cid');
+  new_btn.setAttribute('value', document.getElementById('cid').value);
+  new_form.appendChild(new_btn);
+
+  var new_btn = document.createElement('input');
+  new_btn.setAttribute('type', 'hidden');
+  new_btn.setAttribute('name', 'rnd');
+  new_btn.setAttribute('value', document.getElementById('c_round').value);
   new_form.appendChild(new_btn);
 
   var new_textarea = document.createElement('textarea');
