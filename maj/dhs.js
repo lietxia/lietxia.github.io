@@ -263,7 +263,7 @@ function get_cls(cls) {
   var cid = document.getElementById('cid').value;
   var c_round = document.getElementById('c_round').value;
 
-  arr = get_json('https://cors.io/?https://mahjong.pub/api/majsoul.php?cid=' + cid + '&r=' + c_round + '&c=' + cls);
+  arr = get_json('https://cors.io/?https://mahjong.pub/api/maj_get.php?cid=' + cid + '&r=' + c_round + '&c=' + cls);
   if (arr === null) { return alert('获取第' + cls + '组开赛名单失败') }
   document.getElementById('start_ta').value = arr;
 }
@@ -379,7 +379,7 @@ async function send_data() {
   var new_form = document.createElement('form');
   new_form.setAttribute('method', "post");
   new_form.setAttribute('target', "ifr");
-  new_form.setAttribute('action', "https://mahjong.pub/api/majsoul.php");
+  new_form.setAttribute('action', "https://mahjong.pub/api/maj_post.php");
 
   var new_ifr = document.createElement('iframe');
   new_ifr.setAttribute('name', 'ifr');
