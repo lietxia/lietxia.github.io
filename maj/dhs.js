@@ -283,7 +283,7 @@ function init_start() {
 
 //-------
 
-function copy_miss(){
+function copy_miss() {
   document.getElementById('miss_ta').select();
   document.execCommand("Copy");
 }
@@ -428,6 +428,10 @@ async function send_data() {
   window.ee = []; //重设缓存
   window.pp = []; //重设缓存
   window.tb = []; //重设缓存
+  if (!(typeof window.c_admin === "object")) {
+    window.c_admin = get_json('https://mahjong.pub/api/data.php?t=admin&cid=' + cid)
+  }
+
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(4)').click();
   await sleep(5000);
   var nowstr = document.getElementById('c_date').value;
@@ -466,6 +470,12 @@ async function send_data() {
   new_btn.setAttribute('type', 'hidden');
   new_btn.setAttribute('name', 'cid');
   new_btn.setAttribute('value', document.getElementById('cid').value);
+  new_form.appendChild(new_btn);
+
+  var new_btn = document.createElement('input');
+  new_btn.setAttribute('type', 'hidden');
+  new_btn.setAttribute('name', 'sp');
+  new_btn.setAttribute('value', window.c_admin.c_s_po);
   new_form.appendChild(new_btn);
 
   var new_btn = document.createElement('input');
