@@ -6,17 +6,17 @@
 
     javascript:void((function(){var e=document.createElement('script');e.setAttribute('src','https://lietxia.github.io/res/loop.js');document.body.appendChild(e);})());
 
-![](res/p1.png)
+![](res/p1.jpg)
 
 ## 第二步，进入雀魂大会室管理页
 
-![](res/p2.png)
+![](res/p2.jpg)
 
 点开书签即可(如果是Firefox，点开地址栏，再切换到书签，再点开就能执行)
 
 底部出现绿色工具栏，脚本就成功了
 
-![](res/p3.png)
+![](res/p3.jpg)
 
 执行方法：点击绿色工具栏的按钮即可，满4人他自动开始
 
