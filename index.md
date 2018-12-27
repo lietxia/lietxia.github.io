@@ -14,7 +14,7 @@
 
 > 本页介绍的是PC端+安卓魔改的方法，ios见↓
 
-[iOS魔改方法](ios.md)
+[iOS魔改方法（失效）](ios.md)
 
 [gimmick:TwitterFollow](@lietxia)
 
