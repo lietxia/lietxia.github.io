@@ -28,7 +28,7 @@ if (window.location.pathname != '/') {
   document.body.appendChild(new_script);
 
   var new_script = document.createElement('script');
-  new_script.setAttribute('src', '/dhs/app.ca9d912f.js');
+  new_script.setAttribute('src', '/dhs/app.67216ae6.js');
   new_script.setAttribute('charset', "utf-8");
   document.body.appendChild(new_script);
 
