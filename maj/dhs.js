@@ -65,7 +65,7 @@ if (window.location.pathname != '/') {
     var new_ipt = document.createElement('input');
     new_ipt.setAttribute('size', '2');
     new_ipt.setAttribute('type', 'text');
-    new_ipt.setAttribute('value', '13');
+    new_ipt.setAttribute('value', '0');
     new_ipt.setAttribute('id', 'cid');
     new_div.appendChild(new_ipt);
 
@@ -97,6 +97,16 @@ if (window.location.pathname != '/') {
     nowstr += (d.getMonth() < 10 ? "-0" : '-') + (d.getMonth() + 1);
     nowstr += (d.getDate() < 10 ? "-0" : '-') + d.getDate();
     new_ipt.setAttribute('value', nowstr);
+    new_div.appendChild(new_ipt);
+
+    var new_lable = document.createElement('lable');
+    new_lable.setAttribute('for', 'c_pw');
+    new_lable.innerText = '赛事密码';
+    new_div.appendChild(new_lable);
+    var new_ipt = document.createElement('input');
+    new_ipt.setAttribute('type', 'password');
+    new_ipt.setAttribute('size', '6');
+    new_ipt.setAttribute('id', 'c_pw');
     new_div.appendChild(new_ipt);
 
     tool_div.appendChild(new_div);
@@ -287,6 +297,7 @@ function copy_miss() {
   document.getElementById('miss_ta').select();
   document.execCommand("Copy");
 }
+
 function clean_miss() {
   window.miss = [];
   document.getElementById('miss_ta').value = '';
@@ -428,9 +439,6 @@ async function send_data() {
   window.ee = []; //重设缓存
   window.pp = []; //重设缓存
   window.tb = []; //重设缓存
-  if (!(typeof window.c_admin === "object")) {
-    window.c_admin = get_json('https://mahjong.pub/api/data.php?t=admin&cid=' + cid)
-  }
 
   document.querySelector('#root>div>header>div>div:nth-child(3)>div>div>div>div>button:nth-child(4)').click();
   await sleep(5000);
@@ -474,8 +482,8 @@ async function send_data() {
 
   var new_btn = document.createElement('input');
   new_btn.setAttribute('type', 'hidden');
-  new_btn.setAttribute('name', 'sp');
-  new_btn.setAttribute('value', window.c_admin.c_s_po);
+  new_btn.setAttribute('name', 'pw');
+  new_btn.setAttribute('value', document.getElementById('c_pw').value);
   new_form.appendChild(new_btn);
 
   var new_btn = document.createElement('input');
