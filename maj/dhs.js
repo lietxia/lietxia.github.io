@@ -99,6 +99,8 @@ if (window.location.pathname != '/') {
     new_ipt.setAttribute('value', nowstr);
     new_div.appendChild(new_ipt);
 
+    new_div.appendChild(document.createElement('br'));
+    
     var new_lable = document.createElement('lable');
     new_lable.setAttribute('for', 'c_pw');
     new_lable.innerText = '赛事密码';
@@ -356,8 +358,8 @@ async function add_player(str) {
   window.pp[eelast].updater.enqueueSetState(window.pp[eelast], window.ee[eelast], null, "setState");
   await sleep(1000);
   document.querySelector('body>div>div:nth-child(2)>div>div:nth-child(3)>button').click();
-  await sleep(1000);
-  document.querySelector('body>div>div:nth-child(2)>div>div:nth-child(3)').lastChild.click();
+  //await sleep(1000);
+  //document.querySelector('body>div>div:nth-child(2)>div>div:nth-child(3)').lastChild.click();
 }
 
 async function start_class() {
