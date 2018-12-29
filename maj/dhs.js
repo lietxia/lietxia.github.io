@@ -1,6 +1,6 @@
-if (window.location.pathname != '/') {
+if (window.location.pathname != '/9c7d813114e1aed5fa24401020c048db.png') {
   alert('执行脚本的页面不正确，接下来会自动跳转，请再执行一次脚本');
-  window.location.href = '/';
+  window.location.href = 'https://majsoul.union-game.com/9c7d813114e1aed5fa24401020c048db.png';
 } else {
   history.pushState(null, null, '/dhs/');
   document.getElementsByTagName('style')[0].remove();
