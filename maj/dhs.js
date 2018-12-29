@@ -418,7 +418,7 @@ async function start_class() {
     return (alert(missarr))
   }
 
-
+  await sleep(2000);
   var eelast = window.ee.length - 1;
   window.ee[eelast].prepareSlot[0].initPoint = set[0];
   window.ee[eelast].prepareSlot[1].initPoint = set[1];
@@ -429,6 +429,7 @@ async function start_class() {
   if (cnt === 4) {
     //----點擊隨機按鈕---
     document.querySelector('#root>div>div>main>div:nth-child(2)>div>div>div:nth-child(2)>div:nth-child(2)>label:nth-child(2)>span>span>input').click();
+    await sleep(3000);
     document.querySelector('#root>div>div>main>div:nth-child(2)>div>div>div:nth-child(2)>div:nth-child(3)').lastChild.click();
     alert('開始成功');
   }
