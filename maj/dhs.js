@@ -13,7 +13,7 @@ if (window.location.pathname != '/') {
   document.body.appendChild(new_script);
 
   var new_script = document.createElement('script');
-  new_script.setAttribute('src', '/dhs/manifest.ed14eec5.js')
+  new_script.setAttribute('src', 'manifest.ed14eec5.js')
   new_script.setAttribute('charset', "utf-8");
   document.body.appendChild(new_script);
 
@@ -28,7 +28,7 @@ if (window.location.pathname != '/') {
   document.body.appendChild(new_script);
 
   var new_script = document.createElement('script');
-  new_script.setAttribute('src', '/dhs/app.67216ae6.js');
+  new_script.setAttribute('src', '/dhs/app.3bef008e.js');
   new_script.setAttribute('charset', "utf-8");
   document.body.appendChild(new_script);
 
