@@ -44,7 +44,7 @@ if (window.location.host != "majsoul.union-game.com" ||
   function create_toolbox() {
     var style = document.createElement('style');
     style.type = 'text/css';
-    style.innerHTML = 'body{overflow-x:hidden;} ' +
+    style.innerHTML = //'body{overflow-x:hidden;} ' +
       '#tool_div{background:#bbbcce;width:100%;position:fixed;bottom:0;left:0;} ' +
       '#root{padding-bottom:200px;}' +
       '#ifr{height:40px;width:60%;}' +
