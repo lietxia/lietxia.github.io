@@ -3,8 +3,8 @@ if (window.location.pathname != '/9c7d813114e1aed5fa24401020c048db.png') {
   window.location.href = 'https://majsoul.union-game.com/9c7d813114e1aed5fa24401020c048db.png';
 } else {
   history.pushState(null, null, '/dhs/');
-  document.getElementsByTagName('style')[0].remove();
-  document.getElementsByTagName('style')[0].remove();
+  //document.getElementsByTagName('style')[0].remove();
+  //document.getElementsByTagName('style')[0].remove();
   document.body.innerHTML = '';
   //-------
 
