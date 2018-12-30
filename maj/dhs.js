@@ -428,10 +428,11 @@ async function start_class() {
 
   if (cnt === 4) {
     //----點擊隨機按鈕---
+    await sleep(1000);
     document.querySelector('#root>div>div>main>div:nth-child(2)>div>div>div:nth-child(2)>div:nth-child(2)>label:nth-child(2)>span>span>input').click();
-    //await sleep(3000);
+    await sleep(1000);
     //document.querySelector('#root>div>div>main>div:nth-child(2)>div>div>div:nth-child(2)>div:nth-child(3)').lastChild.click();
-    alert('请点击开始');
+    alert('信息已填好，请点击开始');
   }
 }
 
