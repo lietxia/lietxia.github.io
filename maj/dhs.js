@@ -13,30 +13,29 @@ if (window.location.host != "majsoul.union-game.com" ||
   new_script.setAttribute('id', "root")
   document.body.appendChild(new_script);
 
-  var new_script = document.createElement('script');
-  new_script.setAttribute('src', 'manifest.ed14eec5.js')
-  new_script.setAttribute('charset', "utf-8");
-  document.body.appendChild(new_script);
-
-  var new_script = document.createElement('script');
-  new_script.setAttribute('src', 'https://lietxia.github.io/maj/vendors~app~vendor.19ac4945.js')
-  new_script.setAttribute('charset', "utf-8");
-  document.body.appendChild(new_script);
-
-  var new_script = document.createElement('script');
-  new_script.setAttribute('src', '/dhs/vendors~app.cedcf233.js');
-  new_script.setAttribute('charset', "utf-8");
-  document.body.appendChild(new_script);
-
-  var new_script = document.createElement('script');
-  new_script.setAttribute('src', '/dhs/app.3bef008e.js');
-  new_script.setAttribute('charset', "utf-8");
-  document.body.appendChild(new_script);
-
-  var new_script = document.createElement('script');
-  new_script.setAttribute('src', '/dhs/vendor.3098fd65.js');
-  new_script.setAttribute('charset', "utf-8");
-  document.body.appendChild(new_script);
+  var x = document.createElement('iframe');
+  x.src = 'https://majsoul.union-game.com/dhs/';
+  x.name = 'qhdhs';
+  x.id = 'qhdhs';
+  x.onload = function () {
+    //var tmp = [];
+    var scripts = frames['qhdhs'].document.getElementsByTagName('script');
+    for (let i = 0; i < scripts.length; i++) {
+      if ('https://majsoul.union-game.com/dhs/vendors~app~vendor.19ac4945.js' === scripts[i].src) {
+        var new_script = document.createElement('script');
+        new_script.setAttribute('src', "https://lietxia.github.io/maj/vendors~app~vendor.19ac4945.js")
+        window.top.document.body.appendChild(new_script);
+      } else {
+        var new_script = document.createElement('script');
+        new_script.setAttribute('src', scripts[i].src)
+        window.top.document.body.appendChild(new_script);
+      }
+    }
+    console.log(1);
+    document.body.removeChild(x);
+  };
+  document.body.appendChild(x);
+  
 
 
   //创建工具栏
