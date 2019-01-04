@@ -31,7 +31,7 @@ window.loopcnt = 0; //计数
   e2.setAttribute("onclick", "tenhou_log()");
   newdiv.appendChild(e2);
   var a = document.createElement("a");
-  a.setAttribute("href", "button");
+  a.setAttribute("href", "http://tenhou.net/ranking_tool.html");
   a.setAttribute("target", "_blank");
   a.innerText = "天凤统计工具";
   newdiv.appendChild(a);
