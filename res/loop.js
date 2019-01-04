@@ -136,15 +136,15 @@ async function stck() {
   }
   if (pcnt >= 4) {
     document.getElementById("sbt_1").click();
-    await sleep(2000);
+    await sleep(1500);
     document.getElementById("sbt_2").click();
-    await sleep(2000);
+    await sleep(1500);
     document.getElementById("sbt_3").click();
-    await sleep(2000);
+    await sleep(1500);
     document.getElementById("sbt_4").click();
-    await sleep(2000);
+    await sleep(1500);
     document.getElementById("btn_rand").click();
-    await sleep(2000);
+    await sleep(3000);
     document.getElementById("btn_st").click();
   }
   document.getElementById("lcnt").innerText = window.loopcnt;
