@@ -63,19 +63,19 @@ async function tenhou_log() {
       "L0000 | 00:00 | 四般南喰赤 | " +
       tmparr[3] +
       "(" +
-      tmparr[4] * 1 +
+      parseFloat(tmparr[4]) +
       ") " +
       tmparr[5] +
       "(" +
-      tmparr[6] * 1 +
+      parseFloat(tmparr[6]) +
       ") " +
       tmparr[7] +
       "(" +
-      tmparr[8] * 1 +
+      parseFloat(tmparr[8]) +
       ") " +
       tmparr[9] +
       "(" +
-      tmparr[10] * 1 +
+      parseFloat(tmparr[10]) +
       ")\r\n";
   }
   document.getElementById("th_txt").value = outstr;
