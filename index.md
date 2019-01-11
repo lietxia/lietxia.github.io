@@ -134,7 +134,7 @@ firefox打开
 
 第二个坑:牌背花纹
 
-![](dir/rose/scene/Assets/Resource/mjpai/3d/1s.png)
+![](dir/rose/scene/Assets/Resource/mjpai/1s.png)
 
 牌背素材是在右上角的部分，牌背的部分很小，就算改了牌背也很模糊  
 可喜的是，你可以等比放大（我就放大了400%）程序会自动缩小，这样牌背会有很高的分辨率，不会糊了  
