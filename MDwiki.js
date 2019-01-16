@@ -2657,7 +2657,7 @@ function googlemapsReady() {
     'use strict';
 
     var themes = [
-        { name: '初始', url: 'cdn.bootcss.com/bootstrap/3.4.0/css/bootstrap.min.css' },
+        { name: '初始', url: 'cdn.bootcss.com/twitter-bootstrap/3.4.0/css/bootstrap-theme.min.css' },
         { name: '蓝色', url: 'cdn.bootcss.com/bootswatch/3.4.0/cerulean/bootstrap.min.css' },
         { name: '深色', url: 'cdn.bootcss.com/bootswatch/3.4.0/darkly/bootstrap.min.css' },
         { name: '黑色', url: 'cdn.bootcss.com/bootswatch/3.4.0/cyborg/bootstrap.min.css' },
