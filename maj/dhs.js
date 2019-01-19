@@ -1,8 +1,8 @@
-if (
+﻿if (
   window.location.host != "majsoul.union-game.com" ||
   window.location.pathname != "/9c7d813114e1aed5fa24401020c048db.png"
 ) {
-  alert("执行脚本的页面不正确，接下来会自动跳转，请再执行一次脚本");
+  alert("书签脚本用法：在任意地方运行一次，接下来会转向一个图片\n再在图片的页面运行一次此书签脚本");
   window.location.href =
     "https://majsoul.union-game.com/9c7d813114e1aed5fa24401020c048db.png";
 } else {
