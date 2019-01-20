@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Marked in the browser</title>
+  </head>
+
+  <body>
+    <textarea id="ta"></textarea>
+    <hr />
+    <input type="button" onclick="mjfmt()" value="執行" />
+    <hr />
+    <textarea id="dp"></textarea>
+    <script>
+      function mjfmt() {
+        /*
+         * 麻雀文本格式化 + xxx.md->hash
+         * -1m -> 橫1萬
+         * -1p -> 橫1筒
+         * -1s -> 橫1索
+         * -1z -> 橫1字
+         *
+         * =1m -> 加槓1萬
+         * =1p -> 加槓1筒
+         * =1s -> 加槓1索
+         * =1z -> 加槓1字
+         *  #  -> 牌背
+         */
+        var txt = document.getElementById("ta").value;
+        txt = txt.replace(/<a href="([\w\\]+)\.md">/g, '<a href="#$1.md">');
+
+        var out = txt.replace(/{[\dmpsz\-= #]+}/g, function(word) {
+          var arr = word.split("");
+          var tmparr = [];
+          var str_last = "";
+          var str_sp = "";
+          for (var i = arr.length - 1; i > 0; i--) {
+            if (
+              arr[i] != "m" &&
+              arr[i] != "p" &&
+              arr[i] != "s" &&
+              arr[i] != "z"
+            ) {
+              if (
+                arr[i] != "-" &&
+                arr[i] != "=" &&
+                arr[i] != "{" &&
+                arr[i] != "}" &&
+                arr[i] != " " &&
+                arr[i] != "#"
+              ) {
+                if (arr[i - 1] == "-") {
+                  tmparr.unshift(
+                    "[[File:h" +
+                      arr[i] +
+                      str_last +
+                      ".png|36x30px|alt=橫" +
+                      arr[i] +
+                      str_last +
+                      "]]"
+                  );
+                } else {
+                  if (arr[i - 1] == "=") {
+                    tmparr.shift();
+                    tmparr.unshift(
+                      "[[File:" +
+                        arr[i] +
+                        arr[i + 1] +
+                        str_last +
+                        '.png|36x57px|alt=加槓' +
+                        arr[i] +
+                        arr[i] +
+                        str_last +
+                        "]]"
+                    );
+                  } else {
+                    tmparr.unshift(
+                      "[[File:" +
+                        arr[i] +
+                        str_last +
+                        '.png|27x39px|alt=' +
+                        arr[i] +
+                        str_last +
+                        "]]"
+                    );
+                  }
+                }
+              } else {
+                if (arr[i] === " ") {
+                  tmparr.unshift("　");
+                }
+                if (arr[i] === "#") {
+                  tmparr.unshift('[[File:b.png|27x39px|alt=牌背]]');
+                }
+              }
+            } else {
+              str_last = arr[i];
+            }
+          }
+          return tmparr.join("");
+        });
+        document.getElementById("dp").value = out;
+        return;
+      }
+      //麻雀文本格式化-->
+    </script>
+  </body>
+</html>
