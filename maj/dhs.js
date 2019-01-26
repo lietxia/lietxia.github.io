@@ -528,11 +528,15 @@ async function send_data() {
   await sleep(5000);
   var nowstr = document.getElementById("c_date").value;
   var x = document.getElementsByTagName("tr");
+  var bcnt=0;
+  var bs=false;
   for (var i = 1; i < x.length; i++) {
+    if()
     if (
       x[i].childNodes[1].innerText.indexOf(nowstr) === 0 &&
       x[i].childNodes[6].innerText.replace(/^\s+|\s+$/g, "") != "pass"
     ) {
+      bs=true;
       var tmparr = [];
       tmparr[0] = x[i].childNodes[1].innerText;
       tmparr[1] = x[i].childNodes[2].innerText;
@@ -544,6 +548,12 @@ async function send_data() {
       tmparr[6] = window.ee[window.ee.length - 1].uuidEdit;
       window.tb.push(tmparr);
     }
+    if(bs){
+      if(x[i].childNodes[1].innerText.indexOf(nowstr) != 0){
+      bcnt++;
+      }
+    }
+    if(bcnt>9){break}
   }
 
   var new_form = document.createElement("form");
