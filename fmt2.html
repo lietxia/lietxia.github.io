@@ -30,6 +30,8 @@
          * =1s -> 加槓1索
          * =1z -> 加槓1字
          *  #  -> 牌背
+
+         Image:MJ
          */
         var txt = document.getElementById("ta").value;
 
@@ -65,6 +67,7 @@
         txt = txt.replace(/{{牌画\|(\d)萬(s)?}}/g, '{$1m}');
         txt = txt.replace(/{{牌画\|(\d)筒(s)?}}/g, '{$1p}');
         txt = txt.replace(/{{牌画\|(\d)索(s)?}}/g, '{$1s}');
+        txt = txt.replace(/{{牌画\|(\d)z(s)?}}/g, '{$1z}');
         txt = txt.replace(/{{牌画\|牌背}}/g,'{#}');
         
 
