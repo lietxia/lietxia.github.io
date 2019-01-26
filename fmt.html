@@ -32,8 +32,6 @@
          *  #  -> 牌背
          */
         var txt = document.getElementById("ta").value;
-        txt = txt.replace(/<a href="([\w\\]+)\.md">/g, '<a href="#$1.md">');
-
         var out = txt.replace(/{[\dmpsz\-= #]+}/g, function(word) {
           var arr = word.split("");
           var tmparr = [];

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Marked in the browser</title>
+  </head>
+
+  <body>
+    <textarea id="ta"></textarea>
+    <hr />
+    <input type="button" onclick="mjfmt()" value="執行" />
+    <hr />
+    <textarea id="dp"></textarea>
+    <script>
+      function mjfmt() {
+        /*
+         * 麻雀文本格式化 + xxx.md->hash
+         * -1m -> 橫1萬
+         * -1p -> 橫1筒
+         * -1s -> 橫1索
+         * -1z -> 橫1字
+         *
+         * =1m -> 加槓1萬
+         * =1p -> 加槓1筒
+         * =1s -> 加槓1索
+         * =1z -> 加槓1字
+         *  #  -> 牌背
+         */
+        var txt = document.getElementById("ta").value;
+
+        txt = txt.replace(/{{牌画\|一([^}]+)}}/g, '{{牌画|1$1}}');
+        txt = txt.replace(/{{牌画\|二([^}]+)}}/g, '{{牌画|2$1}}');
+        txt = txt.replace(/{{牌画\|三([^}]+)}}/g, '{{牌画|3$1}}');
+        txt = txt.replace(/{{牌画\|四([^}]+)}}/g, '{{牌画|4$1}}');
+        txt = txt.replace(/{{牌画\|五([^}]+)}}/g, '{{牌画|5$1}}');
+        txt = txt.replace(/{{牌画\|六([^}]+)}}/g, '{{牌画|6$1}}');
+        txt = txt.replace(/{{牌画\|七([^}]+)}}/g, '{{牌画|7$1}}');
+        txt = txt.replace(/{{牌画\|八([^}]+)}}/g, '{{牌画|8$1}}');
+        txt = txt.replace(/{{牌画\|九([^}]+)}}/g, '{{牌画|9$1}}');
+
+        txt = txt.replace(/{{牌画\|東([^}]+)?}}/g, '{{牌画|1z$1}}');
+        txt = txt.replace(/{{牌画\|南([^}]+)?}}/g, '{{牌画|2z$1}}');
+        txt = txt.replace(/{{牌画\|西([^}]+)?}}/g, '{{牌画|3z$1}}');
+        txt = txt.replace(/{{牌画\|北([^}]+)?}}/g, '{{牌画|4z$1}}');
+        txt = txt.replace(/{{牌画\|白([^}]+)?}}/g, '{{牌画|5z$1}}');
+        txt = txt.replace(/{{牌画\|發([^}]+)?}}/g, '{{牌画|6z$1}}');
+        txt = txt.replace(/{{牌画\|発([^}]+)?}}/g, '{{牌画|6z$1}}');
+        txt = txt.replace(/{{牌画\|中([^}]+)?}}/g, '{{牌画|7z$1}}');
+
+        txt = txt.replace(/{{牌画\|(\d)z(s)?\|横}}/g, '{-$1z}');
+        txt = txt.replace(/{{牌画\|(\d)萬(s)?\|横}}/g, '{-$1m}');
+        txt = txt.replace(/{{牌画\|(\d)索(s)?\|横}}/g, '{-$1s}');
+        txt = txt.replace(/{{牌画\|(\d)筒(s)?\|横}}/g, '{-$1p}');
+
+        txt = txt.replace(/{{牌画\|(\d)z(s)?\|二重横}}/g, '{=$1z$1z}');
+        txt = txt.replace(/{{牌画\|(\d)萬(s)?\|二重横}}/g, '{=$1m$1m}');
+        txt = txt.replace(/{{牌画\|(\d)索(s)?\|二重横}}/g, '{=$1s$1s}');
+        txt = txt.replace(/{{牌画\|(\d)筒(s)?\|二重横}}/g, '{=$1p$1p}');
+
+        txt = txt.replace(/{{牌画\|(\d)萬(s)?}}/g, '{$1m}');
+        txt = txt.replace(/{{牌画\|(\d)筒(s)?}}/g, '{$1p}');
+        txt = txt.replace(/{{牌画\|(\d)索(s)?}}/g, '{$1s}');
+        txt = txt.replace(/{{牌画\|牌背}}/g,'{#}');
+        
+
+        txt = txt.replace(/{{spaces\|\d}}/g,' ');
+
+        txt = txt.replace(/{{lang\|(\w+\|)?([^}]+)}}/g,"'''$2'''");
+
+        document.getElementById("dp").value = txt;
+        return;
+      }
+      //麻雀文本格式化-->
+    </script>
+  </body>
+</html>
