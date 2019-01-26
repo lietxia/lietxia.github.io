@@ -531,7 +531,7 @@ async function send_data() {
   var bcnt=0;
   var bs=false;
   for (var i = 1; i < x.length; i++) {
-    if()
+    
     if (
       x[i].childNodes[1].innerText.indexOf(nowstr) === 0 &&
       x[i].childNodes[6].innerText.replace(/^\s+|\s+$/g, "") != "pass"
