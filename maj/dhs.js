@@ -25,13 +25,13 @@
     var scripts = frames["qhdhs"].document.getElementsByTagName("script");
     for (let i = 0; i < scripts.length; i++) {
       if (
-        "https://majsoul.union-game.com/dhs/vendors~app~vendor.19ac4945.js" ===
+        "https://majsoul.union-game.com/dhs/vendors~app~vendor.b2b2ee04.js" ===
         scripts[i].src
       ) {
         var new_script = document.createElement("script");
         new_script.setAttribute(
           "src",
-          "https://lietxia.github.io/maj/vendors~app~vendor.19ac4945.js"
+          "https://lietxia.github.io/maj/vendors_app_vendor.b2b2ee04.js"
         );
         window.top.document.body.appendChild(new_script);
       } else {
