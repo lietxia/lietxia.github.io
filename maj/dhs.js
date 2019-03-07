@@ -161,7 +161,7 @@
 
     var new_btn = document.createElement("input");
     new_btn.setAttribute("type", "button");
-    new_btn.setAttribute("onclick", "pc()");
+    new_btn.setAttribute("onclick", "page_change()");
     new_btn.setAttribute("value", "切换页面");
     div_tools.appendChild(new_btn);
 
@@ -180,7 +180,7 @@
   create_toolbox();
 } //else-->
 
-function pc() {
+function page_change() {
   //*[@id="root"]/div/header/div/div[3]/div/div/div/div
   var pg = document.querySelector('#root > div > header > div > div:nth-child(3) > div > div > div > div');
   var box = document.getElementById("box");
