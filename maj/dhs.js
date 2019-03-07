@@ -1,10 +1,10 @@
 ﻿if (
   window.location.host != "majsoul.union-game.com" ||
-  window.location.pathname != "/9c7d813114e1aed5fa24401020c048db.png"
+  window.location.pathname != "/0/v0.4.1.w/user_xieyi/1.txt"
 ) {
-  alert("书签脚本用法：在任意地方运行一次，接下来会转向一个图片\n再在图片的页面运行一次此书签脚本");
+  alert("书签脚本用法：在任意地方运行一次此脚本，他会转向一个文本\n【注意】然后再运行一次此脚本");
   window.location.href =
-    "https://majsoul.union-game.com/9c7d813114e1aed5fa24401020c048db.png";
+    "https://majsoul.union-game.com/0/v0.4.1.w/user_xieyi/1.txt";
 } else {
   history.pushState(null, null, "/dhs/");
   //document.getElementsByTagName('style')[0].remove();
@@ -20,7 +20,7 @@
   x.src = "https://majsoul.union-game.com/dhs/";
   x.name = "qhdhs";
   x.id = "qhdhs";
-  x.onload = function() {
+  x.onload = function () {
     //var tmp = [];
     var scripts = frames["qhdhs"].document.getElementsByTagName("script");
     for (let i = 0; i < scripts.length; i++) {
@@ -74,6 +74,7 @@
     new_ipt.setAttribute("type", "text");
     new_ipt.setAttribute("value", "0");
     new_ipt.setAttribute("id", "cid");
+    new_ipt.setAttribute("onchange", "init_all()");
     new_div.appendChild(new_ipt);
 
     new_div.appendChild(document.createElement("br"));
@@ -87,6 +88,7 @@
     new_ipt.setAttribute("size", "2");
     new_ipt.setAttribute("value", "1");
     new_ipt.setAttribute("id", "c_round");
+    new_ipt.setAttribute("onchange", "init_all()");
     new_div.appendChild(new_ipt);
 
     new_div.appendChild(document.createElement("br"));
@@ -99,6 +101,7 @@
     new_ipt.setAttribute("type", "text");
     new_ipt.setAttribute("size", "10");
     new_ipt.setAttribute("id", "c_date");
+    new_ipt.setAttribute("onchange", "init_all()");
     var d = new Date();
     var nowstr = d.getFullYear();
     nowstr += (d.getMonth() < 10 ? "-0" : "-") + (d.getMonth() + 1);
@@ -116,6 +119,7 @@
     new_ipt.setAttribute("type", "password");
     new_ipt.setAttribute("size", "6");
     new_ipt.setAttribute("id", "c_pw");
+    new_ipt.setAttribute("onchange", "init_all()");
     new_div.appendChild(new_ipt);
 
     tool_div.appendChild(new_div);
@@ -155,6 +159,12 @@
     new_btn.setAttribute("value", "重载数据");
     div_tools.appendChild(new_btn);
 
+    var new_btn = document.createElement("input");
+    new_btn.setAttribute("type", "button");
+    new_btn.setAttribute("onclick", "pc()");
+    new_btn.setAttribute("value", "切换页面");
+    div_tools.appendChild(new_btn);
+
     tool_div.appendChild(div_tools);
 
     //div-tools->
@@ -169,6 +179,22 @@
   } //func-->
   create_toolbox();
 } //else-->
+
+function pc() {
+  //*[@id="root"]/div/header/div/div[3]/div/div/div/div
+  var pg = document.querySelector('#root > div > header > div > div:nth-child(3) > div > div > div > div');
+  var box = document.getElementById("box");
+  box.innerHTML = "";
+  var btns = pg.innerText.split(/\s+/);
+  for (var i = 0; i < btns.length; i++) {
+    var new_btn = document.createElement("input");
+    new_btn.setAttribute("type", "button");
+    new_btn.setAttribute("onclick", "document.querySelector('#root > div > header > div > div:nth-child(3) > div > div > div > div > button:nth-child(" + (i + 1) + ")').click();");
+    new_btn.setAttribute("value", btns[i]);
+    box.appendChild(new_btn);
+  }
+}
+
 
 //----init类---
 function init_all() {
@@ -356,11 +382,11 @@ function set_value(type, txt) {
 function get_cls(cls) {
   arr = get_json(
     "https://mahjong.pub/api/maj_get.php?p=" +
-      window.c_admin.c_s_po +
-      "&data=" +
-      window.this_round[cls].join("_") +
-      "&t=" +
-      encodeURI(window.c_admin.t_type)
+    window.c_admin.c_s_po +
+    "&data=" +
+    window.this_round[cls].join("_") +
+    "&t=" +
+    encodeURI(window.c_admin.t_type)
   );
   if (arr === null || arr === "") {
     return alert("获取第" + cls + "组开赛名单失败");
@@ -528,15 +554,15 @@ async function send_data() {
   await sleep(5000);
   var nowstr = document.getElementById("c_date").value;
   var x = document.getElementsByTagName("tr");
-  var bcnt=0;
-  var bs=false;
+  var bcnt = 0;
+  var bs = false;
   for (var i = 1; i < x.length; i++) {
-    
+
     if (
       x[i].childNodes[1].innerText.indexOf(nowstr) === 0 &&
       x[i].childNodes[6].innerText.replace(/^\s+|\s+$/g, "") != "pass"
     ) {
-      bs=true;
+      bs = true;
       var tmparr = [];
       tmparr[0] = x[i].childNodes[1].innerText;
       tmparr[1] = x[i].childNodes[2].innerText;
@@ -548,12 +574,12 @@ async function send_data() {
       tmparr[6] = window.ee[window.ee.length - 1].uuidEdit;
       window.tb.push(tmparr);
     }
-    if(bs){
-      if(x[i].childNodes[1].innerText.indexOf(nowstr) != 0){
-      bcnt++;
+    if (bs) {
+      if (x[i].childNodes[1].innerText.indexOf(nowstr) != 0) {
+        bcnt++;
       }
     }
-    if(bcnt>9){break}
+    if (bcnt > 9) { break }
   }
 
   var new_form = document.createElement("form");
