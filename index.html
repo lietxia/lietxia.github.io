@@ -1,138 +1,145 @@
 <!DOCTYPE html>
 <html>
-  <!--
+<!--
    This is MDwiki v0.6.2
    (C) 2013 by Timo Dörr and contributors. This software is licensed
    under the terms of the GNU GPLv3 with additional terms applied.
-   See https://github.com/Dynalon/mdwiki/blob/master/LICENSE.txt for more detail.
+   See //github.com/Dynalon/mdwiki/blob/master/LICENSE.txt for more detail.
    See //github.com/Dynalon/mdwiki for a copy of the source code.
 -->
 
-  <head>
-    <title>MDwiki</title>
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-    <meta charset="UTF-8" />
-    <link
-      href="https://cdn.bootcss.com/twitter-bootstrap/3.4.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/twitter-bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <script src="https://cdn.bootcss.com/jquery.colorbox/1.6.4/jquery.colorbox-min.js"></script>
-    <script src="https://cdn.bootcss.com/marked/0.6.0/marked.min.js"></script>
-    <script src="MDwiki.js"></script>
-    <style type="text/css">
-      /* hide the main content while we assemble everything */
-      .md-hidden-load {
+<head>
+  <title>MDwiki</title>
+  <script> //干掉傻逼的疼逊链接
+    (function () {
+      var patt = new RegExp(/(.+)[\?\&]tdsourcetag\=\w+$/);
+      var arr = patt.exec(window.location.href);
+      if (arr != null) {
+        window.location.href = arr[1];
+      }
+    }())
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta charset="UTF-8" />
+  <link href="//cdn.bootcss.com/twitter-bootstrap/3.4.0/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="//cdn.bootcss.com/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/twitter-bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery.colorbox/1.6.4/jquery.colorbox-min.js"></script>
+  <script src="//cdn.bootcss.com/marked/0.6.0/marked.min.js"></script>
+  <script src="MDwiki.js"></script>
+  <style type="text/css">
+    /* hide the main content while we assemble everything */
+    .md-hidden-load {
+      display: none;
+    }
+
+    .anchor-highlight {
+      font-size: 0.7em;
+      margin-left: 0.25em;
+    }
+
+    /* for pageContentMenu */
+    #md-page-menu {
+      position: static;
+    }
+
+    #md-page-menu a.active {
+      /* background-color: rgba(0, 0, 0, 0.01); */
+      font-weight: bold;
+      padding-left: 6px;
+    }
+
+    @media (min-width: 992px) {
+      #md-page-menu.affix {
+        position: fixed;
+      }
+    }
+
+    @media (min-width: 768px) {
+
+      .md-float-left .col-sm-8,
+      .md-float-right .col-sm-8 {
+        max-width: 66.67%;
+      }
+
+      .md-float-left .col-sm-4,
+      .md-float-right .col-sm-4 {
+        max-width: 33.33%;
+      }
+
+      .md-float-left .col-sm-2,
+      .md-float-right .col-sm-2 {
+        max-width: 16.67%;
+      }
+    }
+
+    @media (max-width: 992px) {
+      a.forkmeongithub {
         display: none;
       }
+    }
 
-      .anchor-highlight {
-        font-size: 0.7em;
-        margin-left: 0.25em;
-      }
+    @media (max-width: 768px) {
 
-      /* for pageContentMenu */
-      #md-page-menu {
-        position: static;
-      }
-
-      #md-page-menu a.active {
-        /* background-color: rgba(0, 0, 0, 0.01); */
-        font-weight: bold;
-        padding-left: 6px;
-      }
-
-      @media (min-width: 992px) {
-        #md-page-menu.affix {
-          position: fixed;
-        }
-      }
-
-      @media (min-width: 768px) {
-        .md-float-left .col-sm-8,
-        .md-float-right .col-sm-8 {
-          max-width: 66.67%;
-        }
-
-        .md-float-left .col-sm-4,
-        .md-float-right .col-sm-4 {
-          max-width: 33.33%;
-        }
-
-        .md-float-left .col-sm-2,
-        .md-float-right .col-sm-2 {
-          max-width: 16.67%;
-        }
-      }
-
-      @media (max-width: 992px) {
-        a.forkmeongithub {
-          display: none;
-        }
-      }
-
-      @media (max-width: 768px) {
-        /* don't use floating for smaller screens */
-        .md-float-left .col-sm-8,
-        .md-float-left .col-sm-4,
-        .md-float-left .col-sm-2 {
-          width: 100%;
-          min-width: 100%;
-        }
-
-        .md-float-right .col-sm-8,
-        .md-float-right .col-sm-4,
-        .md-float-right .col-sm-2 {
-          width: 100%;
-          min-width: 100%;
-        }
-      }
-
-      .md-floatenv .md-text {
-        /* md-text is not of md-col-* but needs the spacing */
-        margin-left: 15px;
-        margin-right: 15px;
-      }
-
-      /* float images */
+      /* don't use floating for smaller screens */
       .md-float-left .col-sm-8,
       .md-float-left .col-sm-4,
       .md-float-left .col-sm-2 {
-        width: auto;
+        width: 100%;
+        min-width: 100%;
       }
 
       .md-float-right .col-sm-8,
       .md-float-right .col-sm-4,
       .md-float-right .col-sm-2 {
-        float: right !important;
-        width: auto;
+        width: 100%;
+        min-width: 100%;
       }
+    }
 
-      #md-all .md-copyright-footer {
-        font-size: smaller;
-        padding: 1em;
-      }
+    .md-floatenv .md-text {
+      /* md-text is not of md-col-* but needs the spacing */
+      margin-left: 15px;
+      margin-right: 15px;
+    }
 
-      html,
-      body {
-        word-wrap: break-word;
-        margin: 0;
-        height: 100%;
-      }
-    </style>
-  </head>
+    /* float images */
+    .md-float-left .col-sm-8,
+    .md-float-left .col-sm-4,
+    .md-float-left .col-sm-2 {
+      width: auto;
+    }
 
-  <body>
-    <noscript>
-      This website requires Javascript to be enabled. Please turn on Javascript
-      and reload the page.
-    </noscript>
+    .md-float-right .col-sm-8,
+    .md-float-right .col-sm-4,
+    .md-float-right .col-sm-2 {
+      float: right !important;
+      width: auto;
+    }
 
-    <div id="md-all" class="container-fluid"></div>
-  </body>
+    #md-all .md-copyright-footer {
+      font-size: smaller;
+      padding: 1em;
+    }
+
+    html,
+    body {
+      word-wrap: break-word;
+      margin: 0;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <noscript>
+    This website requires Javascript to be enabled. Please turn on Javascript
+    and reload the page.
+  </noscript>
+
+  <div id="md-all" class="container-fluid"></div>
+</body>
+
 </html>
