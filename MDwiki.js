@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
   "use strict";
 
   // hide the whole page so we dont see the DOM flickering
@@ -6,7 +6,7 @@
   $("html").addClass("md-hidden-load");
 
   // register our $.md object
-  $.md = function(method) {
+  $.md = function (method) {
     if ($.md.publicMethods[method]) {
       return $.md.publicMethods[method].apply(
         this,
@@ -47,15 +47,15 @@
   $.md.logThreshold = $.md.loglevel.WARN;
 })(jQuery);
 
-(function($) {
+(function ($) {
   "use strict";
-  $.md.getLogger = function() {
+  $.md.getLogger = function () {
     var loglevel = $.md.loglevel;
 
-    var log = function(logtarget) {
+    var log = function (logtarget) {
       var self = this;
       var level = loglevel[logtarget];
-      return function(msg) {
+      return function (msg) {
         if ($.md.logThreshold <= level) {
           console.log("[" + logtarget + "] " + msg);
         }
@@ -74,44 +74,44 @@
   };
 })(jQuery);
 
-(function($) {
+(function ($) {
   "use strict";
   var log = $.md.getLogger();
 
-  $.Stage = function(name) {
+  $.Stage = function (name) {
     var self = $.extend($.Deferred(), {});
     self.name = name;
     self.events = [];
     self.started = false;
 
-    self.reset = function() {
+    self.reset = function () {
       self.complete = $.Deferred();
       self.outstanding = [];
     };
 
     self.reset();
 
-    self.subscribe = function(fn) {
+    self.subscribe = function (fn) {
       if (self.started) {
         $.error("Subscribing to stage which already started!");
       }
       self.events.push(fn);
     };
-    self.unsubscribe = function(fn) {
+    self.unsubscribe = function (fn) {
       self.events.remove(fn);
     };
 
-    self.executeSubscribedFn = function(fn) {
+    self.executeSubscribedFn = function (fn) {
       var d = $.Deferred();
       self.outstanding.push(d);
 
       // display an error if our done() callback is not called
-      $.md.util.wait(2500).done(function() {
+      $.md.util.wait(2500).done(function () {
         if (d.state() !== "resolved") {
           log.fatal(
             "Timeout reached for done callback in stage: " +
-              self.name +
-              ". Did you forget a done() call in a .subscribe() ?"
+            self.name +
+            ". Did you forget a done() call in a .subscribe() ?"
           );
           log.fatal(
             "stage " + name + " failed running subscribed function: " + fn
@@ -119,15 +119,15 @@
         }
       });
 
-      var done = function() {
+      var done = function () {
         d.resolve();
       };
       fn(done);
     };
 
-    self.run = function() {
+    self.run = function () {
       self.started = true;
-      $(self.events).each(function(i, fn) {
+      $(self.events).each(function (i, fn) {
         self.executeSubscribedFn(fn);
       });
 
@@ -139,25 +139,25 @@
       // we resolve when all our registered events have completed
       $.when
         .apply($, self.outstanding)
-        .done(function() {
+        .done(function () {
           self.resolve();
         })
-        .fail(function() {
+        .fail(function () {
           self.resolve();
         });
     };
 
-    self.done(function() {
+    self.done(function () {
       log.debug("stage " + self.name + " completed successfully.");
     });
-    self.fail(function() {
+    self.fail(function () {
       log.debug("stage " + self.name + " completed with errors!");
     });
     return self;
   };
 })(jQuery);
 
-(function($) {
+(function ($) {
   "use strict";
 
   var log = $.md.getLogger();
@@ -196,8 +196,8 @@
       $.Stage("final_tests")
     ];
 
-    $.md.stage = function(name) {
-      var m = $.grep($.md.stages, function(e, i) {
+    $.md.stage = function (name) {
+      var m = $.grep($.md.stages, function (e, i) {
         return e.name === name;
       });
       if (m.length === 0) {
@@ -212,7 +212,7 @@
   function resetStages() {
     var old_stages = $.md.stages;
     $.md.stages = [];
-    $(old_stages).each(function(i, e) {
+    $(old_stages).each(function (i, e) {
       $.md.stages.push($.Stage(e.name));
     });
   }
@@ -239,19 +239,19 @@
   function registerFetchMarkdown() {
     var md = "";
 
-    $.md.stage("init").subscribe(function(done) {
+    $.md.stage("init").subscribe(function (done) {
       var ajaxReq = {
         url: $.md.mainHref,
         dataType: "text",
         cache: false
       };
       $.ajax(ajaxReq)
-        .done(function(data) {
+        .done(function (data) {
           // TODO do this elsewhere
           md = data;
           done();
         })
-        .fail(function() {
+        .fail(function () {
           var log = $.md.getLogger();
           log.fatal("Could not get " + $.md.mainHref);
           done();
@@ -259,20 +259,20 @@
     });
 
     // find baseUrl
-    $.md.stage("transform").subscribe(function(done) {
+    $.md.stage("transform").subscribe(function (done) {
       var len = $.md.mainHref.lastIndexOf("/");
       var baseUrl = $.md.mainHref.substring(0, len + 1);
       $.md.baseUrl = baseUrl;
       done();
     });
 
-    $.md.stage("transform").subscribe(function(done) {
+    $.md.stage("transform").subscribe(function (done) {
       var uglyHtml = transformMarkdown(md);
       $("#md-content").html(uglyHtml);
       md = "";
       var dfd = $.Deferred();
       loadExternalIncludes(dfd);
-      dfd.always(function() {
+      dfd.always(function () {
         done();
       });
     });
@@ -281,7 +281,7 @@
   // load [include](/foo/bar.md) external links
   function loadExternalIncludes(parent_dfd) {
     function findExternalIncludes() {
-      return $("a").filter(function() {
+      return $("a").filter(function () {
         var href = $(this).attr("href");
         var text = $(this).toptext();
         var isMarkdown = $.md.util.hasMarkdownFileExtension(href);
@@ -297,7 +297,7 @@
       }
       var count = 0;
       var elements = [];
-      $jqcol.each(function(i, e) {
+      $jqcol.each(function (i, e) {
         if (count < num_elements) {
           elements.push(e);
           if (!isTextNode(e)) count++;
@@ -309,11 +309,11 @@
     var external_links = findExternalIncludes();
     // continue execution when all external resources are fully loaded
     var latch = $.md.util.countDownLatch(external_links.length);
-    latch.always(function() {
+    latch.always(function () {
       parent_dfd.resolve();
     });
 
-    external_links.each(function(i, e) {
+    external_links.each(function (i, e) {
       var $el = $(e);
       var href = $el.attr("href");
       var text = $el.toptext();
@@ -322,7 +322,7 @@
         cache: false,
         dataType: "text"
       })
-        .done(function(data) {
+        .done(function (data) {
           var $html = $(transformMarkdown(data));
           if (text.startsWith("preview:")) {
             // only insert the selected number of paragraphs; default 3
@@ -338,7 +338,7 @@
             $el.remove();
           }
         })
-        .always(function() {
+        .always(function () {
           latch.countDown();
         });
     });
@@ -370,13 +370,13 @@
     html
       .find("a")
       .not("#md-menu a")
-      .filter(function() {
+      .filter(function () {
         var $this = $(this);
         var attr = $this.attr("href");
         if (!attr || attr.length === 0) $this.removeAttr("href");
       });
 
-    html.find("a, img").each(function(i, e) {
+    html.find("a, img").each(function (i, e) {
       var link = $(e);
       // link must be jquery collection
       var isImage = false;
@@ -394,7 +394,7 @@
 
       if (!isImage && href.startsWith("#") && !href.startsWith("#")) {
         // in-page link
-        link.click(function(ev) {
+        link.click(function (ev) {
           ev.preventDefault();
           $.md.scrollToInPageAnchor(href);
         });
@@ -427,24 +427,24 @@
     cache: false
   };
   $.ajax(ajaxReq)
-    .done(function(data) {
+    .done(function (data) {
       navMD = data;
       $.md.NavigationDfd.resolve();
     })
-    .fail(function() {
+    .fail(function () {
       $.md.NavigationDfd.reject();
     });
 
   function registerBuildNavigation() {
-    $.md.stage("init").subscribe(function(done) {
-      $.md.NavigationDfd.done(function() {
+    $.md.stage("init").subscribe(function (done) {
+      $.md.NavigationDfd.done(function () {
         done();
-      }).fail(function() {
+      }).fail(function () {
         done();
       });
     });
 
-    $.md.stage("transform").subscribe(function(done) {
+    $.md.stage("transform").subscribe(function (done) {
       if (navMD === "") {
         var log = $.md.getLogger();
         log.info("no navgiation.md found, not using a navbar");
@@ -457,7 +457,7 @@
       var $h = $("<div>" + navHtml + "</div>");
 
       // insert <scripts> from navigation.md into the DOM
-      $h.each(function(i, e) {
+      $h.each(function (i, e) {
         if (e.tagName === "SCRIPT") {
           $("script")
             .first()
@@ -467,7 +467,7 @@
 
       // TODO .html() is evil!!!
       var $navContent = $h.eq(0);
-      $navContent.find("p").each(function(i, e) {
+      $navContent.find("p").each(function (i, e) {
         var $el = $(e);
         $el.replaceWith($el.html());
       });
@@ -475,12 +475,12 @@
       done();
     });
 
-    $.md.stage("bootstrap").subscribe(function(done) {
+    $.md.stage("bootstrap").subscribe(function (done) {
       processPageLinks($("#md-menu"));
       done();
     });
 
-    $.md.stage("postgimmick").subscribe(function(done) {
+    $.md.stage("postgimmick").subscribe(function (done) {
       var num_links = $("#md-menu a").length;
       var has_header =
         $("#md-menu .navbar-brand")
@@ -495,7 +495,7 @@
 
   $.md.ConfigDfd = $.Deferred();
   $.ajax({ url: "config.json", cache: false, dataType: "text" })
-    .done(function(data) {
+    .done(function (data) {
       try {
         var data_json = JSON.parse(data);
         $.md.config = $.extend($.md.config, data_json);
@@ -505,18 +505,18 @@
       }
       $.md.ConfigDfd.resolve();
     })
-    .fail(function(err, textStatus) {
+    .fail(function (err, textStatus) {
       log.error("unable to retrieve config.json: " + textStatus);
       $.md.ConfigDfd.reject();
     });
   function registerFetchConfig() {
-    $.md.stage("init").subscribe(function(done) {
+    $.md.stage("init").subscribe(function (done) {
       // TODO 404 won't get cached, requesting it every reload is not good
       // maybe use cookies? or disable re-loading of the page
       //$.ajax('config.json').done(function(data){
-      $.md.ConfigDfd.done(function() {
+      $.md.ConfigDfd.done(function () {
         done();
-      }).fail(function() {
+      }).fail(function () {
         var log = $.md.getLogger();
         log.info("No config.json found, using default settings");
         done();
@@ -525,7 +525,7 @@
   }
 
   function registerClearContent() {
-    $.md.stage("init").subscribe(function(done) {
+    $.md.stage("init").subscribe(function (done) {
       $("#md-all").empty();
       var skel =
         '<div id="md-body"><div id="md-title"></div><div id="md-menu">' +
@@ -541,29 +541,29 @@
     registerClearContent();
 
     // find out which link gimmicks we need
-    $.md.stage("ready").subscribe(function(done) {
+    $.md.stage("ready").subscribe(function (done) {
       $.md.initializeGimmicks();
       $.md.registerLinkGimmicks();
       done();
     });
 
     // wire up the load method of the modules
-    $.each($.md.gimmicks, function(i, module) {
+    $.each($.md.gimmicks, function (i, module) {
       if (module.load === undefined) {
         return;
       }
-      $.md.stage("load").subscribe(function(done) {
+      $.md.stage("load").subscribe(function (done) {
         module.load();
         done();
       });
     });
 
-    $.md.stage("ready").subscribe(function(done) {
+    $.md.stage("ready").subscribe(function (done) {
       $.md("createBasicSkeleton");
       done();
     });
 
-    $.md.stage("bootstrap").subscribe(function(done) {
+    $.md.stage("bootstrap").subscribe(function (done) {
       $.mdbootstrap("bootstrapify");
       processPageLinks($("#md-content"), $.md.baseUrl);
       done();
@@ -573,34 +573,34 @@
 
   function runStages() {
     // wire the stages up
-    $.md.stage("init").done(function() {
+    $.md.stage("init").done(function () {
       $.md.stage("load").run();
     });
-    $.md.stage("load").done(function() {
+    $.md.stage("load").done(function () {
       $.md.stage("transform").run();
     });
-    $.md.stage("transform").done(function() {
+    $.md.stage("transform").done(function () {
       $.md.stage("ready").run();
     });
-    $.md.stage("ready").done(function() {
+    $.md.stage("ready").done(function () {
       $.md.stage("skel_ready").run();
     });
-    $.md.stage("skel_ready").done(function() {
+    $.md.stage("skel_ready").done(function () {
       $.md.stage("bootstrap").run();
     });
-    $.md.stage("bootstrap").done(function() {
+    $.md.stage("bootstrap").done(function () {
       $.md.stage("pregimmick").run();
     });
-    $.md.stage("pregimmick").done(function() {
+    $.md.stage("pregimmick").done(function () {
       $.md.stage("gimmick").run();
     });
-    $.md.stage("gimmick").done(function() {
+    $.md.stage("gimmick").done(function () {
       $.md.stage("postgimmick").run();
     });
-    $.md.stage("postgimmick").done(function() {
+    $.md.stage("postgimmick").done(function () {
       $.md.stage("all_ready").run();
     });
-    $.md.stage("all_ready").done(function() {
+    $.md.stage("all_ready").done(function () {
       $("html").removeClass("md-hidden-load");
 
       // phantomjs hook when we are done
@@ -610,7 +610,7 @@
 
       $.md.stage("final_tests").run();
     });
-    $.md.stage("final_tests").done(function() {
+    $.md.stage("final_tests").done(function () {
       // reset the stages for next iteration
       resetStages();
 
@@ -658,7 +658,7 @@
     if (newHashString) window.location.hash = newHashString;
   }
 
-  $(document).ready(function() {
+  $(document).ready(function () {
     // stage init stuff
     registerFetchConfig();
     registerBuildNavigation();
@@ -666,7 +666,7 @@
 
     appendDefaultFilenameToHash();
 
-    $(window).bind("hashchange", function() {
+    $(window).bind("hashchange", function () {
       window.location.reload(false);
     });
 
@@ -674,9 +674,9 @@
   });
 })(jQuery);
 
-(function($) {
+(function ($) {
   var publicMethods = {
-    isRelativeUrl: function(url) {
+    isRelativeUrl: function (url) {
       if (url === undefined) {
         return false;
       }
@@ -688,31 +688,31 @@
         return false;
       }
     },
-    isRelativePath: function(path) {
+    isRelativePath: function (path) {
       if (path === undefined) return false;
       if (path.startsWith("/")) return false;
       return true;
     },
-    isGimmickLink: function(domAnchor) {
+    isGimmickLink: function (domAnchor) {
       if (domAnchor.toptext().indexOf("gimmick:") !== -1) {
         return true;
       } else {
         return false;
       }
     },
-    hasMarkdownFileExtension: function(str) {
+    hasMarkdownFileExtension: function (str) {
       var markdownExtensions = [".md", ".markdown", ".mdown"];
       var result = false;
       var value = str.toLowerCase().split("#")[0];
-      $(markdownExtensions).each(function(i, ext) {
+      $(markdownExtensions).each(function (i, ext) {
         if (value.toLowerCase().endsWith(ext)) {
           result = true;
         }
       });
       return result;
     },
-    wait: function(time) {
-      return $.Deferred(function(dfd) {
+    wait: function (time) {
+      return $.Deferred(function (dfd) {
         setTimeout(dfd.resolve, time);
       });
     }
@@ -720,18 +720,18 @@
   $.md.util = $.extend({}, $.md.util, publicMethods);
 
   if (typeof String.prototype.startsWith !== "function") {
-    String.prototype.startsWith = function(str) {
+    String.prototype.startsWith = function (str) {
       return this.slice(0, str.length) === str;
     };
   }
   if (typeof String.prototype.endsWith !== "function") {
-    String.prototype.endsWith = function(str) {
+    String.prototype.endsWith = function (str) {
       return this.slice(this.length - str.length, this.length) === str;
     };
   }
 
   $.fn.extend({
-    toptext: function() {
+    toptext: function () {
       return this.clone()
         .children()
         .remove()
@@ -741,8 +741,8 @@
   });
 
   // adds a :icontains selector to jQuery that is case insensitive
-  $.expr[":"].icontains = $.expr.createPseudo(function(arg) {
-    return function(elem) {
+  $.expr[":"].icontains = $.expr.createPseudo(function (arg) {
+    return function (elem) {
       return (
         $(elem)
           .toptext()
@@ -752,18 +752,18 @@
     };
   });
 
-  $.md.util.getInpageAnchorText = function(text) {
+  $.md.util.getInpageAnchorText = function (text) {
     var subhash = text.replace(/ /g, "_");
     // TODO remove more unwanted characters like ?/,- etc.
     return subhash;
   };
-  $.md.util.getInpageAnchorHref = function(text, href) {
+  $.md.util.getInpageAnchorHref = function (text, href) {
     href = href || $.md.mainHref;
     var subhash = $.md.util.getInpageAnchorText(text);
     return "#" + href + "#" + subhash;
   };
 
-  $.md.util.repeatUntil = function(interval, predicate, maxRepeats) {
+  $.md.util.repeatUntil = function (interval, predicate, maxRepeats) {
     maxRepeats = maxRepeats || 10;
     var dfd = $.Deferred();
     function recursive_repeat(interval, predicate, maxRepeats) {
@@ -775,7 +775,7 @@
         dfd.resolve();
         return;
       } else {
-        $.md.util.wait(interval).always(function() {
+        $.md.util.wait(interval).always(function () {
           recursive_repeat(interval, predicate, maxRepeats - 1);
         });
       }
@@ -785,12 +785,12 @@
   };
 
   // a count-down latch as in Java7.
-  $.md.util.countDownLatch = function(capacity, min) {
+  $.md.util.countDownLatch = function (capacity, min) {
     min = min || 0;
     var dfd = $.Deferred();
     if (capacity <= min) dfd.resolve();
     dfd.capacity = capacity;
-    dfd.countDown = function() {
+    dfd.countDown = function () {
       dfd.capacity--;
       if (dfd.capacity <= min) dfd.resolve();
     };
@@ -798,11 +798,11 @@
   };
 })(jQuery);
 
-(function($) {
+(function ($) {
   "use strict";
 
   // PUBLIC API
-  $.md.registerGimmick = function(module) {
+  $.md.registerGimmick = function (module) {
     $.md.gimmicks.push(module);
     return;
   };
@@ -812,7 +812,7 @@
   // src may be an URL or direct javascript sourcecode. When options.callback
   // is provided, the done() function is passed to the function and needs to
   // be called.
-  $.md.registerScript = function(module, src, options) {
+  $.md.registerScript = function (module, src, options) {
     var scriptinfo = new ScriptInfo({
       module: module,
       src: src,
@@ -823,7 +823,7 @@
 
   // same as registerScript but for css. Note that we do not provide a
   // callback when the load finishes
-  $.md.registerCss = function(module, url, options) {
+  $.md.registerCss = function (module, url, options) {
     var license = options.license,
       stage = options.stage || "skel_ready",
       callback = options.callback;
@@ -831,7 +831,7 @@
     checkLicense(license, module);
     var tag =
       '<link rel="stylesheet" href="' + url + '" type="text/css"></link>';
-    $.md.stage(stage).subscribe(function(done) {
+    $.md.stage(stage).subscribe(function (done) {
       $("head").append(tag);
       if (callback !== undefined) {
         callback(done);
@@ -844,7 +844,7 @@
   // turns hostname/path links into http://hostname/path links
   // we need to do this because if accessed by file:///, we need a different
   // transport scheme for external resources (like http://)
-  $.md.prepareLink = function(link, options) {
+  $.md.prepareLink = function (link, options) {
     options = options || {};
     var ownProtocol = window.location.protocol;
 
@@ -860,7 +860,7 @@
 
   // associate a link trigger for a gimmick. i.e. [gimmick:foo]() then
   // foo is the trigger and will invoke the corresponding gimmick
-  $.md.linkGimmick = function(module, trigger, callback, stage) {
+  $.md.linkGimmick = function (module, trigger, callback, stage) {
     if (stage === undefined) {
       stage = "gimmick";
     }
@@ -873,7 +873,7 @@
     linkTriggers.push(linktrigger);
   };
 
-  $.md.triggerIsActive = function(trigger) {
+  $.md.triggerIsActive = function (trigger) {
     if (activeLinkTriggers.indexOf(trigger) === -1) {
       return false;
     } else {
@@ -883,7 +883,7 @@
 
   var initialized = false;
   // TODO combine main.js and modules.js closure
-  $.md.initializeGimmicks = function() {
+  $.md.initializeGimmicks = function () {
     findActiveLinkTrigger();
     runGimmicksOnce();
     loadRequiredScripts();
@@ -953,10 +953,10 @@
     } else if (license === "OTHER") {
       log.warn(
         "WARNING: Module " +
-          module.name +
-          " uses a script" +
-          " with unknown license. This may be a GPL license violation if" +
-          " this website is publically available!"
+        module.name +
+        " uses a script" +
+        " with unknown license. This may be a GPL license violation if" +
+        " this website is publically available!"
       );
     }
   }
@@ -978,15 +978,15 @@
     // start script loading
     log.debug(
       "subscribing " +
-        module.name +
-        " to start: " +
-        loadstage +
-        " end in: " +
-        finishstage
+      module.name +
+      " to start: " +
+      loadstage +
+      " end in: " +
+      finishstage
     );
-    $.md.stage(loadstage).subscribe(function(done) {
+    $.md.stage(loadstage).subscribe(function (done) {
       if (src.startsWith("//") || src.startsWith("http")) {
-        $.getScript(src, function() {
+        $.getScript(src, function () {
           if (callback !== undefined) {
             callback(done);
           } else {
@@ -1005,8 +1005,8 @@
     });
     // if loading is not yet finished in stage finishstage, wait
     // for the loading to complete
-    $.md.stage(finishstage).subscribe(function(done) {
-      loadDone.done(function() {
+    $.md.stage(finishstage).subscribe(function (done) {
+      loadDone.done(function () {
         done();
       });
     });
@@ -1016,7 +1016,7 @@
   // this is most likely a very small subset of all available gimmicks
   function findActiveLinkTrigger() {
     var $gimmicks = $("a:icontains(gimmick:)");
-    $gimmicks.each(function(i, e) {
+    $gimmicks.each(function (i, e) {
       var parts = getGimmickLinkParts($(e));
       if (activeLinkTriggers.indexOf(parts.trigger) === -1) {
         activeLinkTriggers.push(parts.trigger);
@@ -1024,13 +1024,13 @@
     });
     log.debug(
       "Scanning for required gimmick links: " +
-        JSON.stringify(activeLinkTriggers)
+      JSON.stringify(activeLinkTriggers)
     );
   }
 
   function loadRequiredScripts() {
     // find each module responsible for the link trigger
-    $.each(activeLinkTriggers, function(i, trigger) {
+    $.each(activeLinkTriggers, function (i, trigger) {
       var module = findModuleByTrigger(trigger);
       if (module === undefined) {
         log.error(
@@ -1038,7 +1038,7 @@
         );
         return;
       }
-      var scriptinfo = registeredScripts.filter(function(info) {
+      var scriptinfo = registeredScripts.filter(function (info) {
         return info.module.name === module.name;
       })[0];
       // register to load the script
@@ -1050,7 +1050,7 @@
 
   function findModuleByTrigger(trigger) {
     var ret;
-    $.each(linkTriggers, function(i, e) {
+    $.each(linkTriggers, function (i, e) {
       if (e.trigger === trigger) {
         ret = e.module;
       }
@@ -1092,9 +1092,9 @@
       } catch (err) {
         log.error(
           "error parsing argument of gimmick: " +
-            link_text +
-            "giving error: " +
-            err
+          link_text +
+          "giving error: " +
+          err
         );
       }
     }
@@ -1103,7 +1103,7 @@
 
   function runGimmicksOnce() {
     // runs the once: callback for each gimmick within the init stage
-    $.each($.md.gimmicks, function(i, module) {
+    $.each($.md.gimmicks, function (i, module) {
       if (module.once === undefined) {
         return;
       }
@@ -1113,13 +1113,13 @@
 
   // activate all gimmicks on a page, that are contain the text gimmick:
   // TODO make private / merge closures
-  $.md.registerLinkGimmicks = function() {
+  $.md.registerLinkGimmicks = function () {
     var $gimmick_links = $("a:icontains(gimmick:)");
-    $gimmick_links.each(function(i, e) {
+    $gimmick_links.each(function (i, e) {
       var $link = $(e);
       var gimmick_arguments = getGimmickLinkParts($link);
 
-      $.each(linkTriggers, function(i, linktrigger) {
+      $.each(linkTriggers, function (i, linktrigger) {
         if (gimmick_arguments.trigger === linktrigger.trigger) {
           subscribeLinkTrigger($link, gimmick_arguments, linktrigger);
         }
@@ -1130,12 +1130,12 @@
   function subscribeLinkTrigger($link, args, linktrigger) {
     log.debug(
       "Subscribing gimmick " +
-        linktrigger.module.name +
-        " to stage: " +
-        linktrigger.stage
+      linktrigger.module.name +
+      " to stage: " +
+      linktrigger.stage
     );
 
-    $.md.stage(linktrigger.stage).subscribe(function(done) {
+    $.md.stage(linktrigger.stage).subscribe(function (done) {
       args.options = args.options || {};
 
       // it is possible that broken modules or any other transformation removed the $link
@@ -1154,9 +1154,9 @@
   }
 })(jQuery);
 
-(function($) {
+(function ($) {
   var publicMethods = {
-    createBasicSkeleton: function() {
+    createBasicSkeleton: function () {
       setPageTitle();
       wrapParagraphText();
       linkImagesToSelf();
@@ -1164,9 +1164,9 @@
       removeBreaks();
       addInpageAnchors();
 
-      $.md.stage("all_ready").subscribe(function(done) {
+      $.md.stage("all_ready").subscribe(function (done) {
         if ($.md.inPageAnchor !== "") {
-          $.md.util.wait(500).then(function() {
+          $.md.util.wait(500).then(function () {
             $.md.scrollToInPageAnchor($.md.inPageAnchor);
           });
         }
@@ -1200,7 +1200,7 @@
     // paragraph into a <div>
 
     // this also moves ANY child tags to the front of the paragraph!
-    $("#md-content p").each(function() {
+    $("#md-content p").each(function () {
       var $p = $(this);
       // nothing to do for paragraphs without text
       if ($.trim($p.text()).length === 0) {
@@ -1209,7 +1209,7 @@
         return;
       }
       // children elements of the p
-      var children = $p.contents().filter(function() {
+      var children = $p.contents().filter(function () {
         var $child = $(this);
         // we extract images and hyperlinks with images out of the paragraph
         if (this.tagName === "A" && $child.find("img").length > 0) {
@@ -1245,7 +1245,7 @@
     // get insertet after an image
     $(".md-floatenv")
       .find(".md-text")
-      .each(function() {
+      .each(function () {
         var $first = $(this)
           .find("*")
           .eq(0);
@@ -1264,7 +1264,7 @@
     var floatClass = "";
 
     // reduce content of the paragraph to images
-    var nonTextContents = $p.contents().filter(function() {
+    var nonTextContents = $p.contents().filter(function () {
       if (this.tagName === "IMG" || this.tagName === "IFRAME") {
         return true;
       } else if (this.tagName === "A") {
@@ -1300,7 +1300,7 @@
   function linkImagesToSelf() {
     function selectNonLinkedImages() {
       // only select images that do not have a non-empty parent link
-      $images = $("img").filter(function(index) {
+      $images = $("img").filter(function (index) {
         var $parent_link = $(this)
           .parents("a")
           .eq(0);
@@ -1311,7 +1311,7 @@
       return $images;
     }
     var $images = selectNonLinkedImages();
-    return $images.each(function() {
+    return $images.each(function () {
       var $this = $(this);
       var img_src = $this.attr("src");
       var img_title = $this.attr("title");
@@ -1321,10 +1321,10 @@
       // wrap the <img> tag in an anchor and copy the title of the image
       $this.wrap(
         '<a class="md-image-selfref" href="' +
-          img_src +
-          '" title="' +
-          img_title +
-          '"/> '
+        img_src +
+        '" title="' +
+        img_title +
+        '"/> '
       );
     });
   }
@@ -1341,14 +1341,14 @@
       $pilcrow.hide();
 
       var mouse_entered = false;
-      $heading.mouseenter(function() {
+      $heading.mouseenter(function () {
         mouse_entered = true;
-        $.md.util.wait(300).then(function() {
+        $.md.util.wait(300).then(function () {
           if (!mouse_entered) return;
           $pilcrow.fadeIn(200);
         });
       });
-      $heading.mouseleave(function() {
+      $heading.mouseleave(function () {
         mouse_entered = false;
         $pilcrow.fadeOut(200);
       });
@@ -1365,10 +1365,10 @@
 
       var $jumpLink = $(
         '<a class="visible-xs visible-sm jumplink" href="#md-page-menu">' +
-          c +
-          "</a>"
+        c +
+        "</a>"
       );
-      $jumpLink.click(function(ev) {
+      $jumpLink.click(function (ev) {
         ev.preventDefault();
 
         $("body").scrollTop($("#md-page-menu").position().top);
@@ -1383,7 +1383,7 @@
     // which can be accessed by the headings text
     $("h1,h2,h3,h4,h5,h6")
       .not("#md-title h1")
-      .each(function() {
+      .each(function () {
         var $heading = $(this);
         $heading.addClass("md-inpage-anchor");
         var text = $heading
@@ -1400,12 +1400,12 @@
       });
   }
 
-  $.md.scrollToInPageAnchor = function(anchortext) {
+  $.md.scrollToInPageAnchor = function (anchortext) {
     if (anchortext.startsWith("#"))
       anchortext = anchortext.substring(1, anchortext.length);
     // we match case insensitive
     var doBreak = false;
-    $(".md-inpage-anchor").each(function() {
+    $(".md-inpage-anchor").each(function () {
       if (doBreak) {
         return;
       }
@@ -1423,10 +1423,10 @@
   };
 })(jQuery);
 
-(function($) {
+(function ($) {
   "use strict";
   // call the gimmick
-  $.mdbootstrap = function(method) {
+  $.mdbootstrap = function (method) {
     if ($.mdbootstrap.publicMethods[method]) {
       return $.mdbootstrap.publicMethods[method].apply(
         this,
@@ -1438,11 +1438,11 @@
   };
   // simple wrapper around $().bind
   $.mdbootstrap.events = [];
-  $.mdbootstrap.bind = function(ev, func) {
+  $.mdbootstrap.bind = function (ev, func) {
     $(document).bind(ev, func);
     $.mdbootstrap.events.push(ev);
   };
-  $.mdbootstrap.trigger = function(ev) {
+  $.mdbootstrap.trigger = function (ev) {
     $(document).trigger(ev);
   };
 
@@ -1450,7 +1450,7 @@
 
   // PUBLIC API functions that are exposed
   var publicMethods = {
-    bootstrapify: function() {
+    bootstrapify: function () {
       createPageSkeleton();
       buildMenu();
       changeHeading();
@@ -1467,7 +1467,7 @@
       //    $(".md-first-heading").css ("margin-top", "0");
 
       // external content should run after gimmicks were run
-      $.md.stage("pregimmick").subscribe(function(done) {
+      $.md.stage("pregimmick").subscribe(function (done) {
         if ($.md.config.useSideMenu !== false) {
           createPageContentMenu();
         }
@@ -1475,7 +1475,7 @@
         addAdditionalFooterText();
         done();
       });
-      $.md.stage("postgimmick").subscribe(function(done) {
+      $.md.stage("postgimmick").subscribe(function (done) {
         adjustExternalContent();
         highlightActiveLink();
 
@@ -1542,7 +1542,7 @@
 
     // initial offset
     $("#md-body").css("margin-top", "70px");
-    $.md.stage("pregimmick").subscribe(function(done) {
+    $.md.stage("pregimmick").subscribe(function (done) {
       check_offset_to_navbar();
       done();
     });
@@ -1561,30 +1561,30 @@
 
     var dfd1 = $.md.util.repeatUntil(
       40,
-      function() {
+      function () {
         navbar_height = $("#md-main-navbar").height();
         return navbar_height > 35 && navbar_height < 481;
       },
       25
     );
 
-    dfd1.done(function() {
+    dfd1.done(function () {
       navbar_height = $("#md-main-navbar").height();
       set_offset_to_navbar();
       // now bootstrap changes this maybe after a while, again watch for changes
       var dfd2 = $.md.util.repeatUntil(
         20,
-        function() {
+        function () {
           return navbar_height !== $("#md-main-navbar").height();
         },
         25
       );
-      dfd2.done(function() {
+      dfd2.done(function () {
         // it changed, so we need to change it again
         set_offset_to_navbar();
       });
       // and finally, for real slow computers, make sure it is changed if changin very late
-      $.md.util.wait(2000).done(function() {
+      $.md.util.wait(2000).done(function () {
         set_offset_to_navbar();
       });
     });
@@ -1627,7 +1627,7 @@
     h.find("ul li").addClass("dropdown");
 
     // replace hr with dividers
-    $("#md-menu hr").each(function(i, e) {
+    $("#md-menu hr").each(function (i, e) {
       var hr = $(e);
       var prev = hr.prev();
       var next = hr.next();
@@ -1644,7 +1644,7 @@
     });
 
     // remove empty uls
-    $("#md-menu ul").each(function(i, e) {
+    $("#md-menu ul").each(function (i, e) {
       var ul = $(e);
       if (ul.find("li").length === 0) {
         ul.remove();
@@ -1655,7 +1655,7 @@
 
     // wrap the toplevel links in <li>
     $("#md-menu > a").wrap("<li />");
-    $("#md-menu ul").each(function(i, e) {
+    $("#md-menu ul").each(function (i, e) {
       var ul = $(e);
       ul.appendTo(ul.prev());
       ul.parent("li").addClass("dropdown");
@@ -1664,7 +1664,7 @@
     // submenu headers
     $("#md-menu li.dropdown")
       .find("h1, h2, h3")
-      .each(function(i, e) {
+      .each(function (i, e) {
         var $e = $(e);
         var text = $e.toptext();
         var header = $('<li class="dropdown-header" />');
@@ -1702,7 +1702,7 @@
     $("#md-content").addClass("col-md-9");
     $("#md-content-row").prepend('<div class="col-md-3" id="md-left-column"/>');
 
-    var recalc_width = function() {
+    var recalc_width = function () {
       // if the page menu is affixed, it is not a child of the
       // <md-left-column> anymore and therefore does not inherit
       // its width. On every resize, change the class accordingly
@@ -1710,10 +1710,10 @@
       $("#md-page-menu").css("width", width_left_column);
     };
 
-    $(window).scroll(function() {
+    $(window).scroll(function () {
       recalc_width($("#md-page-menu"));
       var $first;
-      $("*.md-inpage-anchor").each(function(i, e) {
+      $("*.md-inpage-anchor").each(function (i, e) {
         if ($first === undefined) {
           var h = $(e);
           if (isVisibleInViewport(h)) {
@@ -1722,7 +1722,7 @@
         }
       });
       // highlight in the right menu
-      $("#md-page-menu a").each(function(i, e) {
+      $("#md-page-menu a").each(function (i, e) {
         var $a = $(e);
         if ($first && $a.toptext() === $first.toptext()) {
           $("#md-page-menu a.active").removeClass("active");
@@ -1749,12 +1749,12 @@
     var $ul = $pannel.find("ul");
     affixDiv.append($pannel);
 
-    $headings.each(function(i, e) {
+    $headings.each(function (i, e) {
       var $heading = $(e);
       var $li = $('<li class="list-group-item" />');
       var $a = $("<a />");
       $a.attr("href", $.md.util.getInpageAnchorHref($heading.toptext()));
-      $a.click(function(ev) {
+      $a.click(function (ev) {
         ev.preventDefault();
 
         var $this = $(this);
@@ -1766,11 +1766,11 @@
       $ul.append($li);
     });
 
-    $(window).resize(function() {
+    $(window).resize(function () {
       recalc_width($("#md-page-menu"));
       check_offset_to_navbar();
     });
-    $.md.stage("postgimmick").subscribe(function(done) {
+    $.md.stage("postgimmick").subscribe(function (done) {
       // recalc_width();
       done();
     });
@@ -1830,11 +1830,11 @@
   function replaceImageParagraphs() {
     // only select those paragraphs that have images in them
     var $pars = $("p img").parents("p");
-    $pars.each(function() {
+    $pars.each(function () {
       var $p = $(this);
       var $images = $(this)
         .find("img")
-        .filter(function() {
+        .filter(function () {
           // only select those images that have no parent anchor
           return $(this).parents("a").length === 0;
         })
@@ -1853,7 +1853,7 @@
 
       // if the image is a link, wrap around the link to avoid
       function wrapImage($imgages, wrapElement) {
-        return $images.each(function(i, img) {
+        return $images.each(function (i, img) {
           var $img = $(img);
           var $parent_img = $img.parent("a");
           if ($parent_img.length > 0) $parent_img.wrap(wrapElement);
@@ -1955,8 +1955,8 @@
   }
 })(jQuery);
 
-(function($) {
-  $.gimmicks = $.fn.gimmicks = function(method) {
+(function ($) {
+  $.gimmicks = $.fn.gimmicks = function (method) {
     if (method === undefined) {
       return;
     }
@@ -1974,14 +1974,14 @@
   // TODO underscores _ in Markdown links are not allowed! bug in our MD imlemenation
 })(jQuery);
 
-(function($) {
+(function ($) {
   //'use strict';
   var alertsGimmick = {
     name: "alerts",
     // TODO
     //version: $.md.version,
-    load: function() {
-      $.md.stage("bootstrap").subscribe(function(done) {
+    load: function () {
+      $.md.stage("bootstrap").subscribe(function (done) {
         createAlerts();
         done();
       });
@@ -1994,7 +1994,7 @@
   // in original format
   function createAlerts() {
     var matches = $(select_paragraphs());
-    matches.each(function() {
+    matches.each(function () {
       var $p = $(this.p);
       var type = this.alertType;
       $p.addClass("alert");
@@ -2026,10 +2026,10 @@
     exp = exp.concat(hint);
     var matches = [];
 
-    $("p").filter(function() {
+    $("p").filter(function () {
       var $par = $(this);
       // check against each expression
-      $(exp).each(function(i, trigger) {
+      $(exp).each(function (i, trigger) {
         var txt = $par.text().toLowerCase();
         // we match only paragrachps in which the 'trigger' expression
         // is follow by a ! or :
@@ -2054,13 +2054,13 @@
   }
 })(jQuery);
 
-(function($) {
+(function ($) {
   // makes trouble, find out why
   //'use strict';
   var colorboxGimmick = {
     name: "colorbox",
-    load: function() {
-      $.md.stage("gimmick").subscribe(function(done) {
+    load: function () {
+      $.md.stage("gimmick").subscribe(function (done) {
         $.gimmicks("colorbox");
         done();
       });
@@ -2072,7 +2072,7 @@
     // takes a standard <img> tag and adds a hyperlink to the image source
     // needed since we scale down images via css and want them to be accessible
     // in original format
-    colorbox: function() {
+    colorbox: function () {
       var $image_groups;
       if (!(this instanceof jQuery)) {
         // select the image groups of the page
@@ -2083,7 +2083,7 @@
       // operate on md-image-group, which holds one
       // or more images that are to be colorbox'ed
       var counter = 0;
-      return $image_groups.each(function() {
+      return $image_groups.each(function () {
         var $this = $(this);
 
         // each group requires a unique name
@@ -2113,13 +2113,13 @@
   $.gimmicks.methods = $.extend({}, $.fn.gimmicks.methods, methods);
 })(jQuery);
 
-(function($) {
+(function ($) {
   "use strict";
 
   var themeChooserGimmick = {
     name: "Themes",
     version: $.md.version,
-    once: function() {
+    once: function () {
       $.md.linkGimmick(this, "carousel", carousel);
     }
   };
@@ -2132,12 +2132,12 @@
 
     var imageUrls = [];
     var i = 0;
-    $.each(href.split(","), function(i, e) {
+    $.each(href.split(","), function (i, e) {
       imageUrls.push($.trim(e));
       $c.find("ol").append(
         '<li data-target="#myCarousel" data-slide-to="' +
-          i +
-          '" class="active" /'
+        i +
+        '" class="active" /'
       );
       var div;
       if (i === 0) {
@@ -2158,28 +2158,28 @@
   }
 })(jQuery);
 
-(function($) {
+(function ($) {
   var disqusGimmick = {
     name: "disqus",
     version: $.md.version,
-    once: function() {
+    once: function () {
       $.md.linkGimmick(this, "disqus", disqus);
     }
   };
   $.md.registerGimmick(disqusGimmick);
 
   var alreadyDone = false;
-  var disqus = function($links, opt, text) {
+  var disqus = function ($links, opt, text) {
     var default_options = {
       identifier: ""
     };
     var options = $.extend(default_options, opt);
     var disqus_div = $(
       '<div id="disqus_thread" class="md-external md-external-noheight md-external-nowidth" >' +
-        '<a href="//disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></div>'
+      '<a href="//disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a></div>'
     );
     disqus_div.css("margin-top", "2em");
-    return $links.each(function(i, link) {
+    return $links.each(function (i, link) {
       if (alreadyDone === true) {
         return;
       }
@@ -2194,7 +2194,7 @@
         // since disqus need lot of height, always but it on the bottom of the page
         $("#md-content").append(disqus_div);
         if ($("#disqus_thread").length > 0) {
-          (function() {
+          (function () {
             // all disqus_ variables are used by the script, they
             // change the config behavious.
             // see: http://help.disqus.com/customer/portal/articles/472098-javascript-configuration-variables
@@ -2230,7 +2230,7 @@
   };
 })(jQuery);
 
-(function($) {
+(function ($) {
   var language = window.navigator.userLanguage || window.navigator.language;
   var code = language + "_" + language.toUpperCase();
   var fbRootDiv = $('<div id="fb-root" />');
@@ -2246,7 +2246,7 @@
   var facebookLikeGimmick = {
     name: "FacebookLike",
     version: $.md.version,
-    once: function() {
+    once: function () {
       $.md.linkGimmick(this, "facebooklike", facebooklike);
       $.md.registerScript(this, fbscript, {
         license: "APACHE2",
@@ -2272,7 +2272,7 @@
       options.layout = "button_count";
     }
 
-    return $link.each(function(i, e) {
+    return $link.each(function (i, e) {
       var $this = $(e);
       var href = $this.attr("href");
       $("body").append(fbRootDiv);
@@ -2289,19 +2289,19 @@
   }
 })(jQuery);
 
-(function($) {
+(function ($) {
   "use strict";
   var forkmeongithubGimmick = {
     name: "forkmeongithub",
     version: $.md.version,
-    once: function() {
+    once: function () {
       $.md.linkGimmick(this, "forkmeongithub", forkmeongithub);
     }
   };
   $.md.registerGimmick(forkmeongithubGimmick);
 
   function forkmeongithub($links, opt, text) {
-    return $links.each(function(i, link) {
+    return $links.each(function (i, link) {
       var $link = $(link);
       // default options
       var default_options = {
@@ -2340,14 +2340,14 @@
       var body_pos_top = 0;
       var github_link = $(
         '<a class="forkmeongithub" href="' +
-          href +
-          '"><img style="position: absolute; top: ' +
-          body_pos_top +
-          ";" +
-          pos +
-          ': 0; border: 0;" src="' +
-          base_href +
-          '" alt="Fork me on GitHub"></a>'
+        href +
+        '"><img style="position: absolute; top: ' +
+        body_pos_top +
+        ";" +
+        pos +
+        ': 0; border: 0;" src="' +
+        base_href +
+        '" alt="Fork me on GitHub"></a>'
       );
       // to avoid interfering with other div / scripts, we remove the link and prepend it to the body
       // the fork me ribbon is positioned absolute anyways
@@ -2358,11 +2358,11 @@
   }
 })(jQuery);
 
-(function($) {
+(function ($) {
   "use strict";
   var gistGimmick = {
     name: "gist",
-    once: function() {
+    once: function () {
       $.md.linkGimmick(this, "gist", gist);
     }
   };
@@ -2370,7 +2370,7 @@
 
   function gist($links, opt, href) {
     $().lazygist("init");
-    return $links.each(function(i, link) {
+    return $links.each(function (i, link) {
       var $link = $(link);
       var gistDiv = $('<div class="gist_here" data-id="' + href + '" />');
       $link.replaceWith(gistDiv);
@@ -2396,7 +2396,7 @@
  * Licensed under the MIT license.
  */
 
-(function($, window, document, undefined) {
+(function ($, window, document, undefined) {
   "use strict";
 
   //
@@ -2432,7 +2432,7 @@
        * Standard init function
        * No magic here
        */
-      init: function(options_input) {
+      init: function (options_input) {
         // default options are default
         options = $.extend({}, defaults, options_input);
 
@@ -2440,7 +2440,7 @@
         /*jshint -W061 */
         document.write = _write;
 
-        $.each(options, function(index, value) {
+        $.each(options, function (index, value) {
           if (typeof value !== "string") {
             throw new TypeError(
               value + " (" + typeof value + ") is not a string"
@@ -2454,12 +2454,12 @@
       /**
        * Load the gists
        */
-      load: function() {
+      load: function () {
         // (1) iterate over gist anchors
         // (2) append the gist-html through the new document.write func (see _write)
 
         // (1)
-        return this.filter("[" + options.id + "]").each(function() {
+        return this.filter("[" + options.id + "]").each(function () {
           var id = $(this).attr(options.id),
             file = $(this).attr(options.file),
             src;
@@ -2477,7 +2477,7 @@
               .replace(/\{file\}/g, file);
 
             // (2) this will trigger our _write function
-            $.getScript(src, function() {});
+            $.getScript(src, function () { });
           }
         });
       },
@@ -2485,7 +2485,7 @@
       /**
        * Just reset the write function
        */
-      reset_write: function() {
+      reset_write: function () {
         document.write = originwrite;
 
         return this;
@@ -2539,7 +2539,7 @@
   }
 
   // method invocation - from jQuery.com
-  $.fn[pluginName] = function(method) {
+  $.fn[pluginName] = function (method) {
     if (methods[method]) {
       return methods[method].apply(
         this,
@@ -2564,7 +2564,7 @@ function googlemapsReady() {
   googlemapsLoadDone.resolve();
 }
 
-(function($) {
+(function ($) {
   //'use strict';
   var scripturl =
     "http://maps.google.com/maps/api/js?sensor=false&callback=googlemapsReady";
@@ -2572,7 +2572,7 @@ function googlemapsReady() {
   function googlemaps($links, opt, text) {
     var $maps_links = $links;
     var counter = new Date().getTime();
-    return $maps_links.each(function(i, e) {
+    return $maps_links.each(function (i, e) {
       var $link = $(e);
       var default_options = {
         zoom: 11,
@@ -2612,7 +2612,7 @@ function googlemapsReady() {
     var geocoder = new google.maps.Geocoder();
 
     // geocode performs address to coordinate transformation
-    geocoder.geocode({ address: opt.address }, function(result, status) {
+    geocoder.geocode({ address: opt.address }, function (result, status) {
       if (status !== "OK") {
         return;
       }
@@ -2631,7 +2631,7 @@ function googlemapsReady() {
   var googleMapsGimmick = {
     name: "googlemaps",
     version: $.md.version,
-    once: function() {
+    once: function () {
       googlemapsLoadDone = $.Deferred();
 
       // register the gimmick:googlemaps identifier
@@ -2644,10 +2644,10 @@ function googlemapsReady() {
         finishstage: "bootstrap"
       });
 
-      $.md.stage("bootstrap").subscribe(function(done) {
+      $.md.stage("bootstrap").subscribe(function (done) {
         // defer the pregimmick phase until the google script fully loaded
         if ($.md.triggerIsActive("googlemaps")) {
-          googlemapsLoadDone.done(function() {
+          googlemapsLoadDone.done(function () {
             done();
           });
         } else {
@@ -2660,11 +2660,11 @@ function googlemapsReady() {
   $.md.registerGimmick(googleMapsGimmick);
 })(jQuery);
 
-(function($) {
+(function ($) {
   var highlightGimmick = {
     name: "highlight",
-    load: function() {
-      $.md.stage("gimmick").subscribe(function(done) {
+    load: function () {
+      $.md.stage("gimmick").subscribe(function (done) {
         highlight();
         done();
       });
@@ -2675,7 +2675,7 @@ function googlemapsReady() {
   function highlight() {
     // marked adds lang-ruby, lang-csharp etc to the <code> block like in GFM
     var $codeblocks = $("pre code[class^=lang-]");
-    return $codeblocks.each(function() {
+    return $codeblocks.each(function () {
       var $this = $(this);
       var classes = $this.attr("class");
       // TODO check for other classes and only find the lang- one
@@ -2688,19 +2688,19 @@ function googlemapsReady() {
   }
 })(jQuery);
 
-(function($) {
+(function ($) {
   "use strict";
   var iframeGimmick = {
     name: "iframe",
     version: $.md.version,
-    once: function() {
+    once: function () {
       $.md.linkGimmick(this, "iframe", create_iframe);
     }
   };
   $.md.registerGimmick(iframeGimmick);
 
   function create_iframe($links, opt, text) {
-    return $links.each(function(i, link) {
+    return $links.each(function (i, link) {
       var $link = $(link);
       var href = $link.attr("href");
       var $iframe = $(
@@ -2712,18 +2712,18 @@ function googlemapsReady() {
       if (opt.width) $iframe.css("width", opt.width);
       if (opt.height) $iframe.css("height", opt.height);
       else {
-        var updateSizeFn = function() {
+        var updateSizeFn = function () {
           var offset = $iframe.offset();
           var winHeight = $(window).height();
           var newHeight = winHeight - offset.top - 5;
           $iframe.height(newHeight);
         };
 
-        $iframe.load(function(done) {
+        $iframe.load(function (done) {
           updateSizeFn();
         });
 
-        $(window).resize(function() {
+        $(window).resize(function () {
           updateSizeFn();
         });
       }
@@ -2731,10 +2731,10 @@ function googlemapsReady() {
   }
 })(jQuery);
 
-(function($) {
+(function ($) {
   var mathGimmick = {
     name: "math",
-    once: function() {
+    once: function () {
       $.md.linkGimmick(this, "math", load_mathjax);
     }
   };
@@ -2752,40 +2752,40 @@ function googlemapsReady() {
   }
 })(jQuery);
 
-(function($) {
+(function ($) {
   "use strict";
 
   var themes = [
     {
       name: "初始",
-      url: "cdn.bootcss.com/twitter-bootstrap/3.4.0/css/bootstrap-theme.min.css"
+      url: "cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
     },
     {
       name: "蓝色",
-      url: "cdn.bootcss.com/bootswatch/3.4.0/cerulean/bootstrap.min.css"
+      url: "cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css"
     },
     {
       name: "深色",
-      url: "cdn.bootcss.com/bootswatch/3.4.0/darkly/bootstrap.min.css"
+      url: "cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/darkly/bootstrap.min.css"
     },
     {
       name: "黑色",
-      url: "cdn.bootcss.com/bootswatch/3.4.0/cyborg/bootstrap.min.css"
+      url: "cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cyborg/bootstrap.min.css"
     },
     {
       name: "灰色",
-      url: "cdn.bootcss.com/bootswatch/3.4.0/slate/bootstrap.min.css"
+      url: "cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css"
     },
     {
       name: "橙色",
-      url: "cdn.bootcss.com/bootswatch/3.4.0/united/bootstrap.min.css"
+      url: "cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css"
     }
   ];
   var useChooser = false;
   var themeChooserGimmick = {
     name: "Themes",
     version: $.md.version,
-    once: function() {
+    once: function () {
       $.md.linkGimmick(this, "themechooser", themechooser, "skel_ready");
       $.md.linkGimmick(this, "theme", apply_theme);
     }
@@ -2794,7 +2794,7 @@ function googlemapsReady() {
 
   var log = $.md.getLogger();
 
-  var set_theme = function(theme) {
+  var set_theme = function (theme) {
     theme.inverse = theme.inverse || false;
 
     if (theme.url === undefined) {
@@ -2802,7 +2802,7 @@ function googlemapsReady() {
         log.error("Theme name must be given!");
         return;
       }
-      var saved_theme = themes.filter(function(t) {
+      var saved_theme = themes.filter(function (t) {
         return t.name === theme.name;
       })[0];
       if (!saved_theme) {
@@ -2835,10 +2835,10 @@ function googlemapsReady() {
     }
   };
 
-  var apply_theme = function($links, opt, text) {
+  var apply_theme = function ($links, opt, text) {
     opt.name = opt.name || text;
-    $links.each(function(i, link) {
-      $.md.stage("postgimmick").subscribe(function(done) {
+    $links.each(function (i, link) {
+      $.md.stage("postgimmick").subscribe(function (done) {
         var $link = $(link);
 
         // only set a theme if no theme from the chooser is selected,
@@ -2853,25 +2853,25 @@ function googlemapsReady() {
     $links.remove();
   };
 
-  var themechooser = function($links, opt, text) {
+  var themechooser = function ($links, opt, text) {
     useChooser = true;
-    $.md.stage("bootstrap").subscribe(function(done) {
+    $.md.stage("bootstrap").subscribe(function (done) {
       restore_theme(opt);
       done();
     });
 
-    return $links.each(function(i, e) {
+    return $links.each(function (i, e) {
       var $this = $(e);
       var $chooser = $('<a href=""></a><ul></ul>');
       $chooser.eq(0).text(text);
 
-      $.each(themes, function(i, theme) {
+      $.each(themes, function (i, theme) {
         var $li = $("<li></li>");
         $chooser.eq(1).append($li);
         var $a = $("<a/>")
           .text(theme.name)
           .attr("href", "")
-          .click(function(ev) {
+          .click(function (ev) {
             ev.preventDefault();
             window.localStorage.theme = theme.name;
             window.location.reload();
@@ -2882,7 +2882,7 @@ function googlemapsReady() {
       $chooser.eq(1).append('<li class="divider" />');
       var $li = $("<li/>");
       var $a_use_default = $("<a>Use default</a>");
-      $a_use_default.click(function(ev) {
+      $a_use_default.click(function (ev) {
         ev.preventDefault();
         window.localStorage.removeItem("theme");
         window.location.reload();
@@ -2900,7 +2900,7 @@ function googlemapsReady() {
     });
   };
 
-  var restore_theme = function(opt) {
+  var restore_theme = function (opt) {
     if (window.localStorage.theme) {
       opt = $.extend({ name: window.localStorage.theme }, opt);
       set_theme(opt);
@@ -2908,7 +2908,7 @@ function googlemapsReady() {
   };
 })(jQuery);
 
-(function($) {
+(function ($) {
   //'use strict';
   // no license information given in the widget.js -> OTHER
   var widgetHref = $.md.prepareLink("platform.twitter.com/widgets.js");
@@ -2919,7 +2919,7 @@ function googlemapsReady() {
   var twitterGimmick = {
     name: "TwitterGimmick",
     version: $.md.version,
-    once: function() {
+    once: function () {
       $.md.linkGimmick(this, "twitterfollow", twitterfollow);
 
       $.md.registerScript(this, twitterscript, {
@@ -2931,8 +2931,8 @@ function googlemapsReady() {
   };
   $.md.registerGimmick(twitterGimmick);
 
-  var twitterfollow = function($links, opt, text) {
-    return $links.each(function(i, link) {
+  var twitterfollow = function ($links, opt, text) {
+    return $links.each(function (i, link) {
       var $link = $(link);
       var user;
       var href = $link.attr("href");
@@ -2948,23 +2948,23 @@ function googlemapsReady() {
       }
       var twitter_src = $(
         '<a href="' +
-          href +
-          '" class="twitter-follow-button" data-show-count="false" data-lang="en" data-show-screen-name="false">' +
-          "@" +
-          user +
-          "</a>"
+        href +
+        '" class="twitter-follow-button" data-show-count="false" data-lang="en" data-show-screen-name="false">' +
+        "@" +
+        user +
+        "</a>"
       );
       $link.replaceWith(twitter_src);
     });
   };
 })(jQuery);
 
-(function($) {
+(function ($) {
   //'use strict';
   var youtubeGimmick = {
     name: "youtube",
-    load: function() {
-      $.md.stage("gimmick").subscribe(function(done) {
+    load: function () {
+      $.md.stage("gimmick").subscribe(function (done) {
         youtubeLinkToIframe();
         done();
       });
@@ -2977,7 +2977,7 @@ function googlemapsReady() {
       "a[href*=youtube\\.com]:empty, a[href*=youtu\\.be]:empty"
     );
 
-    $youtube_links.each(function() {
+    $youtube_links.each(function () {
       var $this = $(this);
       var href = $this.attr("href");
       if (href !== undefined) {
@@ -3000,7 +3000,7 @@ function googlemapsReady() {
   }
 })(jQuery);
 
-(function($) {
+(function ($) {
   "use strict";
   function yuml($link, opt, text) {
     var default_options = {
@@ -3011,7 +3011,7 @@ function googlemapsReady() {
     };
     var options = $.extend({}, default_options, opt);
 
-    return $link.each(function(i, e) {
+    return $link.each(function (i, e) {
       var $this = $(e);
       var url = "http://yuml.me/diagram/";
       var data = $this.attr("href");
@@ -3045,7 +3045,7 @@ function googlemapsReady() {
   var yumlGimmick = {
     name: "yuml",
     version: $.md.version,
-    once: function() {
+    once: function () {
       $.md.linkGimmick(this, "yuml", yuml);
       $.md.registerScript(this, "", {
         license: "LGPL",
