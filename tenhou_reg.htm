@@ -83,7 +83,7 @@
         }
 
         function auto_reg() {
-            var name = document.getElementById('tenhou_name');
+            var name = document.getElementById('tenhou_name').value;
             var errors = {
                 1001: "【ID有不能使用的文字】",
                 1002: "このプレーヤ名を使用するにはIDで入場する必要があります<br>■IDの再発行方法は以下を参照してください<br>https://tenhou.net/support.html"
@@ -125,7 +125,7 @@
                 var searchParams = new URLSearchParams(paramsString);
                 var stats = searchParams.get('res');
                 switch (stats) {
-                    case 1012:
+                    case "1012":
                         log_add("注册[" + name + "]成功 ID=" + searchParams.get('id'));
                         send(name, searchParams.get('id'));
                         clearInterval(nIntervId);//停止
