@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>循环注册天凤账号测试版</title>
+    <style>
+        body,
+        input,
+        textarea {
+            font-family: "Microsoft JhengHei", Meiryo, "Malgun Gothic", tahoma,
+                Dotum, "MS PGothic", PMingLiu, sans-serif;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        (function () {//干掉傻逼的疼逊链接
+            var patt = new RegExp(/(.+)[\?\&]tdsourcetag\=\w+$/);
+            var arr = patt.exec(window.location.href);
+            if (arr != null) {
+                window.location.href = arr[1];
+            }
+        }())
+    </script>
+    <h3>循环注册天凤账号测试版</h3>
+    要注册的ID:<input type="text" id="tenhou_name" value="原村和"><br />
+
+    尝试时间间隔(分钟):<input type="text" id="interval_time" value="3"><br />
+
+    email(成功后会发email)<input type="text" id="email" value="252373009@qq.com"><br />
+
+    <input type="button" onclick="start_reg()" value="开始注册"><br /><br />
+
+    <input type="button" onclick="stop_reg()" value="停止注册">
+
+    <h4>记录(超1000字自动清空)</h4>
+    <textarea id="logs"></textarea>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+
+    <script>
+        /*抢ID小程序
+
+        @q=1：尝试注册
+
+        @res：
+        0 可以注册
+        1001 有不能使用的文字
+        1005 被注册了
+        1006 每7天只能注册1个ID
+        1012 成功
+        
+        */
+
+        var nIntervId = 0;
+        window.logs = "";
+
+        function log_add(msg) {
+            if (window.logs.length > 1000) {
+                window.logs = "";
+            }
+            window.logs += msg + "\n";
+            document.getElementById("logs").value = window.logs;
+        }
+
+        function start_reg() {
+            if (nIntervId != 0) { clearInterval(nIntervId); }
+            auto_reg();
+            var it = document.getElementById('interval_time').value * 60 * 1000;
+            nIntervId = setInterval(auto_reg, it);
+        }
+
+        function stop_reg() {
+            clearInterval(nIntervId);
+        }
+
+        function auto_reg() {
+            var name = document.getElementById('thid');
+            var errors = {
+                1001: "【ID有不能使用的文字】",
+                1002: "このプレーヤ名を使用するにはIDで入場する必要があります<br>■IDの再発行方法は以下を参照してください<br>https://tenhou.net/support.html"
+                , 1003: "IDが正しくありません<br>■IDの再発行方法は以下を参照してくださいhttps://tenhou.net/support.html<br>180日以上対戦を行っていないIDは停止または削除されている場合があります。七段以上で有料版の決済情報が確認できる場合にはIDの復元が可能です。お早めにお問い合わせください。"
+                , 1004: "このプレーヤは既に接続済みです。しばらく経ってから接続してください。"
+                , 1005: "【被注册了】"
+                , 1006: "【每7天只能注册1个ID】"
+                , 1007: "登録に失敗しました"
+                , 1008: "この接続元からは一定期間アクセスできません<br><br>多くのプレーヤから不正/迷惑行為の通報が寄せられた可能性があります。<br>アクセス解除は問い合わせを頂いても行なえない場合があります。<br>健全なコミュニティの運営に何卒ご理解ご協力をいただきますよう<br>よろしくお願い申し上げます。"
+                , 1009: "通報が完了しました"
+                , 1010: "この機能は個室では利用できません<br>ランキング戦ロビーに移動してください"
+                , 1011: "通報に失敗しました"
+                , 1012: "【注册ID成功】"
+                , 1013: "観戦可能な対戦は現在ありません"
+                , 1014: "観戦情報が見つかりませんでした<br>この対戦は既に終了している可能性があります"
+                , 1015: "大会ロビーの作成が完了しました"
+                , 1016: "大会ロビーの作成に失敗しました"
+                , 1017: "予約中は牌譜を閲覧できません"
+                , 1018: "予約中は観戦できません"
+                , 1019: "大会ロビーが見つかりませんでした。"
+                , 1020: "必要な有効期限が不足しています<br><br>今すぐ購入しますか？"
+                , 1021: "外部ログインサーバからの応答がありません"
+                , 1022: "ID互換のないロビーへは移動できません"
+                , 1023: "一時的に使用している外部IDの有効期限が切れました"
+                , 1024: "参加に必要な条件を満たしていません"
+                , 1025: "外部IDでは利用できません"
+                , 1026: "このロビーでは参加登録は行えません"
+                , 1027: "参加登録が完了しました"
+                , 1028: "すでに参加登録が完了しています"
+                , 1100: "このルールへの予約は許可されていません"
+                , 1101: "段位戦の上級/特上卓では、不正防止のため対戦人数が100人未満のルールを予約するには有料会員の有効期限の残りが91日以上必要です"
+                , 1102: "接続数が8000人以下の場合のみ予約が許可されています"
+                , 1200: "トレーニングを使用するにはID登録が必要です。ログイン画面の「新規ID」からIDを取得してください"
+                , 2003: "牌譜の読み込みに失敗しました。<br>プレイ中の牌譜はゲーム終了後に閲覧可能になります"
+            }
+            $.ajax({
+                url: "https://b.mjv.jp/regid?uname=" + encodeURI(name)
+            }).done(function (paramsString) {
+                var searchParams = new URLSearchParams(paramsString);
+                var stats = searchParams.get('res');
+                switch (stats) {
+                    case 1012:
+                        log_add("注册[" + name + "]成功 ID=" + searchParams.get('id'));
+                        send(name, searchParams.get('id'));
+                        clearInterval(nIntervId);//停止
+                        log_add("自动注册停止");
+                        break;
+                    default:
+                        log_add("失败 " + paramsString + errors[stats]);
+                }
+            });
+        }
+
+        function send(name, id) {
+            //存到饼饼干
+            var email = document.getElementById('email');
+            var exdate = new Date();
+            exdate.setDate(exdate.getDate() + 30)
+            document.cookie = id + "=" + encodeURI(name) + ";expires=" + exdate.toGMTString();
+            log_add('保存到饼干成功');
+            $.ajax({
+                url: "https://mahjong.pub/api/saveid.php?id=" + id + "&email=" + email + "&name=" + encodeURI(name)
+            }).done(function (str) {
+                if (str = 'ok') {
+                    log_add('保存到网站成功，可以在饼干或网站里找');
+                } else {
+                    log_add('保存到网站失败，请去饼干找');
+                }
+            });
+        }
+
+
+    </script>
+
+</body>
+
+</html>
