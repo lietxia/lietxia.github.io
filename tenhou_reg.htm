@@ -148,7 +148,7 @@
             $.ajax({
                 url: "https://mahjong.pub/api/saveid.php?id=" + id + "&email=" + email + "&name=" + encodeURI(name)
             }).done(function (str) {
-                if (str = 'ok') {
+                if (str === 'ok') {
                     log_add('保存到网站成功，可以在饼干或网站里找');
                 } else {
                     log_add('保存到网站失败，请去饼干找');
