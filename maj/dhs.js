@@ -4,7 +4,7 @@
 ) {
   alert("书签脚本用法：在任意地方运行一次此脚本，他会转向一个文本\n【注意】然后再运行一次此脚本");
   window.location.href =
-    "https://majsoul.union-game.com/0/v0.4.1.w/user_xieyi/1.txt";
+    "https://majsoul.union-game.com/0/v0.5.1.w/user_xieyi/1.txt";
 } else {
   history.pushState(null, null, "/dhs/");
   //document.getElementsByTagName('style')[0].remove();
