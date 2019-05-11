@@ -319,7 +319,7 @@ function init_start() {
       window.cls[i]["round"] == c_round &&
       window.cls[i]["t_class"] > cls_count
     ) {
-      cls_count = window.cls[i]["t_class"];
+      cls_count++;
       window.this_round[window.cls[i]["t_class"]] = [
         window.cls[i]["rid"],
         window.cls[i]["tid1"],
