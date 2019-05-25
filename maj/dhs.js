@@ -55,7 +55,6 @@ var x = ce(['iframe',
 	'src', "https://majsoul.union-game.com/dhs/",
 	'name', "qhdhs",
 	'id', 'qhdhs',
-	'onload', 'ifr_onload()'
 ]);
 
 x.onload = function () {
