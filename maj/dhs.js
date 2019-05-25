@@ -183,15 +183,15 @@ document.body.appendChild(x);
 
 function page_change() {
 	//*[@id="root"]/div/header/div/div[3]/div/div/div/div
-	var pg = document.querySelector('#root > div > header > div > div:nth-child(3) > div > div > div > div');
+	var pg = document.querySelector('#root > div > header > div > div:nth-child(3) > div > div > div > div').children;
+
 	var box = document.getElementById("box");
 	box.innerHTML = "";
-	var btns = pg.innerText.split(/\s+/);
-	for (var i = 0; i < btns.length; i++) {
+	for (var i = 0; i < pg.length; i++) {
 		var new_btn = document.createElement("input");
 		new_btn.setAttribute("type", "button");
 		new_btn.setAttribute("onclick", "document.querySelector('#root > div > header > div > div:nth-child(3) > div > div > div > div > button:nth-child(" + (i + 1) + ")').click();");
-		new_btn.setAttribute("value", btns[i]);
+		new_btn.setAttribute("value", pg[i].innerText);
 		box.appendChild(new_btn);
 	}
 }
