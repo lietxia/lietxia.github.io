@@ -1,4 +1,25 @@
-//index.html可以直接訪問
+/*
+
+书签
+(function () {
+    if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('https://lietxia.github.io/maj/sw.js', { scope: './' })
+                .then(function (registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(function (err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+    } else {
+        alert('你的瀏覽器不支持SW')
+    }
+})()
+
+
+index.html可以直接訪問
+*/
+
+
 self.addEventListener('fetch', function (event) {
     switch (event.request.url) {
         case 'https://majsoul.union-game.com':

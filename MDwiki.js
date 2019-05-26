@@ -1471,8 +1471,8 @@
         if ($.md.config.useSideMenu !== false) {
           createPageContentMenu();
         }
-        addFooter();
-        addAdditionalFooterText();
+        //addFooter();
+        //addAdditionalFooterText();
         done();
       });
       $.md.stage("postgimmick").subscribe(function (done) {
