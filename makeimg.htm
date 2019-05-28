@@ -6,20 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <style>
-        .hid{
+        .hid {
             display: none;
         }
     </style>
 </head>
 
 <body>
-    <h3>浏览器不能太旧，最低IE9</h3>
+    <h3>推荐chrome或firefox</h3>
     <label>图片长(像素)<input type="text" id="img_w" value="1024" /></label><br />
     <label>图片高(像素)<input type="text" id="img_h" value="768" /></label><br />
     <label>距左侧(像素)<input type="text" id="img_x" value="0" /></label><br />
     <label>距上侧(像素)<input type="text" id="img_y" value="0" /></label><br />
 
     <h3>边框</h3>
+    <label><input type="radio" value="gif_none" name="border" />无边框</label><br />
     <label><input type="radio" value="border1" name="border" checked="checked" />AMOS ULTIMA</label><br />
     <label><input type="radio" value="border2" name="border" />イーガーMJ</label><br />
     <label><input type="radio" value="border3" name="border" />木框</label><br />
@@ -27,100 +28,104 @@
     <hr />
 
     <h3>得点板</h3>
+    <label><input type="radio" value="gif_none" name="box" />无得点板</label><br />
     <label><input type="radio" value="box1" name="box" id="rbox1" checked="checked" />AMOS ULTIMAサイコロBOX</label><br />
     <label><input type="radio" value="box2" name="box" />MJサイコロBOX</label><br />
     <hr />
 
     <h3>缝</h3>
+    <label><input type="radio" value="gif_none" name="line" />无缝</label><br />
     <label><input type="radio" value="line1" name="line" id="rline1" checked="checked" />AMOS ULTIMA溝</label><br />
     <label><input type="radio" value="line2" name="line" />一般</label><br />
     <hr />
 
     <label>选择图片上传：
-        <input type="file" accept="image/*" id="imgup">
-    </label><br />
-    <input type="button" onclick="run()" value="图片合成"><br />
-    合成完，右键->保存[底部的图片]<br />
-    <input type="button" onclick="save()" value="或点此保存图片">
-    <a id="link" download="tenhou.png"></a>
-    <img src="tenhou/border1.png" id="border1" class="hid" />
-    <img src="tenhou/border2.png" id="border2" class="hid" />
-    <img src="tenhou/border3.png" id="border3" class="hid" />
-    <img src="tenhou/border4.png" id="border4" class="hid" />
-    <img src="tenhou/line1.png" id="line1" class="hid" />
-    <img src="tenhou/line2.png" id="line2" class="hid" />
-    <img src="tenhou/box1.png" id="box1" class="hid" />
-    <img src="tenhou/box2.png" id="box2" class="hid" />
+        <input type="file" accept="image/*" id="imgup" />
+    </label>
+    <hr />
+    <input type="button" onclick="run()" value="图片合成" />
+    <hr />
+    合成完
+    <input type="button" onclick="save()" value="点此保存图片" />
+    或者 右键->保存[底部的图片]
+    <a id="down_a" download="tenhou.png" target="_blank"></a>
+
+    <hr />
+    <input type="button" onclick="genbase64()" value="生成base64文本" />
+    <div>BASE64结果<span id="img_size"></span>
+        <br />
+        ※可以把BASE64的文本当做网址用
+    </div>
+    <textarea id="base64_output"></textarea>
+
+    <img src="tenhou/border1.png" id="border1" class="hid" crossOrigin="anonymous" />
+    <img src="tenhou/border2.png" id="border2" class="hid" crossOrigin="anonymous" />
+    <img src="tenhou/border3.png" id="border3" class="hid" crossOrigin="anonymous" />
+    <img src="tenhou/border4.png" id="border4" class="hid" crossOrigin="anonymous" />
+    <img src="tenhou/line1.png" id="line1" class="hid" crossOrigin="anonymous" />
+    <img src="tenhou/line2.png" id="line2" class="hid" crossOrigin="anonymous" />
+    <img src="tenhou/box1.png" id="box1" class="hid" crossOrigin="anonymous" />
+    <img src="tenhou/box2.png" id="box2" class="hid" crossOrigin="anonymous" />
+
+    <img id='gif_none' crossOrigin="anonymous"
+        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+
     <hr>
-    <canvas id="myCanvas" width="1024" height="768" style="border:1px solid #d3d3d3;">
+    <canvas id="myCanvas" width="1024" height="768" crossOrigin="anonymous">
         请不要用那么老的浏览器！Your browser does not support the HTML5 canvas tag.
     </canvas>
-
 
     <script>
         window.maked = 0;
         function save() {
-            if (window.maked === 0) { alert('请先合成图片'); return }
+            if (window.maked === 0) { return alert('请先合成图片'); }
             var Canvas = document.getElementById('myCanvas');
-            Canvas.crossOrigin = "Anonymous";
-            var link = document.getElementById('link');
-            link.setAttribute('href', Canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+            var url = Canvas.toDataURL("image/png");
+            var link = document.getElementById('down_a');
+            link.setAttribute('href', url);
             link.click();
         }
 
+        function genbase64() {
+            if (window.maked === 0) { return alert('请先合成图片'); }
+            var Canvas = document.getElementById('myCanvas');
+            var url = Canvas.toDataURL("image/png");
+            document.getElementById('base64_output').value = url;
+            document.getElementById('img_size').innerText =
+                "图片大小：" + Math.round(url.length / 1024 * 1000) / 1000 + " KB";
+        }
+
         function run() {
-            let file = document.getElementById('imgup').files[0]  // 获取选择的文件，这里是图片类型
+            let file = document.getElementById('imgup').files[0];  // 获取选择的文件，这里是图片类型
             if (typeof (file) == "undefined" || file.size <= 0) {
-                alert("请选择图片");
-                return;
+                return alert("请选择图片");
             }
-            let reader = new FileReader()
+            let reader = new FileReader();
             reader.readAsDataURL(file) //读取文件并将文件以URL的形式保存在resulr属性中 base64格式
             reader.onload = function (e) { // 文件读取完成时触发 
                 let result = e.target.result // base64格式图片地址 
+                document.getElementById('down_a').setAttribute('download', file.name)
                 var image = new Image();
                 image.src = result // 设置image的地址为base64的地址 
                 image.crossOrigin = "Anonymous";
                 image.onload = function () {
                     var Canvas = document.getElementById("myCanvas");
-                    Canvas.crossOrigin = "Anonymous";
                     var cxt = Canvas.getContext("2d");
-                    Canvas.height = 500;
-                    Canvas.height = 768;
-                    var radio = document.getElementsByName("border");
-                    var selectvalue = null;   //  selectvalue为radio中选中的值
-                    for (var i = 0; i < radio.length; i++) {
-                        if (radio[i].checked == true) {
-                            bd_select = document.getElementById(radio[i].value);
-                            break;
-                        }
-                    }
-                    bd_select.crossOrigin = "Anonymous";
-
-                    var radio = document.getElementById("rline1");
-                    if (radio.checked == true) {
-                        line_select = document.getElementById("line1");
-                    } else {
-                        line_select = document.getElementById("line2");
-                    }
-                    line_select.crossOrigin = "Anonymous";
-
-                    var radio = document.getElementById("rbox1");
-                    if (radio.checked == true) {
-                        box_select = document.getElementById("box1");
-                    } else {
-                        box_select = document.getElementById("box2");
-                    }
-                    box_select.crossOrigin = "Anonymous";
 
                     var x = document.getElementById("img_x").value;
                     var y = document.getElementById("img_y").value;
                     var w = document.getElementById("img_w").value;
                     var h = document.getElementById("img_h").value;
+
+                    var border_element = document.getElementById(document.querySelector('input[name="border"]:checked').value);
+                    var line_element = document.getElementById(document.querySelector('input[name="line"]:checked').value);
+                    var box_element = document.getElementById(document.querySelector('input[name="box"]:checked').value);
+
+                    cxt.clearRect(0, 0, Canvas.width, Canvas.height);//清空画布
                     cxt.drawImage(image, x, y, w, h)
-                    cxt.drawImage(line_select, 0, 0);
-                    cxt.drawImage(box_select, 0, 0);
-                    cxt.drawImage(bd_select, 0, 0);
+                    cxt.drawImage(line_element, 0, 0);
+                    cxt.drawImage(box_element, 0, 0);
+                    cxt.drawImage(border_element, 0, 0);
                     window.maked = 1;
                 }
             }

@@ -6,13 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <style>
-        #bg {
+        .hid {
             display: none;
         }
     </style>
 </head>
 
 <body>
+    <h3>推荐chrome或firefox</h3>
+    <h3>边框</h3>
+    <label><input type="radio" value="gif_none" name="border" />无边框</label><br />
+    <label><input type="radio" value="border1" name="border" checked="checked" />标准边框</label><br />
+
+    <h3>缝</h3>
+    <label><input type="radio" value="gif_none" name="line" />无缝</label><br />
+    <label><input type="radio" value="line1" name="line" id="rline1" checked="checked" />标准缝</label><br />
+    <hr />
 
     <label>图片长(像素)<input type="text" id="img_w" value="770" /></label><br />
     <label>图片高(像素)<input type="text" id="img_h" value="770" /></label><br />
@@ -20,32 +29,62 @@
     <label>距上侧(像素)<input type="text" id="img_y" value="115" /></label><br />
     <label>变暗(0.2=加20%黑色)<input type="text" id="img_dark" value="0.2" /></label><br />
     ※游戏里有光照，背景会变亮（把背景图变暗可以中和变亮情况）<br />
+    <hr />
     <label>选择图片上传：
         <input type="file" accept="image/*" id="imgup">
-    </label><br />
-    <input type="button" onclick="run()" value="图片合成"><br />
-    合成完，右键->保存[底部的图片]<br />
-    <input type="button" onclick="save()" value="或点此保存图片"><br />
-    <a id="link1" download="bg.png"></a>
-
-    再往 <a href="http://sm.ms">http://sm.ms</a> 传图片得到URL即可<br />
-
-    这个URL填到【重定向至：xxxx】
+    </label>
     <hr />
-    <canvas id="myCanvas" width="1000" height="1000" style="border:1px solid #d3d3d3;">
+    1.全部选好后 点→<input type="button" onclick="run()" value="图片合成">
+    <hr />
+    2.合成完，你有3种方法使用这个图片<br />
+    <fieldset>
+        <legend>方法1 使用BASE64(推荐)</legend>
+        1.<input type="button" onclick="genbase64()" value="点此生成base64文本" />
+        <br />
+        BASE64结果<span id="img_size"></span>
+        <br />
+        <textarea id="base64_output"></textarea>
+        <br />
+        2.将这个URL填到【重定向至：xxxx】<br />
+        ※base64有大小限制(太大的图片不行)
+    </fieldset>
+
+    <fieldset>
+        <legend>方法2 上传到图床</legend>
+        1.<input type="button" onclick="save()" value="点此保存图片" />
+        或者 自己手动操作： [底部的图片]->右键->保存
+        <br />
+        2.再往 <a href="http://sm.ms">http://sm.ms</a> 传图片,得到URL
+        <br />
+        3.将这个URL填到【重定向至：xxxx】<br />
+    </fieldset>
+
+    <canvas id="myCanvas" width="1000" height="1000" crossOrigin="anonymous">
         请不要用那么老的浏览器！Your browser does not support the HTML5 canvas tag.
     </canvas>
-    <img src="res/border.png" id="bg" />
+
+    <img src="majsoul_bg/border1.png" id="border1" class='hid' crossOrigin="anonymous" />
+    <img src="majsoul_bg/line1.png" id="line1" class='hid' crossOrigin="anonymous" />
+    <img id='gif_none' crossOrigin="anonymous"
+        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
 
     <script>
         window.maked = 0;
         function save() {
-            if (window.maked === 0) { alert('请先合成图片'); return }
+            if (window.maked === 0) { return alert('请先合成图片'); }
             var Canvas = document.getElementById('myCanvas');
-            Canvas.crossOrigin = "Anonymous";
-            var link = document.getElementById('link1');
-            link.setAttribute('href', Canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+            var url = Canvas.toDataURL("image/png");
+            var link = document.getElementById('down_a');
+            link.setAttribute('href', url);
             link.click();
+        }
+        function genbase64() {
+            if (window.maked === 0) { return alert('请先合成图片'); }
+            var Canvas = document.getElementById('myCanvas');
+            var url = Canvas.toDataURL("image/png");
+            document.getElementById('base64_output').value = url;
+            document.getElementById('img_size').innerText =
+                "图片大小：" + Math.round(url.length / 1024 * 1000) / 1000 + " KB";
         }
 
         function run() {
@@ -63,22 +102,24 @@
                 image.crossOrigin = "Anonymous";
                 image.onload = function () {
                     var Canvas = document.getElementById("myCanvas");
-                    Canvas.crossOrigin = "Anonymous";
                     var cxt = Canvas.getContext("2d");
-                    Canvas.height = 1001;
-                    Canvas.height = 1000;
                     var bg = document.getElementById("bg");
-                    bg.crossOrigin = "Anonymous";
                     var x = document.getElementById("img_x").value;
                     var y = document.getElementById("img_y").value;
                     var w = document.getElementById("img_w").value;
                     var h = document.getElementById("img_h").value;
+                    cxt.clearRect(0, 0, Canvas.width, Canvas.height);//清空画布
                     cxt.drawImage(image, x, y, w, h) // 在canvas上绘制图片 
                     var alpha = document.getElementById("img_dark").value;
                     alpha = Number(alpha).toFixed(2);
                     cxt.fillStyle = 'rgba(0, 0, 0, ' + alpha + ')';
-                    cxt.fillRect(0, 0, 1000, 1000);
-                    cxt.drawImage(bg, 0, 0, 1000, 1000);
+                    cxt.fillRect(0, 0, Canvas.width, Canvas.height);
+
+                    var border_element = document.getElementById(document.querySelector('input[name="border"]:checked').value);
+                    var line_element = document.getElementById(document.querySelector('input[name="line"]:checked').value);
+
+                    cxt.drawImage(line_element, 0, 0, Canvas.width, Canvas.height);
+                    cxt.drawImage(border_element, 0, 0, Canvas.width, Canvas.height);
                     window.maked = 1;
                 }
             }

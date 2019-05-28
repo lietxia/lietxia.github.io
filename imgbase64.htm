@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>图片转BASE64</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+</head>
+
+<body>
+    <h3>图片转BASE64</h3>
+
+    <label>选择图片上传：
+        <input type="file" accept="image/*" id="imgup">
+    </label>
+    <hr />
+    <input type="button" onclick="run()" value="处理图片">
+    <hr />
+    <div>BASE64结果
+        <span id="img_size"></span>
+        <br />
+        ※可以把BASE64的文本当做网址用
+    </div>
+    <textarea id="base64_output"></textarea>
+    <script>
+
+        function run() {
+            var file = document.getElementById('imgup').files[0];  // 获取选择的文件，这里是图片类型
+            if (typeof (file) == "undefined" || file.size <= 0) {
+                alert("请选择图片");
+                return;
+            }
+            var fr = new FileReader();
+            fr.onload = function (e) {
+                var result = e.target.result // base64格式图片地址 
+                document.getElementById("base64_output").value = result;
+                document.getElementById('img_size').innerText =
+                    "图片大小：" + Math.round(result.length / 1024 * 1000) / 1000 + " KB";
+            }
+            fr.readAsDataURL(file);
+        };
+
+    </script>
+
+</body>
+
+</html>

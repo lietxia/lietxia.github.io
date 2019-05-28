@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>雀魂图片加密解密</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+</head>
+
+<body>
+    <h3>雀魂图片加密解密</h3>
+
+    <label>选择图片上传：
+        <input type="file" accept="image/*" id="imgup">
+    </label>
+    <hr />
+    <input type="button" onclick="run()" value="处理图片">
+    <hr />
+    <input type="button" id='down_btn' onclick="downimg(this)" title="" value="下载图片">
+    <a id='down_a' href="#" download='result.png' target="_blank"></a>
+    <hr />
+    <div>BASE64结果 
+        <span id="img_size"></span>
+        <br />
+        ※可以把BASE64的文本当做网址用
+    </div>
+    <textarea id="base64_output"></textarea>
+    <script>
+        function downimg(btn) {
+            if (btn.title == '') {
+                return alert("请先上传图片");
+            }
+            var e = document.getElementById('down_a');
+            e.setAttribute('href', btn.title);
+            e.click();
+            e.setAttribute('href', '#');
+        }
+
+        function run() {
+            var file = document.getElementById('imgup').files[0];  // 获取选择的文件，这里是图片类型
+            if (typeof (file) == "undefined" || file.size <= 0) {
+                alert("请选择图片");
+                return;
+            }
+
+            document.getElementById('down_a').setAttribute('download', file.name);
+            var fr = new FileReader();
+            fr.onload = function (e) {
+                var buffer = new Uint8Array(e.target.result);
+                for (var i = 0; i < buffer.length; i++) {
+                    buffer[i] = 73 ^ buffer[i];
+                }
+                var png = new Blob([buffer], { type: file.type });
+                var fr2 = new FileReader();
+                fr2.onload = function (e) {
+                    var result = e.target.result // base64格式图片地址 
+                    document.getElementById("base64_output").value = result;
+                    document.getElementById('img_size').innerText =
+                     "图片大小:" + Math.round(result.length / 1024 * 1000) / 1000 + " KB";
+                }
+                fr2.readAsDataURL(png);
+                var url = URL.createObjectURL(png);
+                document.getElementById('down_btn').setAttribute('title', url);
+                return alert('处理成功，你可以点击[下载图片]来保存')
+            };
+            fr.readAsArrayBuffer(file);
+        };
+
+    </script>
+
+</body>
+
+</html>
