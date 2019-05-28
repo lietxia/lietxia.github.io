@@ -18,6 +18,7 @@
     <hr />
     <input type="button" id='down_btn' onclick="downimg(this)" title="" value="下载图片">
     <a id='down_a' href="#" download='result.png' target="_blank"></a>
+    <!--
     <hr />
     <div>BASE64结果 
         <span id="img_size"></span>
@@ -25,6 +26,7 @@
         ※可以把BASE64的文本当做网址用
     </div>
     <textarea id="base64_output"></textarea>
+    -->
     <script>
         function downimg(btn) {
             if (btn.title == '') {
@@ -51,6 +53,7 @@
                     buffer[i] = 73 ^ buffer[i];
                 }
                 var png = new Blob([buffer], { type: file.type });
+                /*
                 var fr2 = new FileReader();
                 fr2.onload = function (e) {
                     var result = e.target.result // base64格式图片地址 
@@ -59,6 +62,7 @@
                      "图片大小:" + Math.round(result.length / 1024 * 1000) / 1000 + " KB";
                 }
                 fr2.readAsDataURL(png);
+                */
                 var url = URL.createObjectURL(png);
                 document.getElementById('down_btn').setAttribute('title', url);
                 return alert('处理成功，你可以点击[下载图片]来保存')
