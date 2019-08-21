@@ -4,8 +4,8 @@
 > 目前魔改可以在PC+安卓运行。有疑问可以联系我 QQ252373009
 > 魔改在IOS失效，但我找到的新方法，但是實現非常麻煩
 > 【更新方法】在【导入导出】再次下载规则覆盖即可
-> 【2019-08-21】[另一个魔改方法，全平台适用](https://mj.000.mk/#modify_majsoul.md)
-> 【2019-08-21】完全支持日服和国际服，重新导入规则即可
+> 【2019-08-21】[另一个魔改方法，全平台适用](https://mj.000.mk/#modify_majsoul.md)  
+> 【2019-08-21】完全支持日服和国际服，重新导入规则即可  
 > 【2019-08-18】雀魂更换了网址，请把规则再次导入一次，见→【二、插件导入规则】  
 > 【更新！！】添加了[在线合成雀魂背景图的小程序](makebg.htm)
 > 【更新！！】添加了[雀魂图片在线加密解密](imgxor.htm)
@@ -23,6 +23,28 @@
 
 [gimmick:ForkMeOnGitHub](https://github.com/lietxia/lietxia.github.io)
 ----------
+# 2018-08-21更新
+* [另一个魔改方法，全平台适用](https://mj.000.mk/#modify_majsoul.md)
+* 完全支持日服和国际服，重新导入规则即可
+
+如果你要魔改加密的图片：
+1. 找到真实地址
+2. 把图片上传图床,比如 https://sm.ms
+3. 图片地址前加上一个前缀`https://xor.lietxia.workers.dev/?`
+
+比如新建一个规则，改一姬全身像的，你修改后的立绘网址是 https://mj2.000.mk/res/full_test.png
+
+匹配规则写：
+
+    ^https?://(majsoul\.union-game\.com/0|(www\.)?majsoul.com/1|game\.mahjongsoul\.com|mahjongsoul\.game\.yo-star\.com)/[^/]+/extendRes/charactor/yiji/full.png
+
+重定向至：
+
+    https://xor.lietxia.workers.dev/?https://mj2.000.mk/res/full_test.png
+
+一些立绘的其他知识见我另一个帖子的立绘部分（2个方法的正则不同，要注意）  
+https://mj.000.mk/#modify_majsoul.md
+-----
 
 # 效果
 ![](img/050.png)
