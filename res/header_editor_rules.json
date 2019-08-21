@@ -38,154 +38,154 @@
 			"name": "雀魂-改牌（红色玫瑰牌背）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/rose/$3/$4"
+			"to": "https://lietxia.github.io/dir/rose/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌（双面纯黑）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/black2/$3/$4"
+			"to": "https://lietxia.github.io/dir/black2/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-蓝色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/blue/$3/$4"
+			"to": "https://lietxia.github.io/dir/blue/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-青色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/cyan/$3/$4"
+			"to": "https://lietxia.github.io/dir/cyan/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-黑色（正面白，背面黑）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/dark/$3/$4"
+			"to": "https://lietxia.github.io/dir/dark/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-绿色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/green/$3/$4"
+			"to": "https://lietxia.github.io/dir/green/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-橙色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/orange/$3/$4"
+			"to": "https://lietxia.github.io/dir/orange/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-粉红",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/pink/$3/$4"
+			"to": "https://lietxia.github.io/dir/pink/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-紫色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/purple/$3/$4"
+			"to": "https://lietxia.github.io/dir/purple/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-红色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/red/$3/$4"
+			"to": "https://lietxia.github.io/dir/red/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-黄色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/yellow/$3/$4"
+			"to": "https://lietxia.github.io/dir/yellow/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌（双面黑+背面玫瑰花纹）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/black/$3/$4"
+			"to": "https://lietxia.github.io/dir/black/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌（saki2.0麻将牌 by無聲鈴鹿）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/saki2/$3/$4"
+			"to": "https://lietxia.github.io/dir/saki2/$3/$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-樱花牌背少女色(mumu制作)",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas/en/myres2/mjp|res/atlas/jp/myres2/mjp|res/atlas/myres2/mjp|scene/Assets/Resource/mjpai|scene/Assets/Resource/mjpai/en)/[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?majsoul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas(/en|/jp)?/myres2/mjp|scene/Assets/Resource/mjpai)/(en/)?[^/]+/(ui\\.png|hand\\.png|\\d[mpsz]\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://lietxia.github.io/dir/sakura/$3/$4"
+			"to": "https://lietxia.github.io/dir/sakura/$3/$6"
 		},
 		{
 			"enable": false,
