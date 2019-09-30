@@ -36,7 +36,7 @@ function check_js() {
 
 
 (function () {
-	if (window.location.host == "majsoul.union-game.com") {
+	if (window.location.host == "www.majsoul.com") {
 		if (window.location.pathname == "/"
 			|| window.location.pathname == ""
 			|| window.location.pathname == "/index.html"
@@ -59,7 +59,7 @@ function check_js() {
 			document.body.appendChild(e);
 
 			var x = ce(['iframe',
-				'src', "https://majsoul.union-game.com/dhs/",
+				'src', "https://www.majsoul.com/dhs/",
 				'name', "qhdhs",
 				'id', 'qhdhs',
 			]);
@@ -67,9 +67,9 @@ function check_js() {
 			x.onload = function () {
 				var scripts = frames["qhdhs"].document.getElementsByTagName("script");
 				for (let i = 0; i < scripts.length; i++) {
-					//"https://majsoul.union-game.com/dhs/vendors~app~vendor.00956963.js"
+					//"https://www.majsoul.com/dhs/vendors~app~vendor.00956963.js"
 					if (
-						scripts[i].src.substr(0, 53) == "https://majsoul.union-game.com/dhs/vendors~app~vendor"
+						scripts[i].src.substr(0, 53) == "https://www.majsoul.com/dhs/vendors~app~vendor"
 					) {
 						var thisVersion = scripts[i].src.substr(53);
 						var localVersion = localStorage.getItem('vendors_app_vendor');
@@ -120,5 +120,5 @@ function check_js() {
 		}
 	}
 	alert("书签脚本用法：\n1.在任意地方运行一次此脚本，他会转向雀魂首页\n2.【注意】然后再运行一次此脚本");
-	return window.location.href = "https://majsoul.union-game.com/";
+	return window.location.href = "https://www.majsoul.com/";
 })()
