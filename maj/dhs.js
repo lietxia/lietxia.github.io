@@ -102,7 +102,7 @@ function dhs_onload() {
 			document.body.appendChild(e);
 
 			var x = ce(['iframe',
-				'src', "https://www.majsoul.com/dhs/",
+				'src', "https://www.majsoul.com/dhs/?lng=zh-CN#/login",
 				'name', "qhdhs",
 				'id', 'qhdhs',
 				'onload', 'top.dhs_onload()'
