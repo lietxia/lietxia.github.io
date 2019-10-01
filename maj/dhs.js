@@ -1,4 +1,4 @@
-﻿/*
+/*
 雀魂大会室大凤林辅助脚本v1.0
 
 书签
@@ -68,9 +68,7 @@ function check_js() {
 				var scripts = frames["qhdhs"].document.getElementsByTagName("script");
 				for (let i = 0; i < scripts.length; i++) {
 					//"https://www.majsoul.com/dhs/vendors~app~vendor.00956963.js"
-					if (
-						scripts[i].src.substr(0, 53) == "https://www.majsoul.com/dhs/vendors~app~vendor"
-					) {
+					if (scripts[i].src.startsWith("https://www.majsoul.com/dhs/vendors~app~vendor")) {
 						var thisVersion = scripts[i].src.substr(53);
 						var localVersion = localStorage.getItem('vendors_app_vendor');
 
