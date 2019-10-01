@@ -34,6 +34,53 @@ function check_js() {
 	}
 }
 
+function dhs_onload() {
+	var scripts = frames["qhdhs"].document.getElementsByTagName("script");
+	for (let i = 0; i < scripts.length; i++) {
+		//"https://www.majsoul.com/dhs/vendors~app~vendor.00956963.js"
+		if (scripts[i].src.startsWith("https://www.majsoul.com/dhs/vendors~app~vendor")) {
+			var thisVersion = scripts[i].src.substring(scripts[i].src.length - 11);
+			var localVersion = localStorage.getItem('vendors_app_vendor');
+			var vendor_data = localStorage.getItem('vendors_app_vendor_data');
+			if (thisVersion != localVersion
+				|| vendor_data == null
+				|| vendor_data == ""
+				|| vendor_data.length < 100
+			) {//版本不符
+				localStorage.setItem('vendors_app_vendor_data', '');
+				fetch(scripts[i].src)
+					.then(async function (response) {
+						var text = await response.text();
+						text = "window.pp = [];window.ee = [];" + text;
+						text = text.replace(
+							'_.prototype.setState=function(e,t){',
+							'_.prototype.setState=function(e,t){console.log("setstate", e, t); if (typeof e.contest_name != "undefined" || typeof e.query != "undefined" || typeof e.prepareSlot != "undefined" || typeof e.uuidEdit != "undefined") { window.pp.push(this); window.ee.push(e); }'
+						);
+						localStorage.setItem('vendors_app_vendor_data', text);
+						localStorage.setItem('vendors_app_vendor', thisVersion);
+
+						var new_script = document.createElement("script");
+						new_script.innerText = localStorage.getItem('vendors_app_vendor_data');
+						new_script.setAttribute('onload', 'check_js()');
+						window.top.document.body.appendChild(new_script);
+
+					})
+			} else {
+				var new_script = document.createElement("script");
+				new_script.innerText = localStorage.getItem('vendors_app_vendor_data');
+				new_script.setAttribute('onload', 'check_js()');
+				window.top.document.body.appendChild(new_script);
+			}
+
+		} else {
+			var new_script = document.createElement("script");
+			new_script.setAttribute("src", scripts[i].src);
+			window.top.document.body.appendChild(new_script);
+		}
+	}
+	document.body.removeChild(document.getElementById('qhdhs'));
+};
+
 
 (function () {
 	if (window.location.host == "www.majsoul.com") {
@@ -42,7 +89,7 @@ function check_js() {
 			|| window.location.pathname == "/index.html"
 			|| window.location.pathname == "/index.htm") {
 			//改变url
-			history.pushState(null, null, "/dhs/#/login?lng=zh-CN");
+			history.pushState(null, null, "/dhs/?lng=zh-CN");
 			//清除内容
 			document.head.innerHTML = '';
 			document.body.innerHTML = ''
@@ -59,61 +106,16 @@ function check_js() {
 			document.body.appendChild(e);
 
 			var x = ce(['iframe',
-				'src', "https://www.majsoul.com/dhs/",
+				'src', "https://www.majsoul.com/dhs/?lng=zh-CN",
 				'name', "qhdhs",
 				'id', 'qhdhs',
+				'onload', 'top.dhs_onload()'
 			]);
 
-			x.onload = function () {
-				var scripts = frames["qhdhs"].document.getElementsByTagName("script");
-				for (let i = 0; i < scripts.length; i++) {
-					//"https://www.majsoul.com/dhs/vendors~app~vendor.00956963.js"
-					if (scripts[i].src.startsWith("https://www.majsoul.com/dhs/vendors~app~vendor")) {
-						var thisVersion = scripts[i].src.substr(53);
-						var localVersion = localStorage.getItem('vendors_app_vendor');
-
-						if (thisVersion != localVersion) {//版本不符
-							localStorage.setItem('vendors_app_vendor_data', '');
-							$.ajax({
-								url: scripts[i].src,
-								dataType: "text",
-								success: function (text) {
-									text = "window.pp = [];window.ee = [];" + text;
-									text = text.replace(
-										'_.prototype.setState=function(e,t){',
-										'_.prototype.setState=function(e,t){console.log("setstate", e, t); if (typeof e.contest_name != "undefined" || typeof e.query != "undefined" || typeof e.prepareSlot != "undefined" || typeof e.uuidEdit != "undefined") { window.pp.push(this); window.ee.push(e); }'
-									);
-									localStorage.setItem('vendors_app_vendor_data', text);
-									localStorage.setItem('vendors_app_vendor', thisVersion);
-
-									var new_script = document.createElement("script");
-									new_script.innerText = localStorage.getItem('vendors_app_vendor_data');
-									new_script.setAttribute('onload', 'check_js()');
-									window.top.document.body.appendChild(new_script);
-								}
-							})
-						} else {
-							var new_script = document.createElement("script");
-							new_script.innerText = localStorage.getItem('vendors_app_vendor_data');
-							new_script.setAttribute('onload', 'check_js()');
-							window.top.document.body.appendChild(new_script);
-						}
-
-					} else {
-						var new_script = document.createElement("script");
-						new_script.setAttribute("src", scripts[i].src);
-						window.top.document.body.appendChild(new_script);
-					}
-				}
-				document.body.removeChild(document.getElementById('qhdhs'));
-			};
-
 			document.body.appendChild(x);
-
 			var script = document.createElement('script');
 			script.setAttribute('src', 'https://mj.000.mk/dhs/dhs.js')
 			document.body.appendChild(script);
-
 			return;
 		}
 	}
