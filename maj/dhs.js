@@ -41,12 +41,8 @@ function dhs_onload() {
 		if (scripts[i].src.startsWith("https://www.majsoul.com/dhs/vendors~app~vendor")) {
 			var thisVersion = scripts[i].src.substring(scripts[i].src.length - 11);
 			var localVersion = localStorage.getItem('vendors_app_vendor');
-			var vendor_data = localStorage.getItem('vendors_app_vendor_data');
-			if (thisVersion != localVersion
-				|| vendor_data == null
-				|| vendor_data == ""
-				|| vendor_data.length < 100
-			) {//版本不符
+
+			if (thisVersion != localVersion) {//版本不符
 				localStorage.setItem('vendors_app_vendor_data', '');
 				fetch(scripts[i].src)
 					.then(async function (response) {
@@ -89,7 +85,7 @@ function dhs_onload() {
 			|| window.location.pathname == "/index.html"
 			|| window.location.pathname == "/index.htm") {
 			//改变url
-			history.pushState(null, null, "/dhs/?lng=zh-CN");
+			history.pushState(null, null, "/dhs/");
 			//清除内容
 			document.head.innerHTML = '';
 			document.body.innerHTML = ''
@@ -106,7 +102,7 @@ function dhs_onload() {
 			document.body.appendChild(e);
 
 			var x = ce(['iframe',
-				'src', "https://www.majsoul.com/dhs/?lng=zh-CN",
+				'src', "https://www.majsoul.com/dhs/",
 				'name', "qhdhs",
 				'id', 'qhdhs',
 				'onload', 'top.dhs_onload()'
