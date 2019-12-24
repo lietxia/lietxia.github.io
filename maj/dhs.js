@@ -1,4 +1,4 @@
-﻿/*
+/*
 雀魂大会室大凤林辅助脚本v1.0
 
 书签
@@ -34,15 +34,58 @@ function check_js() {
 	}
 }
 
+function dhs_onload() {
+	var scripts = frames["qhdhs"].document.getElementsByTagName("script");
+	for (let i = 0; i < scripts.length; i++) {
+		//"https://www.majsoul.com/dhs/vendors~app~vendor.00956963.js"
+		if (scripts[i].src.startsWith("https://www.majsoul.com/dhs/vendors~app~vendor")) {
+			var thisVersion = scripts[i].src.substring(scripts[i].src.length - 11);
+			var localVersion = localStorage.getItem('vendors_app_vendor');
+
+			if (thisVersion != localVersion) {//版本不符
+				localStorage.setItem('vendors_app_vendor_data', '');
+				fetch(scripts[i].src)
+					.then(async function (response) {
+						var text = await response.text();
+						text = "window.pp = [];window.ee = [];" + text;
+						text = text.replace(
+							'_.prototype.setState=function(e,t){',
+							'_.prototype.setState=function(e,t){console.log("setstate", e, t); if (typeof e.contest_name != "undefined" || typeof e.query != "undefined" || typeof e.prepareSlot != "undefined" || typeof e.uuidEdit != "undefined") { window.pp.push(this); window.ee.push(e); }'
+						);
+						localStorage.setItem('vendors_app_vendor_data', text);
+						localStorage.setItem('vendors_app_vendor', thisVersion);
+
+						var new_script = document.createElement("script");
+						new_script.innerText = localStorage.getItem('vendors_app_vendor_data');
+						new_script.setAttribute('onload', 'check_js()');
+						window.top.document.body.appendChild(new_script);
+
+					})
+			} else {
+				var new_script = document.createElement("script");
+				new_script.innerText = localStorage.getItem('vendors_app_vendor_data');
+				new_script.setAttribute('onload', 'check_js()');
+				window.top.document.body.appendChild(new_script);
+			}
+
+		} else {
+			var new_script = document.createElement("script");
+			new_script.setAttribute("src", scripts[i].src);
+			window.top.document.body.appendChild(new_script);
+		}
+	}
+	document.body.removeChild(document.getElementById('qhdhs'));
+};
+
 
 (function () {
-	if (window.location.host == "majsoul.union-game.com") {
+	if (window.location.host == "www.majsoul.com") {
 		if (window.location.pathname == "/"
 			|| window.location.pathname == ""
 			|| window.location.pathname == "/index.html"
 			|| window.location.pathname == "/index.htm") {
 			//改变url
-			history.pushState(null, null, "/dhs/#/login?lng=zh-CN");
+			history.pushState(null, null, "/dhs/");
 			//清除内容
 			document.head.innerHTML = '';
 			document.body.innerHTML = ''
@@ -59,66 +102,19 @@ function check_js() {
 			document.body.appendChild(e);
 
 			var x = ce(['iframe',
-				'src', "https://majsoul.union-game.com/dhs/",
+				'src', "https://www.majsoul.com/dhs/?lng=zh-CN#/login",
 				'name', "qhdhs",
 				'id', 'qhdhs',
+				'onload', 'top.dhs_onload()'
 			]);
 
-			x.onload = function () {
-				var scripts = frames["qhdhs"].document.getElementsByTagName("script");
-				for (let i = 0; i < scripts.length; i++) {
-					//"https://majsoul.union-game.com/dhs/vendors~app~vendor.00956963.js"
-					if (
-						scripts[i].src.substr(0, 53) == "https://majsoul.union-game.com/dhs/vendors~app~vendor"
-					) {
-						var thisVersion = scripts[i].src.substr(53);
-						var localVersion = localStorage.getItem('vendors_app_vendor');
-
-						if (thisVersion != localVersion) {//版本不符
-							localStorage.setItem('vendors_app_vendor_data', '');
-							$.ajax({
-								url: scripts[i].src,
-								dataType: "text",
-								success: function (text) {
-									text = "window.pp = [];window.ee = [];" + text;
-									text = text.replace(
-										'_.prototype.setState=function(e,t){',
-										'_.prototype.setState=function(e,t){console.log("setstate", e, t); if (typeof e.contest_name != "undefined" || typeof e.query != "undefined" || typeof e.prepareSlot != "undefined" || typeof e.uuidEdit != "undefined") { window.pp.push(this); window.ee.push(e); }'
-									);
-									localStorage.setItem('vendors_app_vendor_data', text);
-									localStorage.setItem('vendors_app_vendor', thisVersion);
-
-									var new_script = document.createElement("script");
-									new_script.innerText = localStorage.getItem('vendors_app_vendor_data');
-									new_script.setAttribute('onload', 'check_js()');
-									window.top.document.body.appendChild(new_script);
-								}
-							})
-						} else {
-							var new_script = document.createElement("script");
-							new_script.innerText = localStorage.getItem('vendors_app_vendor_data');
-							new_script.setAttribute('onload', 'check_js()');
-							window.top.document.body.appendChild(new_script);
-						}
-
-					} else {
-						var new_script = document.createElement("script");
-						new_script.setAttribute("src", scripts[i].src);
-						window.top.document.body.appendChild(new_script);
-					}
-				}
-				document.body.removeChild(document.getElementById('qhdhs'));
-			};
-
 			document.body.appendChild(x);
-
 			var script = document.createElement('script');
 			script.setAttribute('src', 'https://mj.000.mk/dhs/dhs.js')
 			document.body.appendChild(script);
-
 			return;
 		}
 	}
 	alert("书签脚本用法：\n1.在任意地方运行一次此脚本，他会转向雀魂首页\n2.【注意】然后再运行一次此脚本");
-	return window.location.href = "https://majsoul.union-game.com/";
+	return window.location.href = "https://www.majsoul.com/";
 })()
