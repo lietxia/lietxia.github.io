@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>隊伍修改</title>
+  <script> //干掉傻逼的疼逊链接
+    (function () {
+      var patt = new RegExp(/(.+)[\?\&]tdsourcetag\=\w+$/);
+      var arr = patt.exec(window.location.href);
+      if (arr != null) {
+        window.location.href = arr[1];
+      }
+    }())
+  </script>
+  <style>
+    body,
+    input,
+    textarea,
+    option,
+    select {
+      font-family: "Microsoft JhengHei", Meiryo, "Malgun Gothic", tahoma,
+        Dotum, "MS PGothic", PMingLiu, sans-serif;
+      vertical-align: middle;
+    }
+
+    body {
+      background-color: #b0dda5;
+      margin-top: 30px;
+    }
+
+    #success_up,
+    #loading_up {
+      display: none;
+    }
+
+    .ls {
+      background-color: #353535;
+      color: #ffffff;
+      border-radius: 1em;
+      padding: 0 0.5em;
+    }
+
+    li {
+      margin: 0.3em 0;
+    }
+
+    fieldset {
+      padding: 10px;
+      margin: 10px;
+      color: #333;
+      border: #5c5c5c dashed 1px;
+    }
+
+    legend {
+      color: #414141;
+      font-weight: bold;
+    }
+
+    #exit {
+      float: right;
+    }
+
+    #nav a,
+    #nav a:link,
+    #nav a:hover,
+    #nav a:active {
+      text-decoration: none;
+      color: #aaa;
+      padding: 0 10px;
+    }
+
+    #nav a:link,
+    #nav a:visited {
+      color: #aaa;
+    }
+
+    #nav a:hover {
+      color: #3ff;
+    }
+
+    #nav {
+      font-size: 16px;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 99;
+      position: fixed;
+      text-align: center;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      overflow-y: hidden;
+      overflow: visible;
+      padding: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="button" onclick="SAVE_EDIT()" value="保存更改" />
+  <input type="button" onclick="EXIT_CS()" id="exit" value="退賽" />
+  <h3 id="t_name">非法的訪問</h3>
+
+  <form action="team_post.php" method="post" id="form_main" accept-charset="UTF-8">
+    <fieldset>
+      <legend>出場更變</legend>
+      這裏是出場順序，上下拖動改變順序
+      <ol id="all_player_list"></ol>
+      <input type="button" onClick="DEL_LAST_ID()" value="刪除最後的ID" />
+    </fieldset>
+
+    <input name="postdata" type="hidden" id="postdata" value="" />
+    <input name="posttype" type="hidden" id="posttype" value="post" />
+    <input name="cid" type="hidden" id="cid" value="" />
+    <input name="t_pw" type="hidden" id="t_pw" value="" />
+    <input name="linkurl" type="hidden" id="linkurl" value="" />
+    <input name="t_ps" type="hidden" id="g_t_ps" value="" />
+    <input name="team_type" type="hidden" id="g_type" value="0" />
+  </form>
+
+  <fieldset>
+    <legend>添加成員</legend>
+    <input type="button" onClick="ADD_ID()" id="ADD_NEW_ID" value="輸入ID並添加" />
+    <hr />
+    <div id="NEW_PLAYER_LIST"></div>
+    在此輸入牌譜後，再點讀取信息 <br />
+    <input name="PAIPU" type="text" id="PAIPU" value="" />
+    <input name="READ_PP" type="button" onclick="ADD_ID_PP()" value="讀取信息" />
+    <br />
+  </fieldset>
+
+  <form id="upform">
+    <fieldset>
+      <legend>頭像設置</legend>
+
+      <img src="img/none.jpg" id="show_img" alt="隊伍頭像" width="140" height="140" />
+      <br />
+
+      <input type="file" name="smfile" id="smfile" /> <br />
+      <input type="button" onclick="LOCAL_UP_IMG()" value="本地上傳" />
+      <hr />
+      <input type="button" id="enter_url" onclick="ENTER_IMG()" value="或者輸入頭像URL" />
+      <br />
+    </fieldset>
+  </form>
+
+  <fieldset>
+    <legend>隊伍設置</legend>
+    隊伍簡介： <textarea name="t_ps" id="t_ps"></textarea>
+    <div id="isready">
+      鴿不鴿？：
+      <label>
+        <input type="checkbox" name="team_type" id="team_type" />一定不鴿</label>
+    </div>
+  </fieldset>
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script language="javascript">
+    //處理HTML數據
+    function html2Escape(sHtml) {
+      return sHtml.replace(/[<>&"]/g, function (c) {
+        return { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c];
+      });
+    }
+    function escape2Html(str) {
+      var arrEntities = { lt: "<", gt: ">", nbsp: " ", amp: "&", quot: '"' };
+      return str.replace(/&(lt|gt|nbsp|amp|quot);/gi, function (all, t) {
+        return arrEntities[t];
+      });
+    }
+
+    //手動輸入頭像URL
+    function ENTER_IMG() {
+      var IMGURL = null;
+      IMGURL = prompt("請輸入圖片網址", "");
+      //  \S+\.(?:png|jpg|bmp|gif)$
+      if (IMGURL != null && IMGURL != "") {
+        var patt1 = new RegExp(/\S+\.(?:png|jpg|bmp|gif|jpeg)$/);
+        var result = patt1.test(IMGURL);
+        if (result) {
+          alert("檢測通過，別忘了保存");
+          $("#show_img").attr("src", IMGURL);
+          $("#linkurl").val(IMGURL);
+        } else {
+          alert("網址必須以png|jpg|bmp|gif結尾，建議使用上傳");
+        }
+      } //選了yes
+    }
+
+    //提交表單前的處理
+    function SAVE_EDIT() {
+      if (!window.CAN_EDIT) {
+        return alert('網頁端修改出場名單功能，被關閉了');
+      }
+      var x = $("#all_player_list").html();
+      x = x
+        .replace(/<\/li>/g, " ")
+        .replace(/<[^>]+>/g, "")
+        .replace(/(^\s*)|(\s*$)/g, "")
+        .replace(/\s+/g, " ");
+      x = escape2Html(x);
+      $("#postdata").val(x);
+      $("#g_t_ps").val(document.getElementById("t_ps").value);
+      if (document.getElementById("team_type").checked) {
+        $("#g_type").val("1");
+      }
+      $("#form_main").submit();
+
+    }
+
+    //退賽處理
+    function EXIT_CS() {
+      if (window.CAN_EDIT) {
+        if (window.confirm("確定退賽？")) {
+          //alert("确定");
+          $("#posttype").val("out");
+          $("#form_main").submit();
+        }
+      }
+    }
+
+    //選擇ID
+    function ADD_ID_PP() {
+      var PP = document.getElementById("PAIPU").value;
+      var patt1 = new RegExp(
+        /\d{10}gm\-[abcdef1234567890]{4}\-\d{4,5}\-[abcdef1234567890]{8}/gi
+      );
+      var PP = patt1.exec(PP);
+      if (PP !== "" && PP !== null) {
+        $.getJSON("api/data.php?t=pp&cid=" + PP, function (data) {
+          var PLAYER_LIST = data.name;
+          var RADIOS = "";
+          for (var i = 0; i < PLAYER_LIST.length; i++) {
+            RADIOS =
+              RADIOS +
+              '<li><span class="ls">' +
+              html2Escape(PLAYER_LIST[i]) +
+              "</span></li>";
+          }
+          RADIOS =
+            '<fieldset><legend>把需要的ID拖至上方，不需要的拖至下方</legend><ol id="nw_p">' +
+            RADIOS +
+            "</ol></fieldset>";
+          $("#NEW_PLAYER_LIST").html(RADIOS);
+          Sortable.create(document.getElementById("nw_p"), {
+            group: "omega"
+          });
+        });
+      }
+    }
+
+    //上傳頭像
+    function LOCAL_UP_IMG() {
+      var returnmsg = {
+        'Access Denied.': '拒絕訪問',
+        'Upload file count limit.': '超過了最大可上傳次數',
+        'Upload file frequency limit.': '超過了最大可上傳頻率',
+        "Server error. Upload directory isn't writable.": '服务器錯誤。上傳目录不可寫。',
+        'No files were uploaded.': '未上傳文件',
+        'File is empty.': '文件是空的',
+        'File is too large.': '文件太大',
+        'File has an invalid extension.': '不支持的文件格式',
+        'Image upload repeated limit.': '圖片已上傳過',
+        'Could not save uploaded file.': '無法保存文件'
+      };
+
+      var fileObj = document.getElementById("smfile").files[0]; // js 获取文件对象
+      if (typeof fileObj == "undefined" || fileObj.size <= 0) {
+        alert("請選擇圖片");
+        return;
+      }
+      var formFile = new FormData();
+      formFile.append("smfile", fileObj); //加入文件对象
+      formFile.append('ssl', true);
+      $.ajax({
+        url: "https://img.lietxia.workers.dev?https://sm.ms/api/v2/upload/",
+        data: formFile,
+        method: "POST",
+        dataType: "json",
+        cache: false, //上传文件无需缓存
+        processData: false, //用于对data参数进行序列化处理 这里必须false
+        contentType: false, //必须
+        success: function (data) {
+          if (data.success) {
+            alert("頭像上傳成功");
+            document.getElementById("linkurl").value = data.data.url;
+            $("#show_img").attr("src", data.data.url);
+          } else {
+            var rs_match = data["message"].match(/http.+$/);
+            if (rs_match) {
+              alert("頭像上傳成功！");
+              document.getElementById("linkurl").value = rs_match[0];
+              $("#show_img").attr("src", rs_match[0]);
+            } else {
+              var text = (data.message in returnmsg) ? returnmsg[data.message] : data.message;
+              alert("上傳錯誤\n" + text);
+            }
+
+          }
+        }
+      });
+    }
+
+    //刪除ID
+    function DEL_LAST_ID() {
+      if (
+        confirm(
+          "【慎用】是否刪除列表最後的ID？（若誤操作，請不要保存，直接刷新）"
+        )
+      ) {
+        $("#all_player_list li:last-child").remove();
+      }
+    }
+
+    function ADD_ID() {
+      //添加ID
+      var NEWID = null;
+      NEWID = prompt("請輸入新的ID", "");
+      if (NEWID != null && NEWID != "") NEWID = NEWID.replace(/\s+/g, "");
+      {
+        var OLD = document.getElementById("all_player_list").innerHTML;
+        OLD =
+          OLD + '<li><span class="ls">' + html2Escape(NEWID) + "</span></li>";
+        document.getElementById("all_player_list").innerHTML = OLD;
+      } //如果填寫非空
+    } //添加ID
+
+    var args = {};
+    var match = null;
+    var search = decodeURIComponent(location.search.substring(1));
+    var reg = /(?:([^&=]+)=([^&]+))/g;
+    while ((match = reg.exec(search)) !== null) {
+      args[match[1]] = match[2];
+    }
+
+    window.ARGS = args;
+    window.team = false;
+
+    $.ajaxSettings.async = false;
+
+    $.getJSON("api/data.php?t=tm_pw&cid=" + window.ARGS.t_pw, function (data) {
+      window.team = data;
+      window.ARGS.cid = data.cid;
+      $("#cid").val(window.ARGS.cid);
+    });
+
+    $.getJSON("api/data.php?t=admin&cid=" + window.ARGS.cid, function (data) {
+      window.admin = data;
+    });
+
+    window.CAN_EDIT = true; //可以修改
+
+    if (!window.team) {
+      alert("密碼錯誤");
+      window.history.go(-1);
+    }
+
+    //禁止修改
+    if (window.admin.STOP_EDIT == 1) {
+      window.CAN_EDIT = false;
+    }
+
+    //只能通過牌譜添加ID
+    if (window.admin.ONLY_GET == 1) {
+      $("#ADD_NEW_ID").hide();
+    }
+
+    window.ARGS.cid = window.team.cid;
+    //變量設置
+
+    document.getElementById("t_pw").value = window.ARGS.t_pw;
+    //讀取信息
+    if (window.team.img != null && window.team.img != "") {
+      $("#show_img").attr("src", window.team.img);
+      $("#linkurl").val(window.team.img);
+    }
+    $("#t_ps").val(window.team.t_ps);
+
+    if (window.team.t_type == 1) {
+      var h3 = window.admin.c_name + "［不鴿］" + window.team.t_name;
+      $("#isready").html(
+        '<div id="isready">鴿不鴿？：<label><input name="team_type" type="checkbox" id="team_type" checked>一定不鴿</label></div>'
+      );
+    } else if (window.team.t_type == 0) {
+      var h3 = window.admin.c_name + "［可能鴿］" + window.team.t_name;
+    }
+
+    if (window.team.t_type == null || window.team.t_type == "") {
+      var h3 = window.admin.c_name + "［已退賽］" + window.team.t_name;
+      window.CAN_EDIT = false;
+    }
+
+    $("#t_name").html(h3);
+    if (window.team.t_player == null) window.team.t_player = "";
+    if (window.team.t_sub == null) window.team.t_sub = "";
+
+    window.playerlist = (
+      window.team.t_player +
+      "\n" +
+      window.team.t_sub
+    ).split(/\s+/);
+
+    li_data = "";
+    op_data = "";
+    for (var i = 0; i < window.playerlist.length; i++) {
+      if (window.playerlist[i] != "")
+        li_data =
+          li_data +
+          "<li><span class='ls'>" +
+          html2Escape(window.playerlist[i]) +
+          "</span></li>";
+    }
+    if (li_data == "") li_data = "<li><span class='ls'>  </span></li>";
+
+    $("#all_player_list").html(li_data);
+
+    //構建導航條
+    var new_nav = document.createElement("div");
+    new_nav.setAttribute("id", "nav");
+    var link1 = document.createElement("a");
+    link1.setAttribute("href", "./?cid=" + window.ARGS.cid + "#!rule");
+    link1.innerText = "規則";
+    var link2 = document.createElement("a");
+    link2.setAttribute("href", "./?cid=" + window.ARGS.cid + "#!register");
+    link2.innerText = "報名";
+    var link3 = document.createElement("a");
+    link3.setAttribute("href", "./?cid=" + window.ARGS.cid + "#!class");
+    link3.innerText = "分組";
+    var link4 = document.createElement("a");
+    link4.setAttribute("href", "./?cid=" + window.ARGS.cid + "#!ranking");
+    link4.innerText = "統計";
+    var link5 = document.createElement("a");
+    link5.setAttribute("onclick", "TEAM_LOGIN()");
+    link5.innerText = "登入";
+    var link6 = document.createElement("a");
+    link6.setAttribute("href", "./");
+    link6.innerText = "賽事";
+    new_nav.appendChild(link1);
+    new_nav.appendChild(link2);
+    new_nav.appendChild(link3);
+    new_nav.appendChild(link4);
+    new_nav.appendChild(link5);
+    new_nav.appendChild(link6);
+    document.body.appendChild(new_nav);
+  </script>
+
+  <script src="js/Sortable.min.js"></script>
+  <script>
+    Sortable.create(document.getElementById("all_player_list"), {
+      group: "omega"
+    });
+  </script>
+</body>
+
+</html>
