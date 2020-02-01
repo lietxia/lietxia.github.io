@@ -1,0 +1,25 @@
+name: ncov_api
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: 0 * * * *
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: install gulp & build
+        run: |
+          sudo php ncov_api.php
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add ncov_api.php
+          git commit -m "github_actions" -a
+      - name: Push Commits
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
