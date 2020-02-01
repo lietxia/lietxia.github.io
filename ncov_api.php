@@ -22,7 +22,7 @@ if (preg_match(
 }
 $text = '{"success":true,"world":' . $text1 . ',"china":' . $text2 . "}";
 $text = json_encode(json_decode($text));
-echo ($text);
+//echo ($text);
 $myfile = fopen("ncov.json", "w") or die("Unable to open file!");
 fwrite($myfile, $text);
 fclose($myfile);
