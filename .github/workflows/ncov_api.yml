@@ -5,6 +5,8 @@ on:
       - master
   schedule:
     - cron: 0 * * * *
+  watch:
+    types: [started]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,12 +14,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: install gulp & build
+      - name: createjson
         run: |
           sudo php ncov_api.php
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add ncov_api.php
+          git add *
           git commit -m "github_actions" -a
       - name: Push Commits
         uses: ad-m/github-push-action@master
