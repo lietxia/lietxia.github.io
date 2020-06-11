@@ -3,8 +3,8 @@
 > 目前魔改可以在PC+安卓+iOS运行，iOS方法稍后更新,有疑问可以联系我 QQ252373009
 
 > 因为雀魂更新，原来魔改规则无效，建议大家这样修改，可以一劳永逸
-> Tab URL 改成 `http://www.majsoul.com/0/*`
-> 左侧FROM的 `***majsoul.com/0/v**/` 开头的部分改成 `http://www.majsoul.com/0/v版本/`
+> Tab URL 改成 `http://www.maj-soul.com/0/*`
+> 左侧FROM的 `***maj-soul.com/0/v**/` 开头的部分改成 `http://www.maj-soul.com/0/v版本/`
 
 ![](img/021.png)
 
@@ -86,7 +86,7 @@ chrome的插件:Resource Override
 
 手动添加规则方法：
 
-插件设置页【Tab URL】的内容改成 `http://www.majsoul.com/0/*`
+插件设置页【Tab URL】的内容改成 `http://www.maj-soul.com/0/*`
 
  点【add rule】->【url -> url 】添加4行规则
 
@@ -94,10 +94,10 @@ chrome的插件:Resource Override
 
 左侧4行依次填入
 
-    ***majsoul.com/0/v**/scene/Assets/Resource/effect/res_g1/mjui.png
-    ***majsoul.com/0/v**/res/atlas/myres3.png
-    ***majsoul.com/0/v**/scene/Assets/Resource/mjpai/3d/*.png
-    ***majsoul.com/0/v**/scene/Assets/Resource/table/Table_Dif.png
+    ***maj-soul.com/0/v**/scene/Assets/Resource/effect/res_g1/mjui.png
+    ***maj-soul.com/0/v**/res/atlas/myres3.png
+    ***maj-soul.com/0/v**/scene/Assets/Resource/mjpai/3d/*.png
+    ***maj-soul.com/0/v**/scene/Assets/Resource/table/Table_Dif.png
 
 
 右侧4行依次填入
@@ -113,7 +113,7 @@ chrome的插件:Resource Override
 > 第二行：改牌3D的素材
 > 第四行：改背景图
 
-5.进入雀魂 [http://www.majsoul.com](http://www.majsoul.com) 即可享受我魔改后的效果
+5.进入雀魂 [http://www.maj-soul.com](http://www.maj-soul.com) 即可享受我魔改后的效果
 
 ----
 
@@ -155,7 +155,7 @@ chrome的插件:Resource Override
 
 左边是
 
-    ***majsoul.com/0/v**/scene/Assets/Resource/table/Table_Dif.png
+    ***maj-soul.com/0/v**/scene/Assets/Resource/table/Table_Dif.png
 
 的这行，是执行【替换牌桌】的，上传图片到图床 [https://jpg.dog](https://jpg.dog) (图床还有[http://sm.ms](http://sm.ms) 等等) ，然后把url填入右侧
 
@@ -217,7 +217,7 @@ chrome的插件:Resource Override
 
 左边写
 
-    ***majsoul.com/0/v**/audio/sound/girl/*.mp3
+    ***maj-soul.com/0/v**/audio/sound/girl/*.mp3
 
 右边写
 
@@ -229,7 +229,7 @@ chrome的插件:Resource Override
 添加1规则
 左边写
 
-    ***majsoul.com/0/v**/audio/sound/yujie/*.mp3
+    ***maj-soul.com/0/v**/audio/sound/yujie/*.mp3
 
 右边写
 
@@ -241,8 +241,8 @@ chrome的插件:Resource Override
 
 添加2行规则，左边2行写
 
-    ***majsoul.com/0/v**/scene/Assets/Resource/table/tablemid/*.png
-    ***majsoul.com/0/v**/scene/Assets/Resource/table/box_color.png
+    ***maj-soul.com/0/v**/scene/Assets/Resource/table/tablemid/*.png
+    ***maj-soul.com/0/v**/scene/Assets/Resource/table/box_color.png
 
 右边2行写
 

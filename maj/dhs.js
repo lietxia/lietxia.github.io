@@ -37,8 +37,8 @@ function check_js() {
 function dhs_onload() {
 	var scripts = frames["qhdhs"].document.getElementsByTagName("script");
 	for (let i = 0; i < scripts.length; i++) {
-		//"https://www.majsoul.com/dhs/vendors~app~vendor.00956963.js"
-		if (scripts[i].src.startsWith("https://www.majsoul.com/dhs/vendors~app~vendor")) {
+		//"https://www.maj-soul.com/dhs/vendors~app~vendor.00956963.js"
+		if (scripts[i].src.startsWith("https://www.maj-soul.com/dhs/vendors~app~vendor")) {
 			var thisVersion = scripts[i].src.substring(scripts[i].src.length - 11);
 			var localVersion = localStorage.getItem('vendors_app_vendor');
 
@@ -79,7 +79,7 @@ function dhs_onload() {
 
 
 (function () {
-	if (window.location.host == "www.majsoul.com") {
+	if (window.location.host == "www.maj-soul.com") {
 		if (window.location.pathname == "/"
 			|| window.location.pathname == ""
 			|| window.location.pathname == "/index.html"
@@ -102,7 +102,7 @@ function dhs_onload() {
 			document.body.appendChild(e);
 
 			var x = ce(['iframe',
-				'src', "https://www.majsoul.com/dhs/?lng=zh-CN#/login",
+				'src', "https://www.maj-soul.com/dhs/?lng=zh-CN#/login",
 				'name', "qhdhs",
 				'id', 'qhdhs',
 				'onload', 'top.dhs_onload()'
@@ -116,5 +116,5 @@ function dhs_onload() {
 		}
 	}
 	alert("书签脚本用法：\n1.在任意地方运行一次此脚本，他会转向雀魂首页\n2.【注意】然后再运行一次此脚本");
-	return window.location.href = "https://www.majsoul.com/";
+	return window.location.href = "https://www.maj-soul.com/";
 })()
