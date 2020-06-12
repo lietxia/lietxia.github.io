@@ -3,8 +3,8 @@
 > 目前魔改可以在PC+安卓+iOS运行，iOS方法稍后更新,有疑问可以联系我 QQ252373009
 
 > 因为雀魂更新，原来魔改规则无效，建议大家这样修改，可以一劳永逸
-> Tab URL 改成 `http://www.maj-soul.com/0/*`
-> 左侧FROM的 `***maj-soul.com/0/v**/` 开头的部分改成 `http://www.maj-soul.com/0/v版本/`
+> Tab URL 改成 `http:///0/*`
+> 左侧FROM的 `***maj-soul.com/0/v**/` 开头的部分改成 `http:///0/v版本/`
 
 ![](img/021.png)
 
@@ -86,7 +86,7 @@ chrome的插件:Resource Override
 
 手动添加规则方法：
 
-插件设置页【Tab URL】的内容改成 `http://www.maj-soul.com/0/*`
+插件设置页【Tab URL】的内容改成 `http:///0/*`
 
  点【add rule】->【url -> url 】添加4行规则
 
@@ -113,7 +113,7 @@ chrome的插件:Resource Override
 > 第二行：改牌3D的素材
 > 第四行：改背景图
 
-5.进入雀魂 [http://www.maj-soul.com](http://www.maj-soul.com) 即可享受我魔改后的效果
+5.进入雀魂 [http://](http://) 即可享受我魔改后的效果
 
 ----
 

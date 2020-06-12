@@ -124,7 +124,7 @@ firefox打开
 【名称】`主页面背景`  
 【规则类型】选【重定向请求】  
 【匹配类型】选【网址】  
-【匹配规则】`http://www.maj-soul.com/0/v0.3.47.w/scene/Assets/Resource/lobby/yard.jpg`  
+【匹配规则】`http:///0/v0.3.47.w/scene/Assets/Resource/lobby/yard.jpg`  
 【执行类型】选【常规】  
 【重定向至】`https://i.loli.net/2018/09/17/5b9fa1582c181.jpg`
 
@@ -133,9 +133,9 @@ firefox打开
 这样一个简单的魔改就完成了
 
 但这样有个小问题，雀魂只要版本一更新，`maj-soul.com/0/` 后面的`v0.3.47.w` 就要变一次，我们一次一次的改比较麻烦。所以要用【正则表达式】 [百度百科【正则表达式】](https://baike.baidu.com/item/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/1700215) 来建立一个动态的规则。太细的也不说了，总之：
-`http://www.maj-soul.com/0/v0.3.47.w/scene/Assets/Resource/lobby/yard.jpg` 的  
+`http:///0/v0.3.47.w/scene/Assets/Resource/lobby/yard.jpg` 的  
 
-    http://www.maj-soul.com/0/v0.3.47.w
+    http:///0/v0.3.47.w
     部分，换成
     ^http(s?)://(www\.)?majsoul\.com/0/[^/]+
 
@@ -154,7 +154,7 @@ firefox打开
 
 第一个坑:雀魂有部分图片是加密过的，这部分资源无法修改。
 
-就是类似`blob:http://www.maj-soul.com/6e9850f2-115d-4ae6-a612-b4e9dac2472d`
+就是类似`blob:http:///6e9850f2-115d-4ae6-a612-b4e9dac2472d`
 
 这样的图片，多为立绘。
 

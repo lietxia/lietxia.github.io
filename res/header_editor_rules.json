@@ -5,825 +5,825 @@
 			"name": "改点数显示版（透明白+不透明黑）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/scene/Assets/Resource/table/tablemid/(.*\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/scene/Assets/Resource/table/tablemid/(.*\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/board/white-black/$3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/board/white-black/$3"
 		},
 		{
 			"enable": false,
 			"name": "改点数显示版（透明白色）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/scene/Assets/Resource/table/tablemid/(.*\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/scene/Assets/Resource/table/tablemid/(.*\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/board/white/$3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/board/white/$3"
 		},
 		{
 			"enable": true,
 			"name": "雀魂-修改背景",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/scene/Assets/Resource/tablecloth/[^/]+/Table_Dif.jpg",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/scene/Assets/Resource/tablecloth/[^/]+/Table_Dif.jpg",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/res/005.png"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/res/005.png"
 		},
 		{
 			"enable": true,
 			"name": "雀魂-改牌（红色玫瑰牌背）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/rose/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/rose/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌（双面纯黑）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/black2/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/black2/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-蓝色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/blue/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/blue/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-青色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/cyan/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/cyan/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-黑色（正面白，背面黑）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/dark/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/dark/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-绿色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/green/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/green/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-橙色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/orange/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/orange/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-粉红",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/pink/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/pink/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-紫色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/purple/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/purple/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-红色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/red/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/red/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-黄色",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/yellow/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/yellow/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌（双面黑+背面玫瑰花纹）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/black/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/black/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌（saki2.0麻将牌 by無聲鈴鹿）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/saki2/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/saki2/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "雀魂-改牌-樱花牌背少女色(mumu制作)",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/(res/atlas|scene/Assets/Resource/mjpai)/(en/|jp/)?(myres2/mjp/)?[^/]+/(ui\\.png|hand\\.png|hand_ui\\.png|mjp\\.png)",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/dir/sakura/$3/$5$6"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/dir/sakura/$3/$5$6"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->清水谷龙华",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/qingshuigulonghua/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/qingshuigulonghua/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->松实玄",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/songshixuan/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/songshixuan/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->松实宥",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/songshiyou/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/songshiyou/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->福路美穗子",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/fulumeisuizi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/fulumeisuizi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->宫永咲",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/gongyongxiao/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/gongyongxiao/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->龙门渕透华",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/longmenyuantouhua/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/longmenyuantouhua/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->梦乃真帆",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/mengnaizhenfan/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/mengnaizhenfan/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->天江衣",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/tianjiangyi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/tianjiangyi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->原村和",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/yuancunhe/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/yuancunhe/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->竹井久",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/zhujingjiu/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/zhujingjiu/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->须贺京太郎",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/xuhejingtailang/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/xuhejingtailang/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->宫永照",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/gongyongzhao/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/gongyongzhao/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->藤田靖子",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/tengtianjingzi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/tengtianjingzi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->鹭森灼",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/lusenzhuo/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/lusenzhuo/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->小走八重",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/xiaozoubachong/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/xiaozoubachong/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->江口夕",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/jiangkouxi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/jiangkouxi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->高鸭稳乃",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/gaoyawennai/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/gaoyawennai/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->新子憧",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/xinzichong/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/xinzichong/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->弘世堇",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/hongshijin/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/hongshijin/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->江崎仁美（政治羊）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/jiangqirenmei/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/jiangqirenmei/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->安河内美子",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/anheneimeizi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/anheneimeizi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->涩谷尧深（茶杯）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/seguyaoshen/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/seguyaoshen/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->赤土晴绘",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/chituqinghui/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/chituqinghui/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->亦野诚子",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/yiyechengzi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/yiyechengzi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->船久保浩子",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/chuanjiubaohaozi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/chuanjiubaohaozi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->大星淡",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/daxingdan/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/daxingdan/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->二条泉",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/ertiaoquan/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/ertiaoquan/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->花田煌（好棒姐）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/huatianhuang/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/huatianhuang/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "二阶堂语言->荒川憩",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/erjietang/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/huangchuanqi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/huangchuanqi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->清水谷龙华",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/qingshuigulonghua/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/qingshuigulonghua/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->松实玄",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/songshixuan/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/songshixuan/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->松实宥",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/songshiyou/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/songshiyou/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->福路美穗子",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/fulumeisuizi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/fulumeisuizi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->宫永咲",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/gongyongxiao/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/gongyongxiao/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->龙门渕透华",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/longmenyuantouhua/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/longmenyuantouhua/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->梦乃真帆",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/mengnaizhenfan/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/mengnaizhenfan/act_$3.mp3"
 		},
 		{
 			"enable": true,
 			"name": "改一姬语音->天江衣",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/tianjiangyi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/tianjiangyi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->原村和",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/yuancunhe/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/yuancunhe/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->竹井久",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/zhujingjiu/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/zhujingjiu/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->须贺京太郎",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/xuhejingtailang/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/xuhejingtailang/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->宫永照",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/gongyongzhao/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/gongyongzhao/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->藤田靖子",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/tengtianjingzi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/tengtianjingzi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->鹭森灼",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/lusenzhuo/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/lusenzhuo/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->小走八重",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/xiaozoubachong/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/xiaozoubachong/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->江口夕",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/jiangkouxi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/jiangkouxi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->高鸭稳乃",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/gaoyawennai/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/gaoyawennai/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->新子憧",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/xinzichong/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/xinzichong/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->弘世堇",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/hongshijin/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/hongshijin/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->江崎仁美（政治羊）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/jiangqirenmei/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/jiangqirenmei/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->安河内美子",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/anheneimeizi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/anheneimeizi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->涩谷尧深（茶杯）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/seguyaoshen/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/seguyaoshen/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->赤土晴绘",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/chituqinghui/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/chituqinghui/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->亦野诚子",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/yiyechengzi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/yiyechengzi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->船久保浩子",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/chuanjiubaohaozi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/chuanjiubaohaozi/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->大星淡",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/daxingdan/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/daxingdan/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->二条泉",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/ertiaoquan/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/ertiaoquan/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->花田煌（好棒姐）",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/huatianhuang/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/huatianhuang/act_$3.mp3"
 		},
 		{
 			"enable": false,
 			"name": "改一姬语音->荒川憩",
 			"ruleType": "redirect",
 			"matchType": "regexp",
-			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
+			"pattern": "^https?://(majsoul\\.union-game\\.com/0|(www\\.|game)?maj-soul.com/1|game\\.mahjongsoul\\.com|mahjongsoul\\.game\\.yo-star\\.com)/[^/]+/audio/sound/yiji/act_(chi|pon|kan|ron|tumo|rich)\\.mp3",
 			"exclude": "",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "http://mj.000.mk/sound/huangchuanqi/act_$3.mp3"
+			"to": "https://cdn.jsdelivr.net/gh/lietxia/lietxia.github.io@latest/sound/huangchuanqi/act_$3.mp3"
 		}
 	],
 	"sendHeader": [],
