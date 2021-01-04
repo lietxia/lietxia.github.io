@@ -1,6 +1,6 @@
 window.loopcnt = 0; //计数
 
-!(function() {
+!(function () {
   //创建工具栏
   var newdiv = document.createElement("div");
   newdiv.style.cssText =
@@ -61,21 +61,21 @@ async function tenhou_log() {
     tmparr = x[i].innerText.split(/\s+/g);
     outstr +=
       "L0000 | 00:00 | 四般南喰赤 | " +
-      tmparr[3] +
+      tmparr[4] +
       "(" +
-      parseFloat(tmparr[4]) +
-      ") " +
-      tmparr[5] +
-      "(" +
-      parseFloat(tmparr[6]) +
+      parseFloat(tmparr[5]) +
       ") " +
       tmparr[7] +
       "(" +
       parseFloat(tmparr[8]) +
       ") " +
-      tmparr[9] +
+      tmparr[10] +
       "(" +
-      parseFloat(tmparr[10]) +
+      parseFloat(tmparr[11]) +
+      ") " +
+      tmparr[13] +
+      "(" +
+      parseFloat(tmparr[14]) +
       ")\r\n";
   }
   document.getElementById("th_txt").value = outstr;
