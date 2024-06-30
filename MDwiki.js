@@ -2762,23 +2762,23 @@ function googlemapsReady() {
     },
     {
       name: "蓝色",
-      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css"
+      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.1/cerulean/bootstrap.min.css"
     },
     {
       name: "深色",
-      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.0/darkly/bootstrap.min.css"
+      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.1/darkly/bootstrap.min.css"
     },
     {
       name: "黑色",
-      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.0/cyborg/bootstrap.min.css"
+      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.1/cyborg/bootstrap.min.css"
     },
     {
       name: "灰色",
-      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css"
+      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.1/slate/bootstrap.min.css"
     },
     {
       name: "橙色",
-      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css"
+      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.1/united/bootstrap.min.css"
     }
   ];
   var useChooser = false;
