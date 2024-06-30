@@ -2758,27 +2758,27 @@ function googlemapsReady() {
   var themes = [
     {
       name: "初始",
-      url: "cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
+      url: "s4.zstatic.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
     },
     {
       name: "蓝色",
-      url: "cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css"
+      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css"
     },
     {
       name: "深色",
-      url: "cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/darkly/bootstrap.min.css"
+      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.0/darkly/bootstrap.min.css"
     },
     {
       name: "黑色",
-      url: "cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cyborg/bootstrap.min.css"
+      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.0/cyborg/bootstrap.min.css"
     },
     {
       name: "灰色",
-      url: "cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css"
+      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css"
     },
     {
       name: "橙色",
-      url: "cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css"
+      url: "s4.zstatic.net/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css"
     }
   ];
   var useChooser = false;
