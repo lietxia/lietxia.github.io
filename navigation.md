@@ -1,8 +1,8 @@
 # MajhongWiki
 
-[首页|PC和安卓魔改](index.md)
+[首页](index.md)
 
-[iOS魔改(失效)](ios.md)
+[cf-snippets](cf-sni.html)
 
 [算符練習](fupractice.html)
 
