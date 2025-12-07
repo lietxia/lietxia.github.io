@@ -19,9 +19,6 @@
 
 [iOS魔改方法（失效）](ios.md)
 
-[gimmick:TwitterFollow](@lietxia)
-
-[gimmick:ForkMeOnGitHub](https://github.com/lietxia/lietxia.github.io)
 ----------
 # 2018-08-21更新
 * [另一个魔改方法，全平台适用](https://mj.000.mk/#modify_majsoul.md)

@@ -14,6 +14,4 @@
 
 [雀魂背景合成](makebg.htm)
 
-[gimmick:Disqus](lietxia)
-
 [gimmick:ThemeChooser](THEME)
