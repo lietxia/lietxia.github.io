@@ -1,146 +1,54 @@
 <!DOCTYPE html>
 <html>
 <!--
-   This is MDwiki v0.6.2
+   This is MDwiki v0.7.0
    (C) 2013 by Timo Dörr and contributors. This software is licensed
    under the terms of the GNU GPLv3 with additional terms applied.
    See https://github.com/Dynalon/mdwiki/blob/master/LICENSE.txt for more detail.
-   See //github.com/Dynalon/mdwiki for a copy of the source code.
+   See http://github.com/Dynalon/mdwiki for a copy of the source code.
 -->
 
 <head>
-  <title>MDwiki</title>
-  <script> //干掉傻逼的疼逊链接
-    (function () {
-      var patt = new RegExp(/(.+)[\?\&]tdsourcetag\=\w+$/);
-      var arr = patt.exec(window.location.href);
-      if (arr != null) {
-        window.location.href = arr[1];
-      }
-    }())
-  </script>
+    <title>MDwiki</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="fragment" content="!">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="mdwiki.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha512-Dop/vW3iOtayerlYAqCgkVr2aTr2ErwwTYOvRFUpzl2VhCMJyjQF0Q9TjUXIo6JhuM/3i0vVEt2e/7QQmnHQqw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta charset="UTF-8" />
-  <link href="https://s4.zstatic.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/themes/prism.min.css"
+        integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <script src="https://s4.zstatic.net/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-  <script src="https://s4.zstatic.net/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-  <script src="https://s4.zstatic.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <script src="https://s4.zstatic.net/ajax/libs/jquery.colorbox/1.6.4/jquery.colorbox-min.js"></script>
-  <script src="https://s4.zstatic.net/ajax/libs/marked/13.0.1/marked.min.js"></script>
-  <script src="MDwiki.js"></script>
-  <style type="text/css">
-    /* hide the main content while we assemble everything */
-    .md-hidden-load {
-      display: none;
-    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+        integrity="sha512-jGR1T3dQerLCSm/IGEGbndPwzszJBlKQ5Br9vuB0Pw2iyxOy+7AK+lJcCC8eaXyz/9du+bkCy4HXxByhxkHf+w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    .anchor-highlight {
-      font-size: 0.7em;
-      margin-left: 0.25em;
-    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js"
+        integrity="sha512-oBTprMeNEKCnqfuqKd6sbvFzmFQtlXS3e0C/RGFV0hD6QzhHV+ODfaQbAlmY6/q0ubbwlAM/nCJjkrgA3waLzg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    /* for pageContentMenu */
-    #md-page-menu {
-      position: static;
-    }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"
+        integrity="sha512-HiD3V4nv8fcjtouznjT9TqDNDm1EXngV331YGbfVGeKUoH+OLkRTCMzA34ecjlgSQZpdHZupdSrqHY+Hz3l6uQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    #md-page-menu a.active {
-      /* background-color: rgba(0, 0, 0, 0.01); */
-      font-weight: bold;
-      padding-left: 6px;
-    }
-
-    @media (min-width: 992px) {
-      #md-page-menu.affix {
-        position: fixed;
-      }
-    }
-
-    @media (min-width: 768px) {
-
-      .md-float-left .col-sm-8,
-      .md-float-right .col-sm-8 {
-        max-width: 66.67%;
-      }
-
-      .md-float-left .col-sm-4,
-      .md-float-right .col-sm-4 {
-        max-width: 33.33%;
-      }
-
-      .md-float-left .col-sm-2,
-      .md-float-right .col-sm-2 {
-        max-width: 16.67%;
-      }
-    }
-
-    @media (max-width: 992px) {
-      a.forkmeongithub {
-        display: none;
-      }
-    }
-
-    @media (max-width: 768px) {
-
-      /* don't use floating for smaller screens */
-      .md-float-left .col-sm-8,
-      .md-float-left .col-sm-4,
-      .md-float-left .col-sm-2 {
-        width: 100%;
-        min-width: 100%;
-      }
-
-      .md-float-right .col-sm-8,
-      .md-float-right .col-sm-4,
-      .md-float-right .col-sm-2 {
-        width: 100%;
-        min-width: 100%;
-      }
-    }
-
-    .md-floatenv .md-text {
-      /* md-text is not of md-col-* but needs the spacing */
-      margin-left: 15px;
-      margin-right: 15px;
-    }
-
-    /* float images */
-    .md-float-left .col-sm-8,
-    .md-float-left .col-sm-4,
-    .md-float-left .col-sm-2 {
-      width: auto;
-    }
-
-    .md-float-right .col-sm-8,
-    .md-float-right .col-sm-4,
-    .md-float-right .col-sm-2 {
-      float: right !important;
-      width: auto;
-    }
-
-    #md-all .md-copyright-footer {
-      font-size: smaller;
-      padding: 1em;
-    }
-
-    html,
-    body {
-      word-wrap: break-word;
-      margin: 0;
-      height: 100%;
-    }
-  </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.6.4/jquery.colorbox-min.js"
+        integrity="sha512-DAVSi/Ovew9ZRpBgHs6hJ+EMdj1fVKE+csL7mdf9v7tMbzM1i4c/jAvHE8AhcKYazlFl7M8guWuO3lDNzIA48A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="MDwiki.min.js"></script>
 </head>
 
 <body>
-  <noscript>
-    This website requires Javascript to be enabled. Please turn on Javascript
-    and reload the page.
-  </noscript>
+    <noscript>
+        This website requires Javascript to be enabled. Please turn on Javascript
+        and reload the page.
+    </noscript>
 
-  <div id="md-all" class="container-fluid"></div>
+    <div id="md-all">
+    </div>
 </body>
 
 </html>
